@@ -143,7 +143,7 @@ export default function HomeMobileMock() {
 
         {/* hero */}
         <At x={77} y={308} w={715} z={10}>
-          <h1 className="font-display text-[50px] font-black leading-[1.14] tracking-[-0.015em] text-ink">
+          <h1 className="font-display text-[48px] font-black leading-[1.14] tracking-[-0.015em] text-ink">
             Ryan is building apps &amp; AI systems
           </h1>
         </At>

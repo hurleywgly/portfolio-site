@@ -1,6 +1,7 @@
 # DESIGN.md — ryanwigley.com
-# STATUS: design stage COMPLETE (2026-07-23). All five pages aligned across 20 surfaces
-# (5 pages × desktop/mobile × light/dark). Next stage: implementation.
+# STATUS: v1.1 (2026-07-24) — implementation round codified. Design stage COMPLETE
+# (2026-07-23): all five pages aligned across 20 surfaces (5 pages × desktop/mobile ×
+# light/dark). Current stage: implementation — the build conventions below are canon.
 # Source of truth: Figma "ryanwigley.com — Page Designs" (sGFjHbsFwMriSNcfT7TQrc)
 #   — Design Language page, section "MODULES · v2 — home-aligned" (578:2, includes v3
 #     additions band + RULES v3 text block 578:3)
@@ -8,12 +9,13 @@
 #     slugs: home · projects · playbook · about · methodology
 
 ---
-version: 1.0
+version: 1.1
 name: Working Exhibit
 description: Personal site of an AI-systems builder — a working exhibit of live systems.
-status: design locked; porting to code is the next stage
+status: design locked; implementation underway — build conventions codified 2026-07-24
 
 themes:
+  # 2026-07-24 color audit vs Figma (palette exhibits 12:46/12:207 + home mobile 164:3/403:2): no token drift — today's touch-up is the light-mobile banner kicker going bright gold #C9A85A (the dark-gold token on a forest surface); no token values changed.
   light:
     bg: "#E9EEDF"            # pale sage page
     surface: "#F3F4E9"       # selected-row plate, panels
@@ -48,6 +50,7 @@ typography:
   title:    { family: "Fraunces",       weight: "SemiBold", usage: "tile/card titles, skill names, stat numerals" }
   body:     { family: "Hanken Grotesk", usage: "running text, descriptions" }
   label:    { family: "Fragment Mono",  transform: "lowercase or UPPER tracked", usage: "kickers, nav, captions, status tags, data, footers" }
+  mobile-display: "Fraunces Black 48 at artboard scale — every page's mobile hero heading (the mobile artboards are 1054-wide)"
   never: italic
 
 spacing: { base: 8, page-pad-x: 80, content-max: 1280 }
@@ -97,9 +100,13 @@ components:
   methodology-book:  "tarot-style constellation card, Fraunces title, HOW I THINK mono footer"
   arc-timeline:      "gold-dot node timeline with mono step labels (01 HOME → …) — methodology"
   arsenal-cluster:   "kicker + 2×2 chips + browse link, one unit; /capsule keeps NEW badge"
-  shelf:             "personality diorama — never shrinks"
-  crew-polaroid:     "pixel family portrait; small clone sits in About mobile empty space"
+  shelf:             "personality diorama — never shrinks; UNIQUE drawing per theme (light/dark
+                      are different art, not recolors — see implementation.art-exports)"
+  crew-polaroid:     "pixel family portrait; small clone sits in About mobile empty space;
+                      unique art per theme"
   writing-nav-icon:  "document/nib glyph 16px; #8A9478 light / #7E92A9 dark"
+  rw-logo:           "the real single-path monogram vector (Figma 164:103) rendered via
+                      currentColor so it takes the theme's ink — stacked-text lockup RETIRED"
 
 # ————— FILE HYGIENE (for future agents) —————
 hygiene:
@@ -113,6 +120,29 @@ hygiene:
              'ryan comment' frames live left of page frames — never inside them."
   mobile-deltas: "acknowledged: crew polaroid mobile-About only; 1 expanded skill on mobile
                   playbook vs 3 desktop; mobile footers have no GRID tag; frame heights content-driven"
+
+# ————— IMPLEMENTATION (build conventions, codified 2026-07-24) —————
+implementation:
+  mobile-model: >
+    Mobile pages render the Figma mobile artboard at MOCK SCALE — a uniformly scaled
+    1054-wide stage (ScaledStage). The home exhibit (/m) uses ZoomableStage: the same
+    fit-scaling plus pinch-zoom 1×–3× (double-tap, ctrl/cmd+wheel), with the fixed
+    bottom nav outside the zoom. The reflowed-native-mobile approach was tried and
+    REJECTED. Tappable objects on the home exhibit are a future test stage.
+  chrome: >
+    Glass-blur sticky header + glass mobile bottom bar are canon ('bg-page/90
+    backdrop-blur'). The header keeps a CONSTANT layout footprint on every route —
+    exhibit routes (/, /m) render it invisible rather than unmounting it, so navigation
+    never shifts content. scrollbar-gutter: stable for the same reason.
+  art-exports: >
+    Shelf diorama and crew polaroid are UNIQUE drawings per theme. The shelf ships as a
+    single composed TRANSPARENT SVG per theme — individual SVG objects grouped, exported
+    whole from the Figma frames — never a raster plate. The crew polaroid ships per
+    theme as transparent PNG (pixel art). Files: public/art/home/shelf-diorama[-dark].svg
+    · crew-polaroid[-dark].png.
+  ambient-motion: >
+    EXPLORING, NOT YET CANON — subtle lattice-line animation only (draw-in, surveyor's
+    dot, drift). prefers-reduced-motion honored. Lattice + dots only, never text/cards.
 ---
 
 ## Status
@@ -120,7 +150,11 @@ hygiene:
 **Locked (1.0):** both themes · type roles · the five v3 rules · all components above ·
 all 20 page surfaces · file hygiene conventions.
 
-**Next (implementation):** port to code — `app/globals.css` tokens, nav/tile/banner/
+**Locked (1.1, 2026-07-24):** mock-scale mobile rendering (ScaledStage; ZoomableStage on
+/m) · constant-footprint glass chrome · per-theme composed art exports · real RW monogram ·
+mobile display = Fraunces Black 48. Ambient lattice motion is exploring, NOT yet canon.
+
+**In progress (implementation):** port to code — `app/globals.css` tokens, nav/tile/banner/
 selected-row/theme-switcher components, per-page builds from the Figma frames. The avatar
 3D embed is NOT reserved in the layout anymore; it returns as its own future project
 (see `metahuman-avatar-assistant-capsule.md`) with placement decided then.
@@ -147,4 +181,6 @@ Foundation 2026-06 (FC-Mobile MJ recreation) → Home alignment 2026-07-07 (hier
 gold promotion, labeled nav, clearance rule) → V-A tile artwork + banner glyph 2026-07-16 →
 writing nav + image-first playbook 2026-07-17 → Ryan's Home/About/Methodology redesigns +
 dark parity + mobile build-out 2026-07-22 → comment round, lattice/footer/naming canon,
-file cleanup + v3 codification 2026-07-23.
+file cleanup + v3 codification 2026-07-23 → implementation round (mock-scale mobile
+model, constant glass chrome, per-theme art exports, real RW monogram, Figma color
+audit — no token drift) + v1.1 codification 2026-07-24.
