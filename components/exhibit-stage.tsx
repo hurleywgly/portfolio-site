@@ -21,7 +21,7 @@ export function ExhibitStage({
   className?: string
 }) {
   const outerRef = useRef<HTMLDivElement>(null)
-  const [{ scale, left }, set] = useState({ scale: 1, left: 0 })
+  const [{ scale, left }, set] = useState({ scale: 0, left: 0 })
 
   useLayoutEffect(() => {
     const el = outerRef.current
@@ -41,7 +41,10 @@ export function ExhibitStage({
     <div
       ref={outerRef}
       className={cn("relative w-full overflow-hidden", className)}
-      style={{ height: height * scale }}
+      style={{
+        aspectRatio: `${width} / ${height}`,
+        maxHeight: height,
+      }}
     >
       <div
         className="absolute top-0"
@@ -51,6 +54,7 @@ export function ExhibitStage({
           left,
           transformOrigin: "top left",
           transform: `scale(${scale})`,
+          visibility: scale ? "visible" : "hidden",
         }}
       >
         {children}

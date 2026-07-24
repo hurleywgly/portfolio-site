@@ -41,10 +41,16 @@ export function ScaledStage({
     <div
       ref={outer}
       className={className}
-      style={{ height: scale ? height * scale : undefined }}
+      style={{
+        aspectRatio: `${width} / ${height}`,
+        overflow: "hidden",
+        position: "relative",
+      }}
     >
       <div
         style={{
+          inset: 0,
+          position: "absolute",
           width,
           height,
           transform: `scale(${scale})`,

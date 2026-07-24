@@ -14,7 +14,7 @@ import { MethodologyCard } from "@/components/methodology-card"
 import { MobileNavBar } from "@/components/mobile-nav-bar"
 import { ProjectTile, homeMotifs } from "@/components/project-tile"
 import { RwLogo } from "@/components/rw-logo"
-import { ScaledStage } from "@/components/scaled-stage"
+import { ZoomableStage } from "@/components/zoomable-stage"
 import { ShelfDiorama } from "@/components/shelf-diorama"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { WaveformBanner } from "@/components/waveform-banner"
@@ -123,8 +123,8 @@ const marks: LatticeMark[] = homeLatticeMobile
  */
 export default function HomeMobileMock() {
   return (
-    <main>
-      <ScaledStage width={1054} height={2360}>
+    <main className="-mt-[76px] md:-mt-[81px]">
+      <ZoomableStage width={1054} height={2360}>
         <Lattice marks={marks} />
 
         {/* chrome */}
@@ -224,7 +224,7 @@ export default function HomeMobileMock() {
         <At x={657} y={1788} w={304} h={255} z={10}>
           <CrewPolaroid />
         </At>
-      </ScaledStage>
+      </ZoomableStage>
 
       <div className="h-24" />
       <MobileNavBar />

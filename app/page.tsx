@@ -70,7 +70,7 @@ function Box({
 
 export default function Home() {
   return (
-    <main>
+    <main className="-mt-[76px] md:-mt-[81px]">
       {/* ============================= DESKTOP ============================= */}
       <div className="hidden md:block">
         <ExhibitStage width={1440} height={1024}>
