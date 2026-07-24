@@ -19,7 +19,7 @@ import { ShelfDiorama } from "@/components/shelf-diorama"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { WaveformBanner } from "@/components/waveform-banner"
 import { WritingTile } from "@/components/writing-tile"
-import { homeChips, homeTiles } from "@/lib/home-data"
+import { homeChips, homeLatticeMobile, homeTiles } from "@/lib/home-data"
 
 export const metadata: Metadata = {
   title: "Home · mobile mock scale",
@@ -112,20 +112,8 @@ function AtScaled({
   )
 }
 
-/* Mobile-frame lattice: sparse marks in the open zones (artboard coords). */
-const marks: LatticeMark[] = [
-  { type: "bracket", x: 812, y: 300, w: 150, h: 120, corner: "tr" },
-  { type: "dot", x: 958, y: 296 },
-  { type: "rule", x: 36, y: 620, w: 2, h: 260 },
-  { type: "dot", x: 33, y: 616 },
-  { type: "square", x: 30, y: 892, size: 12 },
-  { type: "rule", x: 500, y: 1180, w: 380, h: 2, faint: true },
-  { type: "dot", x: 876, y: 1176 },
-  { type: "rule", x: 990, y: 1420, w: 2, h: 300 },
-  { type: "square", x: 984, y: 1726, size: 12 },
-  { type: "rule", x: 120, y: 1900, w: 320, h: 2, faint: true },
-  { type: "dot", x: 116, y: 1896 },
-]
+/* The real grid-lattice layer from the Figma mobile frame, extracted 1:1. */
+const marks: LatticeMark[] = homeLatticeMobile
 
 /**
  * /m — the Figma mobile frame (1054×2360) rendered at mock scale: the whole
