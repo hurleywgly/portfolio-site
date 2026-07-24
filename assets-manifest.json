@@ -1,0 +1,282 @@
+[
+  {
+    "key": "waveform-wave",
+    "path": "/art/projects/waveform-wave.jpg",
+    "source": "repo",
+    "sourceDetail": "output/moodboard-upload/waveform.jpg (same MJ art as Figma 975:23 'art \u00b7 Waveform')",
+    "intendedPlacement": "projects page \u2014 waveform-banner flagship strip (PODCAST EDITOR kicker / 'Waveform' title / breaker-curl + gold-crest -> soundwave bars)",
+    "w": 1600,
+    "h": 1004,
+    "bytes": 328565
+  },
+  {
+    "key": "stumble-ai",
+    "path": "/art/projects/stumble-ai.jpg",
+    "source": "repo",
+    "sourceDetail": "output/moodboard-upload/stumble-ai.jpg (same MJ art as Figma 975:8 'art \u00b7 Stumble AI')",
+    "intendedPlacement": "projects page \u2014 project-tile 'STUMBLE AI' (flat-S ridge + gold target motif)",
+    "w": 1400,
+    "h": 879,
+    "bytes": 293149
+  },
+  {
+    "key": "acquired-bookshelf",
+    "path": "/art/projects/acquired-bookshelf.jpg",
+    "source": "repo",
+    "sourceDetail": "output/moodboard-upload/acquired-bookshelf.jpg (same MJ art as Figma 975:11)",
+    "intendedPlacement": "projects page \u2014 project-tile 'ACQUIRED BOOKSHELF' (spines + gramophone/broadcast motif)",
+    "w": 1400,
+    "h": 879,
+    "bytes": 265675
+  },
+  {
+    "key": "rain-or-rainier",
+    "path": "/art/projects/rain-or-rainier.jpg",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 975:14 'art \u00b7 Rain or Rainier' (rawImage 1376x864)",
+    "intendedPlacement": "projects page \u2014 project-tile 'RAIN OR RAINIER?' (Seattle skyline + Mt Rainier + rain + gold cap)",
+    "w": 1400,
+    "h": 879,
+    "bytes": 219649
+  },
+  {
+    "key": "ryos-capsule",
+    "path": "/art/projects/ryos-capsule.jpg",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 975:17 'art \u00b7 RyOS Capsule' (rawImage 1376x864)",
+    "intendedPlacement": "projects page \u2014 project-tile 'RYOS STARTER KIT' (capsule + network + compass + chip motif)",
+    "w": 1400,
+    "h": 879,
+    "bytes": 259743
+  },
+  {
+    "key": "my-skills",
+    "path": "/art/projects/my-skills.jpg",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 975:20 'art \u00b7 My Skills' (rawImage 1376x864)",
+    "intendedPlacement": "projects page \u2014 project-tile 'MY SKILLS' (helmet + gold nib swash; links through to tools/playbook page)",
+    "w": 1400,
+    "h": 879,
+    "bytes": 290773
+  },
+  {
+    "key": "auto-mine",
+    "path": "/art/skills/auto-mine.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/auto-mine-B-4.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /auto-mine (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 46891
+  },
+  {
+    "key": "capsule",
+    "path": "/art/skills/capsule.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/capsule-A4.jpeg",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /capsule (arsenal-cluster) \u2014 keeps NEW badge + gold accent-stroke",
+    "w": 1200,
+    "h": 753,
+    "bytes": 138745
+  },
+  {
+    "key": "channel",
+    "path": "/art/skills/channel.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/channel-A-1.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /channel (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 95202
+  },
+  {
+    "key": "claude",
+    "path": "/art/skills/claude.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/claude-A-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /claude (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 50745
+  },
+  {
+    "key": "codex",
+    "path": "/art/skills/codex.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/codex-B-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /codex (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 31683
+  },
+  {
+    "key": "daily-brief",
+    "path": "/art/skills/daily-brief.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/daily-brief-A3.jpeg",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /daily-brief (arsenal-cluster)",
+    "w": 1200,
+    "h": 753,
+    "bytes": 139800
+  },
+  {
+    "key": "design",
+    "path": "/art/skills/design.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/design-A-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /design (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 56918
+  },
+  {
+    "key": "events",
+    "path": "/art/skills/events.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/events-A-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /events (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 58689
+  },
+  {
+    "key": "ink",
+    "path": "/art/skills/ink.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/ink-A1.jpeg",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /ink (arsenal-cluster)",
+    "w": 1200,
+    "h": 753,
+    "bytes": 180485
+  },
+  {
+    "key": "mine",
+    "path": "/art/skills/mine.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/mine-A-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /mine (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 48228
+  },
+  {
+    "key": "ops",
+    "path": "/art/skills/ops.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/ops-A-3.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /ops (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 71565
+  },
+  {
+    "key": "pitch-me",
+    "path": "/art/skills/pitch-me.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/pitch-me-B-4.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /pitch-me (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 51193
+  },
+  {
+    "key": "primer",
+    "path": "/art/skills/primer.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/primer-A-1.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /primer (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 49330
+  },
+  {
+    "key": "projector",
+    "path": "/art/skills/projector.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/projector-B-4.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /projector (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 55839
+  },
+  {
+    "key": "pull-digg",
+    "path": "/art/skills/pull-digg.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/pull-digg-B-3.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /pull-digg (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 44792
+  },
+  {
+    "key": "pull-feed",
+    "path": "/art/skills/pull-feed.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/pull-feed-A-4.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /pull-feed (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 87406
+  },
+  {
+    "key": "pulse",
+    "path": "/art/skills/pulse.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/pulse-A-1.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /pulse (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 37629
+  },
+  {
+    "key": "research",
+    "path": "/art/skills/research.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/research-A-2.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /research (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 60953
+  },
+  {
+    "key": "think",
+    "path": "/art/skills/think.jpg",
+    "source": "repo",
+    "sourceDetail": "output/skill-art-confirmed/think-B-3.webp",
+    "intendedPlacement": "playbook (tools) page \u2014 image-first skill card art for /think (arsenal-cluster)",
+    "w": 611,
+    "h": 384,
+    "bytes": 83127
+  },
+  {
+    "key": "ryan-headshot",
+    "path": "/art/people/ryan-headshot.jpg",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 787:60 'Ryan_headshot-2022_sq-800px' (rawImage 1500x1500). Fallback: public/ryan-profile.jpg (1138x1138).",
+    "intendedPlacement": "about page \u2014 headshot (social-pill-bar header / spec-card \u00b7 person)",
+    "w": 800,
+    "h": 800,
+    "bytes": 155506
+  },
+  {
+    "key": "shelf-diorama",
+    "path": "/art/home/shelf-diorama.png",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 378:2 'shelf \u00b7 personality (ported)' on home-desktop-light 344:2 (2x PNG export, transparent)",
+    "intendedPlacement": "home page \u2014 shelf (personality diorama: robot, Space Needle, Golden Gate, paddleboard, book stack). Never shrinks. Light-theme render.",
+    "w": 711,
+    "h": 355,
+    "bytes": 48375
+  },
+  {
+    "key": "crew-polaroid",
+    "path": "/art/home/crew-polaroid.png",
+    "source": "figma",
+    "sourceDetail": "file sGFjHbsFwMriSNcfT7TQrc node 495:10 'framed_portrait' on home-desktop-light 344:2 (2x PNG export, transparent, incl. 'THE CREW' caption). Hi-res raw portrait (2464x1856, no frame) also available as fill.",
+    "intendedPlacement": "home page \u2014 crew-polaroid (pixel family portrait); small clone also sits in About-mobile empty space",
+    "w": 362,
+    "h": 304,
+    "bytes": 70913
+  }
+]

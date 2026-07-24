@@ -1,246 +1,547 @@
-import { Project, WorkExperience, Tool, Essay } from "./types"
+import type {
+  ActiveProject,
+  PastEntry,
+  Framework,
+  Lens,
+  CapsulePreview,
+  GearItem,
+  Essay,
+  DashboardData,
+  SystemArchitecture,
+  Project,
+  WorkExperience,
+  Tool,
+} from "./types"
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ACTIVE PROJECTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const activeProjects: ActiveProject[] = [
+  {
+    slug: "ryos",
+    title: "ryOS / Mission Control",
+    transformIn: "scattered context",
+    transformOut: "orchestrated daily priorities",
+    description:
+      "A personal operating system that routes calendar, tasks, and knowledge through four specialized AI lenses to surface daily priorities and ship work. Live dashboard at mc.ryanwigley.com.",
+    status: "live",
+    proofOfLife: "4 lens agents, 12 registered skills, daily production use",
+    links: [{ label: "Dashboard", url: "https://mc.ryanwigley.com" }],
+    tags: ["agent orchestration", "knowledge routing", "personal infrastructure"],
+  },
+  {
+    slug: "waveform",
+    title: "Waveform",
+    transformIn: "raw podcast recordings",
+    transformOut: "publish-ready episodes",
+    description:
+      "An audio editor for podcasters — the missing middle between Audacity and Descript. Browser-native, AI-enhanced.",
+    status: "pre-build",
+    proofOfLife: "204 research findings, tech stack locked, 4 spikes complete",
+    links: [{ label: "wavefrm.io", url: "https://wavefrm.io" }],
+    tags: ["audio processing", "browser-native", "creator tools"],
+  },
+  {
+    slug: "capsules",
+    title: "Capsules",
+    transformIn: "agent context",
+    transformOut: "portable knowledge packets",
+    description:
+      "A knowledge transfer protocol for AI systems. Structured compression with evaluation harness and seven archetypes.",
+    status: "active",
+    proofOfLife: "7 archetypes, compression eval framework, production use across ryOS",
+    links: [
+      {
+        label: "Read the essay",
+        url: "https://blog.ryanwigley.com/capsules-a-framework-for-portable-knowledge-transfer-between-ai-agent",
+      },
+    ],
+    tags: ["knowledge transfer", "agent protocol", "compression"],
+  },
+  {
+    slug: "productonics",
+    title: "Productonics",
+    transformIn: "manual business operations",
+    transformOut: "AI-integrated systems",
+    description:
+      "AI systems consulting for SMBs. I build the operating systems that run your business — not tools you have to learn, but infrastructure that works.",
+    status: "active",
+    proofOfLife: "Methodology designed, research validated, first engagements forming",
+    tags: ["business operating systems", "AI integration", "process engineering"],
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PAST ENTRIES (career arc)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const pastEntries: PastEntry[] = [
+  {
+    title: "BounceBug",
+    org: "BounceBug",
+    role: "Co-Founder",
+    period: "2011–2012",
+    transformIn: "music scene chaos",
+    transformOut: "curated daily coverage",
+    description:
+      "Built a dance music media platform from zero to 2MM monthly uniques and $4.1K MRR. First system: content at scale.",
+    metric: "2MM monthly uniques",
+    logo: { light: "/companies/bouncebug-icon.svg", dark: "/companies/bouncebug-icon2.svg" },
+  },
+  {
+    title: "Dubset / MixBANK",
+    org: "Dubset Media",
+    role: "Founding PM → Director of Product",
+    period: "2012–2020",
+    transformIn: "unlicensed DJ mixes",
+    transformOut: "rights-cleared, royalty-ready audio",
+    description:
+      "Built the content processing infrastructure that identified, matched, and cleared rights for mixed audio at scale — audio fingerprinting, automated licensing, $2MM monthly royalties. The system that made Dubset valuable enough for a $50M acquisition by Pex.",
+    metric: "$50M acquisition",
+    logo: { light: "/companies/dubset-icon.svg", dark: "/companies/dubset-icon2.svg" },
+  },
+  {
+    title: "Amazon",
+    org: "Amazon",
+    role: "Sr Technical Product Manager",
+    period: "2021–2025",
+    transformIn: "fragmented subscription APIs",
+    transformOut: "unified partner platform",
+    description:
+      "Led the API v2 migration across 100+ partners — 82% error rate reduction. Designed mobile distribution systems serving millions of devices across Prime, Prime Video, Music, and Audible.",
+    metric: "82% error reduction",
+    logo: { light: "/companies/amazon-icon.svg", dark: "/companies/amazon-icon2.svg" },
+  },
+  {
+    title: "Raya",
+    org: "Raya",
+    role: "Senior Product Manager",
+    period: "2025–present",
+    transformIn: "membership experience",
+    transformOut: "AI-augmented community",
+    description: "Currently leading membership experience and AI adoption.",
+    logo: { light: "/companies/raya-icon.svg", dark: "/companies/raya-icon2.svg" },
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// METHODOLOGY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const threeZones: Framework = {
+  name: "The Three Zones",
+  description:
+    "Every business process falls into one of three zones. The methodology starts by mapping where everything lives today, then designing the system that moves work to the right zone.",
+  zones: [
+    {
+      name: "Runs Itself",
+      color: "emerald",
+      description: "Fully automated. No human in the loop.",
+      examples: ["Invoice generation", "Lead intake", "Status updates", "Data entry"],
+    },
+    {
+      name: "AI-Assisted",
+      color: "amber",
+      description: "AI drafts, human decides.",
+      examples: ["Proposal drafting", "Meeting prep", "Content creation", "Research"],
+    },
+    {
+      name: "Stays Human",
+      color: "sky",
+      description: "Judgment, relationships, strategy. AI doesn't touch it.",
+      examples: ["Client relationships", "Strategic decisions", "Creative judgment", "Leadership"],
+    },
+  ],
+}
+
+export const lenses: Lens[] = [
+  {
+    name: "Synthesizer",
+    focus: "Patterns, decisions, strategic clarity",
+    activateWhen: "Prioritization, connecting dots, 'why' questions",
+    color: "violet",
+  },
+  {
+    name: "Architect",
+    focus: "Systems, relationships, tradeoffs",
+    activateWhen: "Technical strategy, 'how does this hold together'",
+    color: "sky",
+  },
+  {
+    name: "Guardian",
+    focus: "Edge cases, protection, downside",
+    activateWhen: "Risk assessment, quality, 'what am I not seeing'",
+    color: "rose",
+  },
+  {
+    name: "Sculptor",
+    focus: "Design, narrative, experience craft",
+    activateWhen: "Communication, UX, making things resonate",
+    color: "amber",
+  },
+]
+
+export const capsulePreviews: CapsulePreview[] = [
+  {
+    name: "The Capsule Protocol",
+    description:
+      "A structured format for packaging knowledge, patterns, and skills into portable artifacts any AI system can consume. Seven archetypes from Perishable to Dormant.",
+    archetype: "Trainer",
+    ctaUrl: "#",
+  },
+  {
+    name: "Productonics Capsule",
+    description:
+      "Complete go-to-market strategy, pricing architecture, and sales narrative for AI consulting. Research-validated across 4 cycles and 9 agents.",
+    archetype: "Seed",
+    ctaUrl: "#",
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// GEAR (topology, not shopping list)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const gear: GearItem[] = [
+  {
+    name: "Claude Code",
+    category: "code",
+    whyILoveIt: "My primary engineering partner. Skills, hooks, agents — it runs ryOS.",
+    connectsTo: ["Claude", "Cursor", "Notion"],
+    icon: { light: "/tools/claudecode-icon.svg", dark: "/tools/claudecode-icon2.svg" },
+  },
+  {
+    name: "Claude",
+    category: "ai",
+    whyILoveIt: "Deep thinking, long context, council deliberations. The brain behind the lenses.",
+    connectsTo: ["Claude Code", "Notion"],
+    icon: { light: "/tools/claude-icon.svg", dark: "/tools/claude-icon2.svg" },
+  },
+  {
+    name: "ChatGPT",
+    category: "ai",
+    whyILoveIt: "Thought partner for brainstorming and information synthesis.",
+    connectsTo: ["Notion"],
+    icon: { light: "/tools/chatgpt-icon.svg", dark: "/tools/chatgpt-icon2.svg" },
+  },
+  {
+    name: "Perplexity",
+    category: "ai",
+    whyILoveIt: "Research with citations. When I need sources, not opinions.",
+    connectsTo: ["Notion", "Claude"],
+    icon: { light: "/tools/perplexity-ai-icon.svg", dark: "/tools/perplexity-ai-icon2.svg" },
+  },
+  {
+    name: "Cursor",
+    category: "code",
+    whyILoveIt: "AI-powered code editor. Composer mode for rapid prototyping.",
+    connectsTo: ["Claude Code", "v0"],
+    icon: { light: "/tools/code-tags.svg", dark: "/tools/code-tags2.svg" },
+  },
+  {
+    name: "v0",
+    category: "build",
+    whyILoveIt: "Fastest path from design spec to deployed prototype.",
+    connectsTo: ["Cursor", "Lovable"],
+    icon: { light: "/tools/v0-icon.svg", dark: "/tools/v0-icon2.svg" },
+  },
+  {
+    name: "Lovable",
+    category: "build",
+    whyILoveIt: "Full-stack prototypes from description. Ship MVPs in hours.",
+    connectsTo: ["v0", "Replit"],
+    icon: { light: "/tools/lovable-icon.svg", dark: "/tools/lovable-icon2.svg" },
+  },
+  {
+    name: "Replit",
+    category: "build",
+    whyILoveIt: "Fast apps, agents, and tools with data integration.",
+    connectsTo: ["Lovable", "Claude Code"],
+    icon: { light: "/tools/replit-icon.svg", dark: "/tools/replit-icon2.svg" },
+  },
+  {
+    name: "Notion",
+    category: "organize",
+    whyILoveIt: "Flexible database for family, projects, and ideas. The capture layer.",
+    connectsTo: ["Claude", "ChatGPT", "Claude Code"],
+    icon: { light: "/tools/notion-icon.svg", dark: "/tools/notion-icon2.svg" },
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ESSAYS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const essays: Essay[] = [
+  {
+    id: "8",
+    date: "3/14/26",
+    title: "Capsules Essay",
+    preview:
+      "PM editorial compression is the missing protocol for agent-to-agent knowledge transfer. I built capsules and an evaluation harness to prove it.",
+    url: "https://blog.ryanwigley.com/capsules-a-framework-for-portable-knowledge-transfer-between-ai-agent",
+  },
+  {
+    id: "6",
+    date: "11/9/25",
+    title: "Personal Engineering",
+    preview:
+      "It's ironic how we obsessed over the interface while the real breakthrough was happening in the background.",
+    url: "https://blog.ryanwigley.com/personal-engineering",
+  },
+  {
+    id: "1",
+    date: "2/26/25",
+    title: "Everyday AI Copilots",
+    preview: "A walkthrough of how I use AI assistants to get more sh*t done.",
+    url: "https://blog.ryanwigley.com/everyday-ai-copilots",
+  },
+  {
+    id: "2",
+    date: "1/26/25",
+    title: "Thought Partner, Assistant, & Agent",
+    preview: "A PM's practical guide to using AI: mental models, prompts, and tools.",
+    url: "https://blog.ryanwigley.com/thought-partner-assistant-and-agent",
+  },
+  {
+    id: "7",
+    date: "12/12/24",
+    title: "100 Days of AI",
+    preview: "I've been finding myself thinking a lot about young Ryan lately.",
+    url: "https://blog.ryanwigley.com/100-days-of-ai",
+  },
+  {
+    id: "3",
+    date: "12/5/24",
+    title: "Free-range AI Agents",
+    preview:
+      "I can't stop thinking about AI agents. We're witnessing the dawn of truly autonomous digital beings.",
+    url: "https://blog.ryanwigley.com/free-range-ai-agents",
+  },
+  {
+    id: "4",
+    date: "10/31/24",
+    title: "The Growing AI Innovation Gap",
+    preview: "This gap isn't just about access to tools, it's about the pace of innovation.",
+    url: "https://blog.ryanwigley.com/the-growing-ai-innovation-gap",
+  },
+  {
+    id: "5",
+    date: "10/22/24",
+    title: "How to Avoid Overthinking Your API",
+    preview:
+      "If you are in the business of software integrations, your API is your brand's digital handshake with the world.",
+    url: "https://blog.ryanwigley.com/how-to-avoid-overthinking-your-api",
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DASHBOARD (mock data — structured to match MC's JSON for easy swap)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const dashboardData: DashboardData = {
+  projects: [
+    {
+      name: "Waveform",
+      phase: "pre-build",
+      focus: "Scaffold React + Zustand + Canvas architecture",
+      progress: 15,
+    },
+    {
+      name: "ryOS",
+      phase: "live",
+      focus: "v3 knowledge architecture — mess hall compilation",
+      progress: 72,
+    },
+    {
+      name: "Productonics",
+      phase: "research",
+      focus: "First client acquisition — cold start playbook",
+      progress: 35,
+    },
+  ],
+  research: {
+    activeDomains: ["Podcaster pain points", "AI consulting channels", "Audio quality enhancement"],
+    totalFindings: 84,
+    themes: [
+      { name: "Filler removal", strength: "strong", findingCount: 14 },
+      { name: "Web-native gap", strength: "strong", findingCount: 11 },
+      { name: "Template-first editing", strength: "moderate", findingCount: 8 },
+      { name: "Descript pricing pain", strength: "moderate", findingCount: 7 },
+      { name: "Mobile recording quality", strength: "emerging", findingCount: 5 },
+    ],
+    cyclesCompleted: 4,
+  },
+  velocity: {
+    backlog: 23,
+    inProgress: 0,
+    done: 4,
+  },
+  decisions: [
+    { date: "2026-04-04", decision: "Brand bible finalized — cream canvas, coral action, teal content" },
+    { date: "2026-04-04", decision: "Tech stack locked: React + TS + Vite + Zustand" },
+    { date: "2026-04-03", decision: "Filler detection deferred to V1 (out of MVP)" },
+    { date: "2026-04-03", decision: "Dark mode deferred — not MVP, not V1" },
+    { date: "2026-03-28", decision: "Mission Control v1 shipped to mc.ryanwigley.com" },
+  ],
+  content: [
+    { title: "Filler removal is the feature podcasters dream about", platform: "x", score: 8.3, status: "reviewed" },
+    { title: "Descript's pricing is pushing creators to downgrade", platform: "x", score: 7.7, status: "draft" },
+    { title: "The missing middle in podcast editing", platform: "linkedin", score: 8.0, status: "draft" },
+    { title: "Why I built my own operating system", platform: "linkedin", score: 7.3, status: "draft" },
+  ],
+  heartbeat: {
+    lastUpdated: "2026-04-04T09:15:00Z",
+    agentCount: 4,
+    skillCount: 12,
+    streamsActive: 6,
+  },
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SYSTEM ARCHITECTURE (interactive dashboard data)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const systemArchitecture: SystemArchitecture = {
+  lenses: [
+    { name: "Synthesizer", color: "violet", activeSkills: ["council-think", "council-plan", "research", "mark"] },
+    { name: "Architect", color: "sky", activeSkills: ["council-think", "council-plan", "build"] },
+    { name: "Guardian", color: "rose", activeSkills: ["council-think", "council-plan", "capsule-eval"] },
+    { name: "Sculptor", color: "amber", activeSkills: ["council-think", "council-plan", "x-post", "linkedin", "social", "pdfer"] },
+  ],
+  skills: [
+    { name: "Session Start", slug: "session-start", category: "session", description: "Initialize session with context validation" },
+    { name: "Bootstrap", slug: "bootstrap", category: "session", description: "Full state initialization from intake" },
+    { name: "Sync", slug: "sync", category: "session", description: "Lightweight context refresh" },
+    { name: "Log Work", slug: "log-work", category: "tracking", description: "Append entry to domain worklog" },
+    { name: "Mark", slug: "mark", category: "tracking", description: "Mid-day checkpoint: synthesize, log, update" },
+    { name: "Kanban", slug: "kanban", category: "tracking", description: "Manage domain task boards" },
+    { name: "Today", slug: "today", category: "daily", description: "Comprehensive daily catch-up across all systems" },
+    { name: "Push Today", slug: "push-today", category: "daily", description: "Briefing delivered to Discord and tablet" },
+    { name: "Council Think", slug: "council-think", category: "council", description: "Four-lens parallel deliberation on any topic" },
+    { name: "Council Plan", slug: "council-plan", category: "council", description: "Sequential planning with four-lens review" },
+    { name: "Research", slug: "research", category: "creation", description: "Autonomous persona-driven web research" },
+    { name: "Build", slug: "build", category: "creation", description: "Kanban-driven task execution with gate respect" },
+    { name: "Projector", slug: "projector", category: "creation", description: "Claude Project package creation" },
+    { name: "Capsule", slug: "capsule", category: "creation", description: "Agent-to-agent knowledge transfer" },
+    { name: "X Post", slug: "x-post", category: "content", description: "X/Twitter posts with built-in critique" },
+    { name: "LinkedIn", slug: "linkedin", category: "content", description: "LinkedIn posts with professional voice" },
+    { name: "Social", slug: "social", category: "content", description: "Both X and LinkedIn from a single idea" },
+    { name: "PDFer", slug: "pdfer", category: "content", description: "Beautiful print-ready HTML documents" },
+    { name: "Commit", slug: "commit-changes", category: "git", description: "Context-aware git commit and push" },
+    { name: "Midjourney", slug: "midjourney-prompt", category: "design", description: "Collaborative prompt crafting with style DNA" },
+  ],
+  domains: [
+    { name: "Builder", description: "Experiments, content, products, consultancy, career, finances" },
+    { name: "Family", description: "Logistics, planning, health, coordination, relationships" },
+  ],
+  streams: [
+    {
+      id: "waveform-pain-points",
+      name: "Waveform Pain Points",
+      type: "research",
+      status: "completed",
+      project: "Waveform",
+      summary: "Podcaster switching triggers and friction mapping",
+      details: { cyclesCompleted: 4, findingsKept: 84, themes: ["Filler removal", "Web-native gap", "Template editing", "Descript pricing", "Mobile quality"] },
+    },
+    {
+      id: "capsules-for-sale",
+      name: "Capsules for Sale",
+      type: "research",
+      status: "active",
+      project: "ryOS",
+      summary: "Viability of selling capsules as knowledge products",
+      details: { cyclesCompleted: 1, findingsKept: 12 },
+    },
+    {
+      id: "productonics-channels",
+      name: "AI Consulting Channels",
+      type: "research",
+      status: "active",
+      project: "Productonics",
+      summary: "Where SMB buyers actually discover AI consultants",
+      details: { cyclesCompleted: 2, findingsKept: 31 },
+    },
+    {
+      id: "waveform-build",
+      name: "Waveform Product Build",
+      type: "build",
+      status: "active",
+      project: "Waveform",
+      summary: "MVP scaffold through first 50 users",
+      details: { phase: "pre-build", tasksDone: 4, tasksTotal: 27 },
+    },
+    {
+      id: "social-content-mill",
+      name: "Social Content Mill",
+      type: "content",
+      status: "active",
+      project: "Builder",
+      summary: "Generate and score social drafts from research insights",
+      details: { draftsCount: 5 },
+    },
+    {
+      id: "audio-quality",
+      name: "Audio Quality Enhancement",
+      type: "research",
+      status: "completed",
+      project: "Waveform",
+      summary: "Beyond noise removal — making phone recordings sound studio-quality",
+      details: { cyclesCompleted: 2, findingsKept: 18 },
+    },
+  ],
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LEGACY (old projects — kept for redirect handling)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 export const projects: Project[] = [
-  {
-    id: "stumble-ai",
-    title: "Stumble AI",
-    description: "Retro-inspired discovery tool for AI websites.",
-    coverImage: "/stumble-ai-ss_light.png",
-    prototypeUrl: "https://stumble-ai.com/",
-    problemStatement: "The AI landscape evolves at breakneck speed—500+ new tools launch weekly, yet 90% of valuable solutions remain undiscovered. Developers and business leaders waste 15+ hours monthly navigating through ProductHunt posts, Twitter threads, and GitHub repos, often missing game-changing tools buried in the noise. Traditional discovery platforms fail at scale: manual curation can't keep pace, while basic categorization misses the nuance that makes tools relevant.",
-    myRole: "**Solo Technical Founder & Full-Stack Developer** — I architected and built Stumble AI from concept to production, handling everything from system design to machine learning integration. This wasn't just development; it was creating an entirely new approach to technology discovery.",
-    technicalInnovation: "**Chrome Extension & Ambient Discovery Engine**\n\nEngineered a **zero-friction discovery system** that captures AI tools as users naturally browse, eliminating active search overhead. The extension uses intelligent filtering algorithms to identify AI-related content with 92% accuracy, feeding a real-time processing queue without impacting browser performance (< 10ms overhead).\n\n**Key Achievement:** Passive discovery pipeline processing 10,000+ websites daily with zero user intervention.\n\n**⚡ Advanced Multi-Signal Tech Stack Detection**\n\nRevolutionized technology detection by moving beyond basic string matching to **forensic-level analysis**:\n\n• **DOM Fingerprinting:** Framework signatures via component structure analysis\n• **Network Analysis:** CDN patterns and resource loading sequences\n• **Meta Intelligence:** Generator tags and build tool artifacts\n• **Behavioral Patterns:** Runtime characteristics and API call signatures\n\n**Impact:** Detection accuracy jumped from 15% → 85%, identifying 30+ frameworks including edge cases like custom React builds and SSR implementations.\n\n** Temporal Intelligence System**\n\nBuilt a **5-layer confidence-weighted detection system** crucial for AI's rapid evolution:\n\n• 1. **Structured Data Mining** (JSON-LD, Schema.org) — 95% confidence\n• 2. **Meta Tag Extraction** (OpenGraph, Twitter Cards) — 90% confidence\n• 3. **Semantic HTML Analysis** (time elements, article dates) — 75% confidence\n• 4. **URL Pattern Recognition** (date slugs, versioning) — 60% confidence\n• 5. **Content Heuristics** (copyright, update patterns) — 40% confidence\n\n**Result:** 78% of discoveries include accurate temporal context, helping users identify emerging vs. established tools.\n\n**🏗️ Scalable Processing Architecture**\n\nDesigned a **distributed scraping orchestrator** that respects rate limits while maintaining data freshness:\n\n• **Queue Management:** Priority-based processing with exponential backoff\n• **Batch Optimization:** Processes 100 sites/minute across distributed workers\n• **Smart Caching:** CDN-level caching with intelligent invalidation\n• **Resource Pooling:** Connection reuse reducing latency by 60%",
-    strategicExecution: "**Authentication & Personalization**\n\nImplemented **privacy-first authentication** via Supabase with Google OAuth, enabling:\n\n• Personalized discovery feeds based on tech stack preferences\n• Saved collections with collaborative sharing\n• Discovery history with temporal navigation\n• Zero-knowledge architecture for sensitive browsing data\n\n** Database Architecture & Performance**\n\nArchitected a **PostgreSQL schema optimized for discovery**:\n\n• JSONB fields for flexible, queryable tech stack storage\n• Materialized views for instant category aggregations\n• Full-text search with weighted relevance scoring\n• Row-level security (RLS) for multi-tenant isolation\n\n**Performance:** Sub-100ms query times for complex discovery searches across 50,000+ indexed tools.\n\n** Security & Optimization**\n\n• **CSP Headers:** Strict content policies preventing XSS attacks\n• **Framework Hardening:** Removed version disclosure and debug endpoints\n• **API Rate Limiting:** Token bucket algorithm preventing abuse\n• **Edge Caching:** CloudFlare integration reducing origin load by 70%",
-    impact: "**📊 By the Numbers**\n\n• **10x faster discovery** compared to manual browsing methods\n• **85% detection accuracy** for technology stacks (vs. 15% baseline)\n• **50,000+ AI tools** indexed and categorized\n• **3,000+ active users** discovering tools daily\n• **92% relevance score** for recommended tools (user-reported)\n\n**🎯 User Outcomes**\n\n• **Time Saved:** Average user saves 15 hours/month on tool research\n• **Discovery Quality:** 73% of users report finding \"game-changing\" tools they wouldn't have discovered otherwise\n• **Developer Insights:** Tech stack visibility helps teams make informed adoption decisions\n• **Competitive Intelligence:** Companies track emerging competitor technologies",
-    keyLearnings: "**The Automation-Curation Balance**\n\nPure algorithms miss context while manual curation can't scale. Stumble AI's breakthrough came from **augmented intelligence**—using ML to surface candidates while preserving human judgment for relevance. This hybrid approach maintains quality at scale.\n\n**Multi-Signal Reliability**\n\nModern web apps are complex beasts. Single detection methods fail catastrophically. Success required **ensemble detection**—combining multiple weak signals into strong confidence scores. This principle now guides all my technical architecture decisions.\n\n**Context Is Everything**\n\nThe same AI tool can be transformative or useless depending on timing, technical stack, and user goals. Building systems that understand and adapt to **dynamic user context** separates platforms from directories. Stumble AI learns from every interaction, continuously improving relevance.\n\n**Technical Depth Matters**\n\nSurface-level categorization fails in technical domains. Stumble AI's value comes from **deep technical analysis**—understanding not just what a tool does, but how it's built, when it emerged, and who it serves. This depth creates defensible differentiation.",
-    technologyHighlights: "**Discovery Pipeline:**\nBrowser → Extension → Queue → Scraper → Analyzer → Database → API → Frontend\n\n**Tech Stack:**\n• Frontend: Next.js 14, TailwindCSS, Framer Motion\n• Backend: Node.js, Express, PostgreSQL, Redis\n• Extension: Chrome Manifest V3, Background Service Workers\n• ML/Analysis: TensorFlow.js, Natural Language Toolkit\n• Infrastructure: Vercel, Supabase, CloudFlare",
-    lookingForward: "Stumble AI demonstrates how thoughtful technical architecture can transform a simple idea into a platform that fundamentally improves how professionals discover and evaluate emerging AI technologies. It's not just about finding tools—it's about finding the right tools at the right time."
-  },
-  {
-    id: "bookshelf",
-    title: "Acquired Bookshelf",
-    description: "AI assisted bookshelf for the Acquired podcast.",
-    coverImage: "/acquired-bookshelf.png?height=630&width=1200",
-    prototypeUrl: "https://acquired-bookshelf.vercel.app/",
-    problemStatement: "The Acquired podcast, known for its deep research and comprehensive analysis of company stories, frequently references valuable books and resources throughout its episodes. However, listeners faced a significant challenge: these recommendations were scattered across hundreds of episodes, making it difficult to discover and access these learning materials efficiently. There was no central repository where listeners could explore all referenced resources, limiting the educational impact of the podcast's rich content.",
-    myRole: "As the sole developer of this project, I took complete ownership from conception to deployment. This included initial planning, technical architecture decisions, development, and ongoing maintenance. The project showcased my ability to identify community needs, leverage modern development tools, and ship valuable features efficiently.",
-    processOverview: "The development journey began with defining the vision through v0 mocks, which helped establish the core concept and user experience. These initial mocks became the foundation for sketching out the interface and planning the technical implementation. \n\n Working iteratively between Claude Code and Cursor, I evolved the design from an initial side-scrolling layout to a more sophisticated tile-grid system. The grid features alternating tile sizes based on book dimensions and positioning, creating a dynamic, visually engaging interface. Tailwind CSS powered the styling throughout, enabling rapid iteration on the look and feel. \n\n **Data Pipeline & Integration** \n\n Built a streamlined data management system using JSON for content storage • Integrated with Open Library API for comprehensive book metadata • Implemented robust fallback mechanisms for missing or incomplete data • Designed the system for automated content updates \n\n **Automation & Monitoring** \n\n Deployed a fully automated pipeline on Render with scheduled cron jobs • System automatically adds new books as podcast episodes are processed • Built-in error handling with alerts sent to a private Discord channel for any processing issues • Ensures the bookshelf stays current without manual intervention \n\n **Deployment** \n\n Deployed to Vercel for reliable hosting and performance • Implemented monitoring for API usage and system health",
-    technologyHighlights: "**Development Tools:** v0 for initial mocks and concept definition • Claude Code and Cursor for iterative development and code refinement • **Frontend:** Next.js with TypeScript for type safety and improved development experience • **Styling:** TailwindCSS for rapid UI development, consistent design, and tile-grid layout system • **Data Management:** JSON-based content storage with static site generation for optimal performance • **API Integration:** Open Library API with rate limiting and caching • **Automation:** Render cron jobs for scheduled book processing • Discord webhooks for error monitoring and alerts • **Deployment:** Vercel for automated deployment and hosting",
-    impact: "The project has demonstrated significant impact since launch: \n\n Attracted over 10,000 visitors in the first two months • Created a searchable database of podcast-referenced books • Contributed a valuable resource to the Acquired podcast community • Successfully automated the resource discovery process for listeners \n\n **Fully Automated Operations** \n\n The system runs completely autonomously with a cron job on Render that processes new podcast episodes and adds books automatically • Built-in monitoring sends alerts to a private Discord channel whenever issues arise during processing • Zero manual intervention required for ongoing maintenance and content updates",
-    lessonsLearned: "__AI-Powered Development:__ Strategic use of V0 for scaffolding and Cursor IDE for development significantly accelerated project delivery while maintaining code quality. • __Community Focus:__ Understanding and addressing specific community needs leads to higher user engagement. • __Technical Architecture:__ Choosing a modern, maintainable tech stack enables quick iterations and reliable performance. • __Solo Development:__ Effective planning and tool selection are crucial for successful solo project execution.",
-  },
-  {
-    id: "apiinfra",
-    title: "Enterprise API Rebuild",
-    description: "Scaling a key piece of Amazon infrastructure.",
-    coverImage: "/api-infra-before-after.png?height=630&width=1200",
-    prototypeUrl: "https://customer-activation-simulator-ryanwigley522.replit.app/",
-    problemStatement: "Our subscription management platform experienced significant growth, evolving from serving early adopters to becoming a major enterprise solution. The legacy monolithic architecture struggled to scale with this growth, resulting in elevated error rates, challenging partner integrations, and reduced development velocity. As customer adoption increased, these technical limitations began impacting business growth and partner satisfaction.",
-    myRole: "As technical product leader, I spearheaded the initiative to modernize our API infrastructure. I led cross-functional engineering teams through the architectural transformation, managing stakeholder alignment across engineering, business, and operations. My responsibilities included developing the migration strategy, coordinating with technical program managers and integration specialists, and maintaining executive alignment throughout the project.",
-    processOverview: "The transformation followed a strategic, phased approach. Initially, we conducted a thorough analysis of the existing architecture, uncovering various custom integrations that had accumulated over time. We developed a migration strategy that balanced maintaining existing operations while building the new architecture. \n\n A significant challenge was managing the transition period - supporting active partners on the legacy system while developing the new platform. This required careful resource allocation and prioritization across maintenance and development efforts. \n\n The migration followed a methodical approach: starting with pilot partners for initial validation, expanding to early adopters for process refinement, and finally executing a broad rollout. Throughout this process, we maintained close coordination with technical account managers and integration partners to ensure smooth transitions.",
-    technologyHighlights: "We implemented a modern service-oriented architecture, decomposing the monolith into focused services handling distinct business capabilities: \n\n Modular service architecture for subscriptions and billing • Enhanced API gateway with robust authentication • Support for asynchronous operations • Improved data management with dedicated service databases • Flexible integration patterns supporting diverse partner requirements",
-    impact: "The transformation delivered substantial improvements across key metrics: \n\nSignificant reduction in transaction processing times • Dramatic decrease in error rates • Streamlined partner onboarding process • Accelerated feature delivery • Reduced customer support volume • Enhanced subscription lifecycle automation",
-    customerAndStakeholderFeedback: "Partners reported increased satisfaction with the platform's reliability and performance. The new architecture enabled improved automation capabilities and provided a better technical integration experience. We observed a notable reduction in support incidents and strong adoption of new platform capabilities.",
-    lessonsLearned: "The project revealed valuable insights about large-scale system transformation. While the new API improved technical efficiency, we learned important lessons about scaling our onboarding processes. Early discovery of partner requirements proved crucial, as integration complexity often extended beyond initial assessments. \n\n Success hinged on maintaining strong communication channels with stakeholders and carefully orchestrating migrations to minimize business impact. The transformation elevated our technical standards and improved our ability to serve enterprise customers. It demonstrated that complex architectural transformations can be executed successfully while maintaining business continuity through careful planning, clear communication, and strategic technical leadership.",
-  },
-  {
-    id: "music-charts",
-    title: "Performance Metrics Dashboard",
-    description: "Real-time analytics platform for music performance tracking",
-    coverImage: "/MusicCharts-dashboard.png?height=630&width=1200",
-    prototypeUrl: "https://ejkkikxkwskjgv2d.vercel.app/",
-    problemStatement: "Empire Distribution, known for launching the careers of artists like Kendrick Lamar and Cardi B, faced a critical turning point in their data operations. Their legacy analytics platform had become a bottleneck, with teams waiting up to an hour for basic report filters to load. Each new user or data ingestion task further degraded system performance, creating a ripple effect across the organization. The challenge wasn't just technical – it was affecting Empire's ability to make timely business decisions and serve their artists effectively.",
-    myRole: "As the technical product lead, I stepped into a three-month engagement tasked with modernizing Empire's analytics infrastructure. Working alongside a team of five developers, finance specialists, and project managers, I quickly identified that success would require more than just technical solutions – it demanded a careful balance of innovation and operational stability. \n\n The existing monolithic architecture needed a complete overhaul, but we couldn't disrupt daily operations. I designed a strategy that would introduce modern technology while respecting the complexities of Empire's established workflows. This meant building a React frontend and Ruby on Rails backend that could seamlessly integrate with their legacy systems while laying groundwork for future scalability.",
-    technicalInnovation: "We approached the rebuild methodically, focusing on three critical areas. First, we tackled the performance issues by implementing a new data architecture using MongoDB and SQLite. This immediately reduced report generation time from over an hour to under five minutes. Next, we automated the data ingestion process, eliminating the manual intervention that had been consuming valuable team resources. \n\n The most challenging aspect was integrating with multiple streaming platforms while maintaining system performance. We built efficient data mapping workflows for services like Spotify, Apple Music, and YouTube, enhancing Empire's existing trend detection system to provide more actionable insights. The new architecture eliminated the performance degradation issues that had plagued the old system, allowing concurrent users to work without impacting each other.",
-    implementationAndImpact: "Worked closely with industry analysts to identify key metrics and visualization needs. Iteratively improved based on user feedback.",
-    lookingForward: "This project demonstrated how thoughtful technical architecture combined with strategic implementation could transform a critical business system. We not only solved immediate operational challenges but established a foundation for Empire's future growth. The platform's API-first design and scalable architecture positioned Empire to continue evolving their analytics capabilities as industry needs change. \n\n The success of this transformation came from balancing technical excellence with business realities – understanding that the best solutions are those that not only solve today's problems but enable tomorrow's opportunities. Through careful planning and execution, we turned what could have been a disruptive overhaul into a smooth evolution of Empire's technical capabilities. ",
-    keyLearnings: "The Empire Analytics project reinforced crucial lessons about modernizing legacy systems in fast-moving industries. Building clear boundaries between old and new architectures proved essential for managing complexity, while our standalone component approach enabled rapid testing and iteration. The dramatic performance improvements we achieved came primarily from addressing database bottlenecks early – a reminder that in data-heavy applications, the foundation must be solid before adding features. \n\n Perhaps the most valuable insight was about managing change in established organizations. By involving operational teams early and demonstrating concrete benefits quickly, we built the trust needed to implement broader changes. Starting with core workflows that delivered immediate value helped secure buy-in for more ambitious improvements. \n\n This experience showed that successful technical transformation isn't just about building new systems – it's about understanding how technology, business processes, and people intersect. In the end, creating flexible systems that can evolve with changing needs proved more valuable than pursuing feature completeness from the start."
-  },
+  // Kept minimal — old detail pages still reference these during transition
   {
     id: "marketplace",
     title: "Music Marketplace",
     description: "Rights management technology for DJ mixes and remixes.",
-    coverImage: "/mixbank-demo-ss.png?height=630&width=1200",
+    coverImage: "/mixbank-demo-ss.png",
     prototypeUrl: "https://super-frangollo-031a70.netlify.app/",
-    problemStatement: "In 2014, the music industry faced a critical challenge: there was no way to legally distribute and monetize derivative works like DJ mixes and remixes on major streaming platforms. Content creators couldn't legitimately share their work, rights holders couldn't track usage of their intellectual property, and streaming platforms couldn't tap into this growing content category. The industry needed a solution that could identify copyrighted content within derivative works, manage licensing, and distribute royalties – all at scale.",
-    myRole: "As product owner from concept through acquisition, I led the development of MixBANK, a first-of-its-kind B2B2C marketplace for licensing and distributing derivative music content. The challenge was multifaceted: we needed to create entirely new workflows for content identification, build a scalable licensing system, and develop automated distribution pipelines – all while managing complex stakeholder relationships across the music industry. \n\n Starting with a small team of four developers, I wore multiple hats as sprint manager, engineering ops lead, and product manager. As the platform evolved, I scaled the team to 30+ members, including 10 developers, 2 QA engineers, and 11 content operations specialists. Throughout this growth, I maintained ownership of product strategy, stakeholder management, and technical direction.",
-    technicalInnovation: "The core of our solution was MixSCAN, our proprietary audio fingerprinting and rights attribution technology. We faced unique technical challenges: DJ mixes featured overlapping songs, tempo/pitch changes, and audio effects that made traditional fingerprinting insufficient. Our solution combined advanced audio fingerprinting with textual data disambiguation, pushing identification accuracy from 15% to an industry-leading 70%. \n\n We built a robust cloud infrastructure on AWS, using MongoDB with Redis for high-throughput content processing and RDS with Postgres for reliable royalty tracking. The system could process an hour of audio in under 10 minutes, scaling both vertically and horizontally to handle millions of tracks. To ensure continuous improvement, we developed a TestSuite with 500+ benchmark content pieces, allowing us to experiment with various approaches including NLP techniques and machine learning models.",
-    strategicExecution: 'Our development journey followed three key phases: \n\n __2014-2016:__ We focused on perfecting our licensing and audio fingerprinting technology. Working closely with major labels (Universal, Sony, Warner) and publishers, we achieved coverage of over 100M tracks – representing 90% of the world\'s licensed discography. \n\n __2016-2018:__ We launched partnerships with Apple Music and Spotify, helping Apple create an entirely new "DJs & Mixes" genre category. This required solving complex integration challenges, from metadata formatting to automated content delivery pipelines. We implemented support for both manual CSV imports and DDEX XML Schema, accommodating organizations of all sizes. \n\n __2018-2020:__ We scaled the platform to process $2MM in monthly royalties while maintaining a 1.3% discrepancy rate and 99% fraud detection rate. This growth phase required careful balance of technical debt against market pressures, leading to successful acquisition by PEX in 2020.',
-    stakeholderManagement: "Success required coordinating across multiple stakeholder groups:\n\n Maintained monthly in-person meetings with major labels and publishers in NYC • Collaborated with 25 influential DJs for feature development and testing • Conducted bi-monthly sessions with independent labels for pipeline refinement • Worked directly with Apple and Spotify on content delivery optimization  • Led weekly executive standups and regular board presentations • Managed daily engineering operations with remote technical teams.",
-    impactAndLegacy: "The platform revolutionized how derivative music content is monetized and distributed: \n\n Created new revenue streams for content creators and rights holders • Built a network of 20K+ DJ talents •Processed millions of hours of audio content • Established industry standards for rights management of derivative works • Technology now powers copyright protection across major social media platforms worldwide",
-    keyLearnings: "This journey taught me invaluable lessons about leading complex technical products: \n\n Building innovative solutions requires balancing stakeholder needs with technical vision • Success in nascent markets demands systematic, data-driven decision making • Strong relationships across technical and business stakeholders are crucial • Protecting engineering teams while maintaining progress requires careful management • Clear product vision and prioritization processes are essential for healthy company culture \n\n The MixBANK story demonstrates how technical innovation, strategic product management, and careful stakeholder coordination can solve complex industry challenges while creating significant business value."
-  }
-]
-
-export const tools: Tool[] = [
-    { 
-        name: "Notion", 
-        description: "Flexible database for my family, projects, and new ideas.",
-        icon: {
-          light: "/tools/notion-icon.svg",
-          dark: "/tools/notion-icon2.svg"
-        }
-    },
-    { 
-        name: "ChatGPT", 
-        description: "Thought partner, information organizer, and planning assistant.",
-        icon: {
-          light: "/tools/chatgpt-icon.svg",
-          dark: "/tools/chatgpt-icon2.svg"
-        }
-    },
-    { 
-        name: "Claude", 
-        description: "My favorite project assistant, rapid prototyper, and everything-else copilot.",
-        icon: {
-          light: "/tools/claude-icon.svg",
-          dark: "/tools/claude-icon2.svg"
-        }
-    },
-    { 
-        name: "Perplexity", 
-        description: "My go-to model for research and web browsing with context.",
-        icon: {
-            light: "/tools/perplexity-ai-icon.svg",
-            dark: "/tools/perplexity-ai-icon2.svg"
-          }
-    },
-    { 
-        name: "Claude Code", 
-        description: "My favorite autonomus AI coding assistant, OS, and so much more.",
-        icon: {
-            light: "/tools/claudecode-icon.svg",
-            dark: "/tools/claudecode-icon2.svg"
-          }
-    },
-    { 
-        name: "Cursor", 
-        description: "AI-powered code editor and composer.",
-        icon: {
-            light: "/tools/code-tags.svg",
-            dark: "/tools/code-tags2.svg"
-          }
-    },
-    { 
-        name: "Lovable", 
-        description: "GenAI tool for prototypes and building from scratch.",
-        icon: {
-            light: "/tools/lovable-icon.svg",
-            dark: "/tools/lovable-icon2.svg"
-          }
-    },
-    { 
-        name: "v0", 
-        description: "Quickest way to build and deploy prototypes with designs or specs.",
-        icon: {
-            light: "/tools/v0-icon.svg",
-            dark: "/tools/v0-icon2.svg"
-          }
-    },
-    { 
-        name: "Replit", 
-        description: "Create fast apps, agents, and tools with your data or through integration.",
-        icon: {
-            light: "/tools/replit-icon.svg",
-            dark: "/tools/replit-icon2.svg"
-          }
-    },
-]
-
-export const essays: Essay[] = [
-    {
-        id: "8",
-        date: "3/14/26",
-        title: "Capsules Essay",
-        preview: "PM editorial compression is the missing protocol for agent-to-agent knowledge transfer. I built capsules and an evaluation harness to prove it.",
-        url: "https://blog.ryanwigley.com/capsules-a-framework-for-portable-knowledge-transfer-between-ai-agent",
-      },
-    {
-        id: "6",
-        date: "11/9/25",
-        title: "Personal Engineering",
-        preview: "It's ironic how we obsessed over the interface while the real breakthrough was happening in the background.",
-        url: "https://blog.ryanwigley.com/personal-engineering",
-      },
-    {
-        id: "1",
-        date: "2/26/25",
-        title: "Everyday AI Copilots",
-        preview: "A walkthrough of how I use AI assistants to get more sh*t done.",
-        url: "https://blog.ryanwigley.com/everyday-ai-copilots",
-      },
-      {
-        id: "2",
-        date: "1/26/25",
-        title: "Thought Partner, Assistant, & Agent",
-        preview: "A PM's practical guide to using AI: mental models, prompts, and tools.",
-        url: "https://blog.ryanwigley.com/thought-partner-assistant-and-agent",
-      },
-      {
-        id: "2",
-        date: "12/12/24",
-        title: "100 days of AI",
-        preview: "I've been finding myself thinking a lot about young Ryan lately.",
-        url: "https://blog.ryanwigley.com/100-days-of-ai",
-      },
-      {
-        id: "3",
-        date: "12/5/24",
-        title: "Free-range AI agents",
-        preview: "I can't stop thinking about AI agents. We're witnessing the dawn of truly autonomous digital beings",
-        url: "https://blog.ryanwigley.com/free-range-ai-agents",
-      },
-      {
-        id: "4",
-        date: "10/31/24",
-        title: "The growing AI innovation gap",
-        preview: "This gap isn't just about access to tools, it's about the pace of innovation.",
-        url: "https://blog.ryanwigley.com/the-growing-ai-innovation-gap",
-      },
-      {
-        id: "5",
-        date: "10/22/24",
-        title: "How to avoid overthinking your API",
-        preview: "If you are in the business of software integrations, your API is your brand's digital handshake with the world.",
-        url: "https://blog.ryanwigley.com/how-to-avoid-overthinking-your-api",
-      },
+    problemStatement: "",
+    myRole: "",
+  },
 ]
 
 export const workExperience: WorkExperience[] = [
-    {
-        company: "Raya",
-        role: "Principal PM",
-        period: "2025 - today",
-        logo: {
-          light: "/companies/raya-icon.svg",
-          dark: "/companies/raya-icon2.svg"
-        }
-    },
-    {
-        company: "Amazon",
-        role: "Sr Technical PM",
-        period: "2021 - 2025",
-        logo: {
-          light: "/companies/amazon-icon.svg",
-          dark: "/companies/amazon-icon2.svg"
-        }
-    },
-    {
-        company: "Dubset Media",
-        role: "Founding PM",
-        period: "2012 - 2020",
-        logo: {
-            light: "/companies/dubset-icon.svg",
-            dark: "/companies/dubset-icon2.svg"
-          }
-    },
-    {
-        company: "Bouncebug",
-        role: "Co-Founder",
-        period: "2011 - 2012",
-        logo: {
-            light: "/companies/bouncebug-icon.svg",
-            dark: "/companies/bouncebug-icon2.svg"
-          }
-    }
-] 
+  {
+    company: "Raya",
+    role: "Principal PM",
+    period: "2025 - today",
+    logo: { light: "/companies/raya-icon.svg", dark: "/companies/raya-icon2.svg" },
+  },
+  {
+    company: "Amazon",
+    role: "Sr Technical PM",
+    period: "2021 - 2025",
+    logo: { light: "/companies/amazon-icon.svg", dark: "/companies/amazon-icon2.svg" },
+  },
+  {
+    company: "Dubset Media",
+    role: "Founding PM",
+    period: "2012 - 2020",
+    logo: { light: "/companies/dubset-icon.svg", dark: "/companies/dubset-icon2.svg" },
+  },
+  {
+    company: "Bouncebug",
+    role: "Co-Founder",
+    period: "2011 - 2012",
+    logo: { light: "/companies/bouncebug-icon.svg", dark: "/companies/bouncebug-icon2.svg" },
+  },
+]
+
+export const tools: Tool[] = [
+  {
+    name: "Notion",
+    description: "Flexible database for my family, projects, and new ideas.",
+    icon: { light: "/tools/notion-icon.svg", dark: "/tools/notion-icon2.svg" },
+  },
+]

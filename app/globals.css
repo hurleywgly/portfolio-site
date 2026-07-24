@@ -4,48 +4,100 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 40 20% 96%;
+    --foreground: 220 20% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 220 20% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --popover-foreground: 220 20% 10%;
+    --primary: 30 80% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 92%;
+    --secondary-foreground: 220 20% 10%;
+    --muted: 220 10% 92%;
+    --muted-foreground: 220 10% 40%;
+    --accent: 30 80% 45%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+    --border: 220 10% 88%;
+    --input: 220 10% 88%;
+    --ring: 30 80% 45%;
+    --radius: 0.375rem;
+    --chart-1: 30 80% 55%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 220 60% 55%;
+    --chart-4: 340 65% 50%;
+    --chart-5: 270 50% 55%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 220 20% 7%;
+    --foreground: 40 10% 90%;
+    --card: 220 18% 10%;
+    --card-foreground: 40 10% 90%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 40 10% 90%;
+    --primary: 30 80% 55%;
+    --primary-foreground: 220 20% 7%;
+    --secondary: 220 15% 14%;
+    --secondary-foreground: 40 10% 80%;
+    --muted: 220 15% 14%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 30 80% 55%;
+    --accent-foreground: 220 20% 7%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 220 15% 16%;
+    --input: 220 15% 16%;
+    --ring: 30 80% 55%;
+  }
+
+  /* === Design essence tokens (from capsule) === */
+  :root {
+    /* Motion — one named easing, reused everywhere */
+    --transitions-snappy: cubic-bezier(.2, .8, .2, 1);
+    --transitions-slow: cubic-bezier(.16, 1, .3, 1);
+    --transitions-bounce: cubic-bezier(.68, -0.55, .265, 1.55);
+
+    /* Glass (dark museum aesthetic) */
+    --glass-bg: rgba(15, 23, 42, 0.4);
+    --glass-bg-strong: rgba(15, 23, 42, 0.72);
+    --glass-border: rgba(251, 191, 36, 0.2);
+    --glass-border-strong: rgba(251, 191, 36, 0.45);
+    --blur-panel: 12px;
+    --blur-panel-subtle: 8px;
+
+    /* Amber glow */
+    --glow-amber: 0 0 40px -10px rgba(251, 191, 36, 0.3);
+    --glow-amber-strong: 0 0 60px -5px rgba(251, 191, 36, 0.5);
+    --glow-amber-inset: inset 0 0 60px -20px rgba(251, 191, 36, 0.15);
+
+    /* Layering */
+    --z-backdrop: 0;
+    --z-panel: 10;
+    --z-nav: 50;
+    --z-modal: 100;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --transitions-snappy: 0ms;
+      --transitions-slow: 0ms;
+      --transitions-bounce: 0ms;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    :root {
+      --glass-bg: rgba(15, 23, 42, 0.88);
+      --glass-bg-strong: rgba(15, 23, 42, 0.95);
+    }
   }
 }
 
@@ -58,3 +110,105 @@
   }
 }
 
+/* Transformation signature arrow */
+.transform-arrow {
+  @apply inline-block mx-2 text-primary opacity-70;
+}
+
+/* Status badge variants */
+.status-live {
+  @apply bg-emerald-500/15 text-emerald-400 border-emerald-500/30;
+}
+.status-active {
+  @apply bg-primary/15 text-primary border-primary/30;
+}
+.status-pre-build {
+  @apply bg-sky-500/15 text-sky-400 border-sky-500/30;
+}
+.status-concept {
+  @apply bg-muted text-muted-foreground border-border;
+}
+
+/* Subtle glow for interactive elements */
+.glow-hover {
+  transition: box-shadow 300ms var(--transitions-snappy);
+}
+.glow-hover:hover {
+  box-shadow: var(--glow-amber);
+}
+
+/* === Glass panel primitive === */
+.glass-panel {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-panel)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur-panel)) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  box-shadow: var(--glow-amber), var(--glow-amber-inset);
+  contain: paint;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(251, 191, 36, 0.18),
+    transparent 40%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms var(--transitions-snappy);
+}
+
+.glass-panel:hover::before {
+  opacity: 1;
+}
+
+.glass-panel-subtle {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-panel-subtle)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--blur-panel-subtle)) saturate(1.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  contain: paint;
+  isolation: isolate;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel,
+  .glass-panel-subtle {
+    background: var(--glass-bg-strong);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* === Blueprint ornament pulse (steps, cheap) === */
+@keyframes blueprint-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+.blueprint-pulse {
+  animation: blueprint-pulse 2.4s steps(3, end) infinite;
+}
+
+/* === Clip-path headline unfurl === */
+@keyframes clip-unfurl {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.clip-unfurl {
+  animation: clip-unfurl 900ms var(--transitions-slow) forwards;
+}
+
+/* Dashboard widget grid */
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}

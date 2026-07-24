@@ -2,15 +2,17 @@ import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ParticlesBackground } from "@/components/particles-background"
+import { BlueprintBackdrop } from "@/components/blueprint-backdrop"
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ryanwigley.com'),
-  title: "Ryan Wigley | Technologist and Product Leader",
-  description: "Personal website and portfolio of Ryan Wigley, Technologist and Product Leader, based in Seattle.",
+  metadataBase: new URL("https://ryanwigley.com"),
+  title: "Ryan Wigley | AI Systems Engineer",
+  description:
+    "I engineer AI systems that run businesses, starting with my own. From API infrastructure to operating systems — designing how complex inputs flow through structured processes to produce reliable outputs.",
   openGraph: {
-    title: "Ryan Wigley | Technologist and Product Leader",
-    description: "Personal website and portfolio of Ryan Wigley, Technologist and Product Leader, based in Seattle.",
+    title: "Ryan Wigley | AI Systems Engineer",
+    description:
+      "I engineer AI systems that run businesses, starting with my own.",
   },
 }
 
@@ -20,9 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        {/* Google Analytics */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-747E1F6JP2"
@@ -38,19 +39,17 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${GeistSans.className} min-h-screen bg-background text-foreground`}>
+      <body className={`${GeistSans.className} min-h-screen bg-background text-foreground antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
-          forcedTheme="system"
         >
-          <ParticlesBackground />
+          <BlueprintBackdrop />
           {children}
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
