@@ -8,13 +8,14 @@ import { SiteNav } from "@/components/site-nav"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 /**
- * Shared page chrome for every route except home. Home is a self-contained
- * exhibit that renders its own nav, logo, and theme-switcher inside the scaled
- * canvas, so the global header steps aside there.
+ * Shared page chrome for every route except the exhibit pages. Home (and its
+ * /m mock-scale variant) are self-contained exhibits that render their own
+ * nav, logo, and theme-switcher inside the scaled canvas, so the global
+ * header steps aside there.
  */
 export function Header() {
   const pathname = usePathname()
-  if (pathname === "/") return null
+  if (pathname === "/" || pathname === "/m") return null
 
   return (
     <>
