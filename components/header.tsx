@@ -1,118 +1,123 @@
 "use client"
 
-import { Mail, Linkedin, Menu, X } from "lucide-react"
-import Image from "next/image"
+import {
+  FileText,
+  FolderKanban,
+  Home,
+  UserRound,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { siteNav, type SiteNavItem } from "@/lib/site"
 
-const NAV_ITEMS = [
-  { label: "Work", href: "/work" },
-  { label: "Methodology", href: "/methodology" },
-  { label: "Writing", href: "/writing" },
-  { label: "About", href: "/about" },
-  { label: "Dashboard", href: "/dashboard" },
-]
+const navIcons: Record<string, LucideIcon> = {
+  home: Home,
+  projects: FolderKanban,
+  tools: Wrench,
+  writing: FileText,
+  about: UserRound,
+}
+
+function isCurrent(pathname: string, item: SiteNavItem) {
+  if (!item.href) return false
+  return (
+    pathname === item.href ||
+    (item.href !== "/" && pathname.startsWith(`${item.href}/`))
+  )
+}
+
+function NavItem({
+  item,
+  pathname,
+  mobile = false,
+}: {
+  item: SiteNavItem
+  pathname: string
+  mobile?: boolean
+}) {
+  const Icon = navIcons[item.label]
+  const active = isCurrent(pathname, item)
+  const className = mobile
+    ? `flex min-w-0 flex-col items-center gap-1 px-1 py-2 font-mono text-[9px] lowercase tracking-[-0.02em] ${
+        active ? "text-accent" : "text-nav-icon"
+      }`
+    : `relative inline-flex items-center gap-2 py-2 font-mono text-xs lowercase tracking-[0.08em] transition-colors ${
+        active
+          ? "text-ink after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-accent"
+          : "text-muted hover:text-ink"
+      }`
+
+  const content = (
+    <>
+      <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <span>{item.label}</span>
+    </>
+  )
+
+  if (item.external) {
+    return (
+      <a
+        href={item.external}
+        className={className}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {content}
+        <span className="sr-only">(opens in a new tab)</span>
+      </a>
+    )
+  }
+
+  return (
+    <Link
+      href={item.href!}
+      className={className}
+      aria-current={active ? "page" : undefined}
+    >
+      {content}
+    </Link>
+  )
+}
 
 export function Header() {
   const pathname = usePathname()
-  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
-      <div className="container max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-        {/* Logo / Name */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <Image
-            src="/ryan-profile.jpg"
-            alt="Ryan Wigley"
-            width={32}
-            height={32}
-            className="rounded-full"
-            priority
-          />
-          <span className="font-semibold text-sm tracking-tight">Ryan Wigley</span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  isActive
-                    ? "text-primary font-medium"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
-
-        {/* Social + Mobile Toggle */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="https://www.linkedin.com/in/ryanwigley/"
-            className="text-muted-foreground hover:text-foreground hidden sm:block"
-            target="_blank"
-          >
-            <Linkedin className="h-4 w-4" />
-          </Link>
-          <Link
-            href="https://x.com/rywigs"
-            className="text-muted-foreground hover:text-foreground hidden sm:block"
-            target="_blank"
-          >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-          </Link>
-          <Link
-            href="mailto:ryan.wigley522@gmail.com"
-            className="text-muted-foreground hover:text-foreground hidden sm:block"
-          >
-            <Mail className="h-4 w-4" />
-          </Link>
-
-          {/* Mobile menu toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-muted-foreground hover:text-foreground"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+    <header className="relative z-50">
+      <div className="hidden border-b border-rule md:block">
+        <div className="exhibit-shell flex h-24 items-center justify-between gap-8">
+          <nav className="flex items-center gap-7" aria-label="Primary navigation">
+            {siteNav.map((item) => (
+              <NavItem
+                key={item.label}
+                item={item}
+                pathname={pathname}
+              />
+            ))}
+          </nav>
+          <ThemeToggle />
         </div>
       </div>
 
-      {/* Mobile Nav */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md">
-          <nav className="container max-w-5xl mx-auto px-4 py-3 flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-3 py-2 text-sm rounded-md ${
-                    isActive
-                      ? "text-primary font-medium bg-primary/5"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-        </div>
-      )}
+      <div className="fixed right-4 top-4 z-50 md:hidden">
+        <ThemeToggle />
+      </div>
+      <nav
+        className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-5 rounded-xl border border-card-border bg-card px-2 text-on-card shadow-lg md:hidden"
+        aria-label="Primary navigation"
+      >
+        {siteNav.map((item) => (
+          <NavItem
+            key={item.label}
+            item={item}
+            pathname={pathname}
+            mobile
+          />
+        ))}
+      </nav>
     </header>
   )
 }

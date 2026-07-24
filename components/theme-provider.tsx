@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import { ReactNode } from 'react'
+import type { ReactNode } from "react"
 import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
-} from 'next-themes'
+} from "next-themes"
 
 interface Props extends ThemeProviderProps {
   children: ReactNode

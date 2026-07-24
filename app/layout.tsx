@@ -1,52 +1,58 @@
-import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
+import { Fragment_Mono, Fraunces, Hanken_Grotesk } from "next/font/google"
 import "./globals.css"
+import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
-import { BlueprintBackdrop } from "@/components/blueprint-backdrop"
+
+const displayFont = Fraunces({
+  subsets: ["latin"],
+  weight: ["600", "900"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const bodyFont = Hanken_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-body",
+  display: "swap",
+})
+
+const monoFont = Fragment_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-mono",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ryanwigley.com"),
-  title: "Ryan Wigley | AI Systems Engineer",
+  title: "Ryan Wigley | AI Systems Builder",
   description:
-    "I engineer AI systems that run businesses, starting with my own. From API infrastructure to operating systems — designing how complex inputs flow through structured processes to produce reliable outputs.",
+    "A working exhibit of live systems, tools, and methods by Ryan Wigley.",
   openGraph: {
-    title: "Ryan Wigley | AI Systems Engineer",
-    description:
-      "I engineer AI systems that run businesses, starting with my own.",
+    title: "Ryan Wigley | AI Systems Builder",
+    description: "A working exhibit of live systems, tools, and methods.",
   },
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <head>
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-747E1F6JP2"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-747E1F6JP2');
-            `,
-          }}
-        />
-      </head>
-      <body className={`${GeistSans.className} min-h-screen bg-background text-foreground antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} min-h-screen bg-page font-body text-ink antialiased`}
+      >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
+          defaultTheme="system"
+          enableSystem
           disableTransitionOnChange
         >
-          <BlueprintBackdrop />
+          <Header />
           {children}
         </ThemeProvider>
       </body>

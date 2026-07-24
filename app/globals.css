@@ -4,211 +4,86 @@
 
 @layer base {
   :root {
-    --background: 40 20% 96%;
-    --foreground: 220 20% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
-    --primary: 30 80% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 10% 92%;
-    --secondary-foreground: 220 20% 10%;
-    --muted: 220 10% 92%;
-    --muted-foreground: 220 10% 40%;
-    --accent: 30 80% 45%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 10% 88%;
-    --input: 220 10% 88%;
-    --ring: 30 80% 45%;
-    --radius: 0.375rem;
-    --chart-1: 30 80% 55%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 220 60% 55%;
-    --chart-4: 340 65% 50%;
-    --chart-5: 270 50% 55%;
+    color-scheme: light;
+    --bg: #e9eedf;
+    --page: var(--bg);
+    --surface: #f3f4e9;
+    --card: #4f5f40;
+    --card-deep: #495a3d;
+    --card-border: #445239;
+    --on-card: #e8ebdd;
+    --on-card-muted: #aeb8a0;
+    --ink: #222b1a;
+    --muted: #5b6b4b;
+    --rule: #c7cdb4;
+    --diagram-line: #98a48c;
+    --diagram: var(--diagram-line);
+    --accent: #a18a2e;
+    --lattice-mid: #98a48c;
+    --nav-icon: #8a9478;
   }
 
   .dark {
-    --background: 220 20% 7%;
-    --foreground: 40 10% 90%;
-    --card: 220 18% 10%;
-    --card-foreground: 40 10% 90%;
-    --popover: 220 18% 10%;
-    --popover-foreground: 40 10% 90%;
-    --primary: 30 80% 55%;
-    --primary-foreground: 220 20% 7%;
-    --secondary: 220 15% 14%;
-    --secondary-foreground: 40 10% 80%;
-    --muted: 220 15% 14%;
-    --muted-foreground: 220 10% 50%;
-    --accent: 30 80% 55%;
-    --accent-foreground: 220 20% 7%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 15% 16%;
-    --input: 220 15% 16%;
-    --ring: 30 80% 55%;
+    color-scheme: dark;
+    --bg: #192b43;
+    --page: var(--bg);
+    --surface: #1f3149;
+    --card: #2a3d54;
+    --card-deep: #2a3d54;
+    --card-border: #3e5573;
+    --on-card: #dde5ee;
+    --on-card-muted: #8aa0bc;
+    --ink: #e4eaf1;
+    --muted: #8295ab;
+    --rule: #2e4259;
+    --diagram-line: #3e5573;
+    --diagram: var(--diagram-line);
+    --accent: #c9a85a;
+    --lattice-mid: #516885;
+    --nav-icon: #7e92a9;
   }
 
-  /* === Design essence tokens (from capsule) === */
-  :root {
-    /* Motion — one named easing, reused everywhere */
-    --transitions-snappy: cubic-bezier(.2, .8, .2, 1);
-    --transitions-slow: cubic-bezier(.16, 1, .3, 1);
-    --transitions-bounce: cubic-bezier(.68, -0.55, .265, 1.55);
-
-    /* Glass (dark museum aesthetic) */
-    --glass-bg: rgba(15, 23, 42, 0.4);
-    --glass-bg-strong: rgba(15, 23, 42, 0.72);
-    --glass-border: rgba(251, 191, 36, 0.2);
-    --glass-border-strong: rgba(251, 191, 36, 0.45);
-    --blur-panel: 12px;
-    --blur-panel-subtle: 8px;
-
-    /* Amber glow */
-    --glow-amber: 0 0 40px -10px rgba(251, 191, 36, 0.3);
-    --glow-amber-strong: 0 0 60px -5px rgba(251, 191, 36, 0.5);
-    --glow-amber-inset: inset 0 0 60px -20px rgba(251, 191, 36, 0.15);
-
-    /* Layering */
-    --z-backdrop: 0;
-    --z-panel: 10;
-    --z-nav: 50;
-    --z-modal: 100;
+  *,
+  *::before,
+  *::after {
+    border-color: var(--rule);
+    box-sizing: border-box;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    :root {
-      --transitions-snappy: 0ms;
-      --transitions-slow: 0ms;
-      --transitions-bounce: 0ms;
-    }
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+  html {
+    min-height: 100%;
+    background: var(--page);
   }
 
-  @supports not (backdrop-filter: blur(1px)) {
-    :root {
-      --glass-bg: rgba(15, 23, 42, 0.88);
-      --glass-bg-strong: rgba(15, 23, 42, 0.95);
-    }
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    min-height: 100dvh;
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-body), sans-serif;
+  }
+
+  em,
+  i {
+    font-style: normal;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--page);
   }
 }
 
-/* Transformation signature arrow */
-.transform-arrow {
-  @apply inline-block mx-2 text-primary opacity-70;
-}
-
-/* Status badge variants */
-.status-live {
-  @apply bg-emerald-500/15 text-emerald-400 border-emerald-500/30;
-}
-.status-active {
-  @apply bg-primary/15 text-primary border-primary/30;
-}
-.status-pre-build {
-  @apply bg-sky-500/15 text-sky-400 border-sky-500/30;
-}
-.status-concept {
-  @apply bg-muted text-muted-foreground border-border;
-}
-
-/* Subtle glow for interactive elements */
-.glow-hover {
-  transition: box-shadow 300ms var(--transitions-snappy);
-}
-.glow-hover:hover {
-  box-shadow: var(--glow-amber);
-}
-
-/* === Glass panel primitive === */
-.glass-panel {
-  position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur-panel)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--blur-panel)) saturate(1.4);
-  border: 1px solid var(--glass-border);
-  border-radius: 1rem;
-  box-shadow: var(--glow-amber), var(--glow-amber-inset);
-  contain: paint;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.glass-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(251, 191, 36, 0.18),
-    transparent 40%
-  );
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 300ms var(--transitions-snappy);
-}
-
-.glass-panel:hover::before {
-  opacity: 1;
-}
-
-.glass-panel-subtle {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur-panel-subtle)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--blur-panel-subtle)) saturate(1.2);
-  border: 1px solid var(--glass-border);
-  border-radius: 0.75rem;
-  contain: paint;
-  isolation: isolate;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .glass-panel,
-  .glass-panel-subtle {
-    background: var(--glass-bg-strong);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+@layer utilities {
+  .exhibit-shell {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
   }
-}
 
-/* === Blueprint ornament pulse (steps, cheap) === */
-@keyframes blueprint-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-.blueprint-pulse {
-  animation: blueprint-pulse 2.4s steps(3, end) infinite;
-}
-
-/* === Clip-path headline unfurl === */
-@keyframes clip-unfurl {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-.clip-unfurl {
-  animation: clip-unfurl 900ms var(--transitions-slow) forwards;
-}
-
-/* Dashboard widget grid */
-.widget-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
+  @media (min-width: 768px) {
+    .exhibit-shell {
+      padding-inline: 5rem;
+    }
+  }
 }

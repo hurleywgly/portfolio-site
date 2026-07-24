@@ -1,35 +1,32 @@
-import { ArrowUpRight } from "lucide-react"
-import Link from "next/link"
+interface FooterProps {
+  grid: string
+  locationOnly?: boolean
+}
 
-export function Footer() {
+export function Footer({ grid, locationOnly = false }: FooterProps) {
   return (
-    <footer className="border-t border-border/50 mt-auto">
-      <div className="container max-w-5xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-4">
-        <p className="text-xs text-muted-foreground/60">
-          Designed &amp; engineered by Ryan Wigley
+    <footer className="mb-24 border-t border-rule md:mb-0">
+      <div className="exhibit-shell flex flex-col gap-5 py-8 font-mono text-[11px] uppercase tracking-[0.14em] text-muted sm:flex-row sm:items-center sm:justify-between">
+        {locationOnly ? (
+          <p>BASED · SEATTLE, WA</p>
+        ) : (
+          <p className="flex flex-wrap gap-x-2 gap-y-1">
+            <a href="https://x.com/hurleywgly">X</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://github.com/hurleywgly">GITHUB</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.linkedin.com/in/ryanwigley/">LINKEDIN</a>
+            <span aria-hidden="true">·</span>
+            <a href="mailto:ryan.wigley522@gmail.com">EMAIL</a>
+          </p>
+        )}
+        <p className="hidden items-center gap-2 sm:flex">
+          <span
+            className="h-[7px] w-[7px] rounded-full bg-accent"
+            aria-hidden="true"
+          />
+          GRID {grid} · 47°N · PAGE
         </p>
-        <div className="flex flex-wrap gap-5 text-xs">
-          <Link
-            href="https://blog.ryanwigley.com"
-            target="_blank"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            blog <ArrowUpRight className="h-3 w-3" />
-          </Link>
-          <Link
-            href="mailto:ryan.wigley522@gmail.com"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            email <ArrowUpRight className="h-3 w-3" />
-          </Link>
-          <Link
-            href="https://github.com/hurleywgly/portfolio_site"
-            target="_blank"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            source <ArrowUpRight className="h-3 w-3" />
-          </Link>
-        </div>
       </div>
     </footer>
   )
