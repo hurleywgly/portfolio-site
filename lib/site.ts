@@ -1,4 +1,4 @@
-export const BLOG_URL = "https://ryanwigley.substack.com"
+export const BLOG_URL = "https://blog.ryanwigley.com"
 
 export type SiteNavItem =
   | {
