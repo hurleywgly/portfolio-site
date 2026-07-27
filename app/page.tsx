@@ -111,9 +111,12 @@ export default function Home() {
             </p>
           </Box>
 
-          {/* personality diorama */}
+          {/* personality diorama — links to /about (the shelf and the crew are
+              the two "who is this person" objects on the front door) */}
           <Box x={629} y={148} w={350} h={171} z={10}>
-            <ShelfDiorama />
+            <Link href="/about" aria-label="About Ryan" className="block h-full w-full">
+              <ShelfDiorama />
+            </Link>
           </Box>
 
           {/* flagship + work grid */}
@@ -166,9 +169,11 @@ export default function Home() {
             </Link>
           </Box>
 
-          {/* crew */}
+          {/* crew — also links to /about */}
           <Box x={1175} y={579} w={181} h={152} z={10}>
-            <CrewPolaroid />
+            <Link href="/about" aria-label="About Ryan" className="block h-full w-full">
+              <CrewPolaroid />
+            </Link>
           </Box>
         </ExhibitStage>
       </div>

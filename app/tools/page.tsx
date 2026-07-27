@@ -25,10 +25,14 @@ export default function ToolsPage() {
 
         {/* hero */}
         <header className="relative">
-          <p className="font-mono text-[13px] lowercase tracking-[0.04em] text-muted">
+          {/* kicker is gold, matching /about and /methodology (canon: kickers
+              are '// lowercase mono' in accent) */}
+          <p className="font-mono text-[2.467vw] lowercase tracking-[0.04em] text-accent md:text-[13px]">
             {playbookHero.kicker}
           </p>
-          <h1 className="mt-4 max-w-[22ch] font-display text-[27px] font-black leading-[0.98] tracking-[-0.02em] text-ink md:text-[40px]">
+          {/* mobile heading uses the same 48/1054 vw ratio as every other page
+              so the effective size matches the mock-scale pages */}
+          <h1 className="mt-4 max-w-[22ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[34px] md:leading-[1.05]">
             {playbookHero.title}
           </h1>
           <p className="mt-6 max-w-[58ch] font-body text-[18px] leading-[1.5] text-muted md:text-[20px]">

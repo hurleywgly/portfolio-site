@@ -28,10 +28,10 @@ export default function ProjectsPage() {
               every mobile hero at Fraunces Black 48 on that artboard, so the
               match is 48/1054 = 4.554vw (≈17.1px @375, ≈19.6px @430) — exactly
               what /about measures. Kicker 26/1054, body 35/1054, same source. */}
-          <p className="font-mono text-[2.467vw] lowercase tracking-[0.04em] text-muted md:text-[13px]">
+          <p className="font-mono text-[2.467vw] lowercase tracking-[0.04em] text-accent md:text-[13px]">
             // current projects
           </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[40px] md:leading-[0.98]">
+          <h1 className="mt-4 max-w-[18ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[34px] md:leading-[1.05]">
             Always tinkering.
           </h1>
           <p className="mt-6 max-w-[48ch] font-body text-[3.321vw] leading-[1.5] text-muted md:text-[17px] md:leading-[1.55]">

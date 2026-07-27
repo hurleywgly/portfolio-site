@@ -159,9 +159,11 @@ export function HomeMobileMock() {
           <WaveformBanner />
         </AtScaled>
 
-        {/* shelf — its own art per theme */}
+        {/* shelf — its own art per theme; taps through to /about */}
         <At x={496} y={560} w={556} h={273} z={10}>
-          <ShelfDiorama />
+          <Link href="/about" aria-label="About Ryan" className="block h-full w-full">
+            <ShelfDiorama />
+          </Link>
         </At>
 
         {/* work grid: tiles natural 140×128 → 190×172 artboard */}
@@ -221,9 +223,11 @@ export function HomeMobileMock() {
           <WritingTile />
         </AtScaled>
 
-        {/* crew — per-theme art */}
+        {/* crew — per-theme art; taps through to /about */}
         <At x={657} y={1788} w={304} h={255} z={10}>
-          <CrewPolaroid />
+          <Link href="/about" aria-label="About Ryan" className="block h-full w-full">
+            <CrewPolaroid />
+          </Link>
         </At>
       </ZoomableStage>
 

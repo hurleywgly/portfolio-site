@@ -32,7 +32,9 @@ export function WaveformBanner({
         <span className="mt-1 font-display text-[21px] font-black leading-none tracking-[-0.01em] text-on-card">
           Waveform
         </span>
-        <span className="mt-2.5 font-mono text-[13px] tracking-[0.01em] text-on-card-muted">
+        {/* must stay on ONE line — the glyph sits to the right, so the text
+            column is narrow enough that this wraps without the nowrap guard */}
+        <span className="mt-2.5 whitespace-nowrap font-mono text-[13px] tracking-[0.01em] text-on-card-muted">
           raw audio&nbsp;&nbsp;→&nbsp;&nbsp;finished episodes
         </span>
       </div>
