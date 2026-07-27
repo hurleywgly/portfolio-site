@@ -1,36 +1,25 @@
-import { ArrowUpRight } from "lucide-react"
-import Link from "next/link"
-import { FC } from 'react'
+interface FooterProps {
+  locationOnly?: boolean
+}
 
-export const Footer: FC = () => {
+export function Footer({ locationOnly = false }: FooterProps) {
   return (
-    <footer className="border-t">
-      <div className="max-w-3xl mx-auto px-4 py-6">
-        <div className="flex flex-wrap gap-6 text-sm">
-          <Link
-            href="https://blog.ryanwigley.com"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            blog
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="mailto:ryan.wigley522@gmail.com"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            email
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="https://github.com/hurleywgly/portfolio_site"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            view source
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </div>
+    <footer className="mb-24 border-t border-rule md:mb-0">
+      <div className="exhibit-shell flex flex-col gap-5 py-8 font-mono text-[11px] uppercase tracking-[0.14em] text-muted sm:flex-row sm:items-center sm:justify-between">
+        {locationOnly ? (
+          <p>BASED · SEATTLE, WA</p>
+        ) : (
+          <p className="flex flex-wrap gap-x-2 gap-y-1">
+            <a href="https://x.com/rywigs">X</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://github.com/hurleywgly">GITHUB</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.linkedin.com/in/rywigs/">LINKEDIN</a>
+            <span aria-hidden="true">·</span>
+            <a href="mailto:ryan.wigley522@gmail.com">EMAIL</a>
+          </p>
+        )}
       </div>
     </footer>
   )
 }
-

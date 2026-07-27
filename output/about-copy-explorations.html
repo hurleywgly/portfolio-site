@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Page · Copy Explorations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Hanken+Grotesk:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ── Tokens: ryanwigley.com light theme (DESIGN.md) ─────────────── */
+  :root {
+    --bg: #E9EEDF;
+    --surface: #F3F4E9;
+    --card: #4F5F40;
+    --card-border: #445239;
+    --on-card: #E8EBDD;
+    --on-card-muted: #AEB8A0;
+    --ink: #222B1A;
+    --muted: #5B6B4B;
+    --rule: #C7CDB4;
+    --diagram: #98A48C;
+    --accent: #A18A2E;
+    --accent-soft: rgba(161, 138, 46, 0.16);
+
+    --font-display: 'Fraunces', 'Georgia', serif;
+    --font-body: 'Hanken Grotesk', -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'Fragment Mono', 'SF Mono', 'Menlo', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    padding: 56px clamp(20px, 4vw, 64px) 72px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Header ──────────────────────────────────────────────────────── */
+  header { max-width: 1480px; margin: 0 auto 40px; }
+
+  header h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(30px, 4vw, 44px);
+    letter-spacing: -0.01em;
+    margin: 10px 0 12px;
+  }
+
+  header .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 62ch;
+    margin-bottom: 18px;
+  }
+
+  .spec-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .spec-chips .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  .spec-chips .chip strong { color: var(--ink); font-weight: 400; }
+
+  .header-rule { border: none; border-top: 1px solid var(--rule); margin: 28px auto 0; max-width: 1480px; }
+
+  /* ── Variant grid ────────────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 2vw, 28px);
+    max-width: 1480px;
+    margin: 36px auto 0;
+  }
+  @media (max-width: 1150px) { .grid { grid-template-columns: 1fr; max-width: 640px; } }
+
+  .variant { display: flex; flex-direction: column; gap: 14px; }
+
+  .variant-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .variant-label .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); margin-right: 8px; vertical-align: 1px;
+  }
+
+  /* ── Page mock ───────────────────────────────────────────────────── */
+  .mock {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 30px 30px 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* faint blueprint hint, kept clear of content */
+  .mock::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 140px; height: 100%;
+    background:
+      linear-gradient(to left, transparent 0, transparent 100%),
+      repeating-linear-gradient(to bottom, transparent 0 88px, rgba(152,164,140,.35) 88px 89px),
+      repeating-linear-gradient(to right, transparent 0 46px, rgba(152,164,140,.35) 46px 47px);
+    mask-image: linear-gradient(to left, black 20%, transparent 95%);
+    -webkit-mask-image: linear-gradient(to left, black 20%, transparent 95%);
+    pointer-events: none;
+  }
+
+  .mock-nav {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 26px;
+  }
+  .mock-nav .active { color: var(--ink); border-bottom: 1.5px solid var(--accent); padding-bottom: 2px; }
+
+  .mock .mock-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .mock h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(26px, 2.4vw, 34px);
+    line-height: 1.12;
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+
+  /* marker swash — accent wash behind one word, asymmetric radius, never italic */
+  .swash {
+    background: linear-gradient(100deg, var(--accent-soft) 0%, rgba(161,138,46,0.30) 55%, var(--accent-soft) 100%);
+    border-radius: 12px 3px 10px 4px;
+    padding: 0 0.14em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .mock .body { font-size: 14.5px; line-height: 1.65; color: var(--ink); max-width: 46ch; }
+  .mock .body p + p { margin-top: 12px; }
+
+  .fact {
+    border-bottom: 1.5px dotted var(--accent);
+    cursor: help;
+    color: inherit;
+    text-decoration: none;
+  }
+  .fact sup { font-family: var(--font-mono); font-size: 9px; color: var(--accent); margin-left: 1px; }
+
+  .mock .close-line { margin-top: 16px; font-size: 14.5px; color: var(--ink); font-weight: 500; }
+
+  .mock-contact {
+    margin-top: auto;
+    padding-top: 22px;
+  }
+  .mock-contact .cta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .mock-contact .cta .arrow { color: var(--accent); }
+  .mock-contact .socials {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  /* ── Read block (annotations under each mock) ────────────────────── */
+  .read {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    color: var(--on-card);
+  }
+  .read .row { display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: baseline; }
+  .read .row + .row { margin-top: 10px; }
+  .read .k {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-card-muted);
+  }
+  .read .v { font-size: 13px; line-height: 1.5; }
+  .read .v.gold { color: #C9A85A; }
+
+  /* ── Synthesis ──────────────────────────────────────────────────── */
+  .synthesis {
+    max-width: 1480px;
+    margin: 36px auto 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: clamp(20px, 3vw, 48px);
+  }
+  @media (max-width: 900px) { .synthesis { grid-template-columns: 1fr; } }
+
+  .synthesis h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .synthesis p { font-size: 14.5px; max-width: 68ch; }
+  .synthesis p + p { margin-top: 10px; }
+
+  .facts-list { list-style: none; }
+  .facts-list li {
+    font-size: 13.5px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+  }
+  .facts-list li:last-child { border-bottom: none; }
+  .facts-list .ref { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
+
+  footer {
+    max-width: 1480px;
+    margin: 44px auto 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+  }
+
+  @media print {
+    body { padding: 0.4in; }
+    .grid { grid-template-columns: repeat(3, 1fr); }
+    .variant, .mock, .read { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">ryanwigley.com · /about · round 2</div>
+  <h1>Three ways to open the About page</h1>
+  <p class="subtitle">Each draft rendered as it would read on the page — same dossier structure, different opening move. Dotted-gold words<sup style="font-family:var(--font-mono);font-size:9px;color:var(--accent)">1–3</sup> are facts awaiting your ruling.</p>
+  <div class="spec-chips">
+    <span class="chip">your spec →</span>
+    <span class="chip"><strong>simple, out the door fast</strong></span>
+    <span class="chip"><strong>confident, not braggy</strong></span>
+    <span class="chip"><strong>inviting</strong></span>
+    <span class="chip"><strong>product person</strong></span>
+    <span class="chip"><strong>proof: it all runs daily</strong></span>
+  </div>
+</header>
+<hr class="header-rule">
+
+<section class="grid">
+
+  <!-- ── DRAFT A ─────────────────────────────────────────────────── -->
+  <article class="variant">
+    <div class="variant-label"><span class="dot"></span>draft a · proof first</div>
+    <div class="mock">
+      <nav class="mock-nav"><span>home</span><span>projects</span><span>tools</span><span class="active">about</span></nav>
+      <div class="mock-kicker">// about</div>
+      <h2>I ship what I <span class="swash">use</span>.</h2>
+      <div class="body">
+        <p>I&rsquo;m a product person &mdash; fifteen years of building things people rely on: a music blog <span class="fact">2MM people read monthly<sup>1</sup></span>, the rights infrastructure behind Dubset&rsquo;s $50M acquisition, and subscription APIs serving <span class="fact">millions of devices<sup>2</sup></span> at Amazon.</p>
+        <p>Now I lead product at <span class="fact">Raya<sup>3</sup></span> and build AI systems on the side &mdash; starting with my own problems, then other people&rsquo;s. Everything on this site runs daily.</p>
+      </div>
+      <p class="close-line">If something here is useful to you, I&rsquo;d love to hear about it.</p>
+      <div class="mock-contact">
+        <div class="cta">GET IN TOUCH <span class="arrow">&rarr;</span> ryan.wigley522@gmail.com</div>
+        <div class="socials">X &nbsp;&middot;&nbsp; GITHUB &nbsp;&middot;&nbsp; LINKEDIN &nbsp;&middot;&nbsp; EMAIL</div>
+      </div>
+    </div>
+    <div class="read">
+      <div class="row"><span class="k">leans on</span><span class="v">The dogfooding claim as identity. Headline doubles as the site&rsquo;s thesis and takes the marker swash cleanly.</span></div>
+      <div class="row"><span class="k">risk</span><span class="v gold">&ldquo;Ship&rdquo; is maker-speak — slightly colder than the inviting tone you asked for.</span></div>
+    </div>
+  </article>
+
+  <!-- ── DRAFT B ─────────────────────────────────────────────────── -->
+  <article class="variant">
+    <div class="variant-label"><span class="dot"></span>draft b · warmth first</div>
+    <div class="mock">
+      <nav class="mock-nav"><span>home</span><span>projects</span><span>tools</span><span class="active">about</span></nav>
+      <div class="mock-kicker">// about</div>
+      <h2>Hey, I&rsquo;m Ryan.</h2>
+      <div class="body">
+        <p>Product manager by trade, <span class="swash">builder</span> by default. Fifteen years of shipping &mdash; music media, rights tech acquired for $50M, Amazon&rsquo;s subscription APIs, now membership at <span class="fact">Raya<sup>3</sup></span>.</p>
+        <p>Outside work I build AI systems to solve my own problems first: the operating system that runs my day also helps friends run their families and businesses. Nothing here is theoretical &mdash; if it&rsquo;s on this site, I use it.</p>
+      </div>
+      <p class="close-line">Reach out &mdash; I&rsquo;m easy to find below.</p>
+      <div class="mock-contact">
+        <div class="cta">GET IN TOUCH <span class="arrow">&rarr;</span> ryan.wigley522@gmail.com</div>
+        <div class="socials">X &nbsp;&middot;&nbsp; GITHUB &nbsp;&middot;&nbsp; LINKEDIN &nbsp;&middot;&nbsp; EMAIL</div>
+      </div>
+    </div>
+    <div class="read">
+      <div class="row"><span class="k">leans on</span><span class="v">The plainest, most human open. &ldquo;PM by trade, builder by default&rdquo; carries the product-person identity in six words.</span></div>
+      <div class="row"><span class="k">risk</span><span class="v gold">&ldquo;Hey, I&rsquo;m Ryan&rdquo; spends the headline on a greeting — friendly, but claims nothing.</span></div>
+    </div>
+  </article>
+
+  <!-- ── DRAFT C ─────────────────────────────────────────────────── -->
+  <article class="variant">
+    <div class="variant-label"><span class="dot"></span>draft c · pattern first</div>
+    <div class="mock">
+      <nav class="mock-nav"><span>home</span><span>projects</span><span>tools</span><span class="active">about</span></nav>
+      <div class="mock-kicker">// about</div>
+      <h2>Product person. Systems <span class="swash">builder</span>.</h2>
+      <div class="body">
+        <p>The same pattern keeps repeating: I hit a problem in my own life, build a system to fix it, and it turns out other people have the same problem.</p>
+        <p>A music blog became <span class="fact">2MM readers<sup>1</sup></span>. A DJ-mix itch became rights infrastructure acquired for $50M. Lately, the AI operating system I built to run my own day is helping friends and companies run theirs. Day job: product at <span class="fact">Raya<sup>3</sup></span>.</p>
+      </div>
+      <p class="close-line">If any of this sounds useful, my inbox is open.</p>
+      <div class="mock-contact">
+        <div class="cta">GET IN TOUCH <span class="arrow">&rarr;</span> ryan.wigley522@gmail.com</div>
+        <div class="socials">X &nbsp;&middot;&nbsp; GITHUB &nbsp;&middot;&nbsp; LINKEDIN &nbsp;&middot;&nbsp; EMAIL</div>
+      </div>
+    </div>
+    <div class="read">
+      <div class="row"><span class="k">leans on</span><span class="v">The build-for-myself&rarr;others pattern told as a story, with the career arc as its proof. Closest to your ryOS answer.</span></div>
+      <div class="row"><span class="k">risk</span><span class="v gold">Longest of the three — the reader meets the pattern before they meet you.</span></div>
+    </div>
+  </article>
+
+</section>
+
+<section class="synthesis">
+  <div>
+    <h3>what&rsquo;s varying</h3>
+    <p>All three keep your structure — headline grab, a few sentences, contact and socials in reach — and all three carry the proof ethos (&ldquo;runs daily&rdquo; / &ldquo;I use it&rdquo;) and name you as a product person. What varies is the opening move: <strong>A</strong> leads with the proof claim, <strong>B</strong> leads with warmth and lets the identity line do the work, <strong>C</strong> leads with the pattern behind everything you&rsquo;ve built.</p>
+    <p>Pieces are mixable — e.g. B&rsquo;s identity line under A&rsquo;s headline, or C&rsquo;s pattern paragraph as the second paragraph of either.</p>
+  </div>
+  <div>
+    <h3>open fact rulings</h3>
+    <ul class="facts-list">
+      <li><span class="ref">1</span><span>BounceBug: Figma says &ldquo;a million daily visits&rdquo;, repo says 2MM monthly uniques. Which ships?</span></li>
+      <li><span class="ref">2</span><span>Amazon: &ldquo;billions of mobile customers&rdquo; (Figma) vs millions of devices (repo).</span></li>
+      <li><span class="ref">3</span><span>Raya title: Principal PM or Senior PM — or no title at all.</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>working exhibit · copy exploration · 2026-07-13</footer>
+
+</body>
+</html>

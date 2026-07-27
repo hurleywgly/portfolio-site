@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "/Users/RyanWigley/.nvm/versions/node/v23.11.0/bin/node",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "dev-3002",
+      "runtimeExecutable": "/Users/RyanWigley/.nvm/versions/node/v23.11.0/bin/node",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev", "-p", "3002"],
+      "port": 3002
+    }
+  ]
+}

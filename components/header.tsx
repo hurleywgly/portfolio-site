@@ -1,49 +1,52 @@
-import { Mail, Linkedin } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { FC } from 'react'
-import { ThemeAwareImage } from "@/components/ui/theme-aware-image"
-import { workExperience } from "@/lib/data"
+"use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { MobileNavBar } from "@/components/mobile-nav-bar"
+import { RwLogo } from "@/components/rw-logo"
+import { SiteNav } from "@/components/site-nav"
+import { ThemeSwitcher } from "@/components/theme-switcher"
+
+/**
+ * Shared page chrome. Exhibit routes overlap an invisible version of this
+ * same-height slot with their self-contained chrome, keeping the root layout
+ * footprint constant while routes stream in.
+ */
 export function Header() {
-  const experience = workExperience[0] // Current role (Raya)
+  const pathname = usePathname()
+  const exhibitRoute = pathname === "/" || pathname === "/m"
+  const exhibitVisibility = exhibitRoute
+    ? "invisible pointer-events-none"
+    : ""
 
   return (
-    <header className="py-8">
-      <div className="container max-w-4xl mx-auto px-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Image
-            src="/ryan-profile.jpg"
-            alt="Ryan Wigley"
-            width={62}
-            height={62}
-            className="rounded-full"
-            priority
-          />
-          <div className="flex-1">
-            <Link href="/" className="flex items-center gap-2">
-              <h1 className="text-2xl font-semibold">Ryan Wigley</h1>
-            </Link>
+    <>
+      <header
+        className={`sticky top-0 z-40 hidden border-b border-rule bg-page/90 backdrop-blur md:block ${exhibitVisibility}`}
+        aria-hidden={exhibitRoute || undefined}
+      >
+        <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-8 px-10">
+          <Link href="/" aria-label="Ryan Wigley — home">
+            <RwLogo className="text-[26px]" />
+          </Link>
+          <div className="flex items-center gap-8">
+            <SiteNav />
+            <ThemeSwitcher />
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="https://www.linkedin.com/in/ryanwigley/" className="text-muted-foreground hover:text-foreground">
-            <Linkedin className="h-5 w-5" />
-            <span className="sr-only">LinkedIn</span>
-          </Link>
-          <Link href="https://x.com/rywigs" className="text-muted-foreground hover:text-foreground">
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-            <span className="sr-only">X (Twitter)</span>
-          </Link>
-          <Link href="mailto:ryan.wigley522@gmail.com" className="text-muted-foreground hover:text-foreground">
-            <Mail className="h-5 w-5" />
-            <span className="sr-only">Email</span>
-          </Link>
-        </div>
+      </header>
+
+      <div
+        className={`flex h-[76px] items-center justify-between px-5 py-4 md:hidden ${exhibitVisibility}`}
+        aria-hidden={exhibitRoute || undefined}
+      >
+        <Link href="/" aria-label="Ryan Wigley — home">
+          <RwLogo className="text-[24px]" />
+        </Link>
+        <ThemeSwitcher />
       </div>
-    </header>
+
+      {!exhibitRoute && <MobileNavBar />}
+    </>
   )
 }
-
