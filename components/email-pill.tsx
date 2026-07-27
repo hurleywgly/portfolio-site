@@ -1,22 +1,22 @@
+import { aboutEmail } from "@/lib/about-data"
 import { cn } from "@/lib/utils"
 
-const EMAIL = "ryan.wigley522@gmail.com"
-
 /**
- * The GET IN TOUCH email pill: a forest/slate full-pill `mailto:` link with the
- * address in mono. Fills its parent box; font-size is inherited so the one
- * component serves both the desktop pill and the scaled-up mobile artboard pill.
+ * The GET IN TOUCH pill: a forest (light) / slate (dark) `mailto:` plate with
+ * the address in mono, r4 as drawn in the frames. Fills its parent box and
+ * inherits font-size, so the one component serves both the desktop pill
+ * (360×48, 14px) and the scaled-up mobile artboard pill (496×78, 28px).
  */
 export function EmailPill({ className }: { className?: string }) {
   return (
     <a
-      href={`mailto:${EMAIL}`}
+      href={`mailto:${aboutEmail}`}
       className={cn(
-        "flex h-full w-full items-center rounded-full bg-card px-[7%] font-mono text-[14px] tracking-[0.02em] text-on-card transition-colors hover:text-accent",
+        "flex h-full w-full items-center rounded-[4px] bg-card px-[7.5%] font-mono text-[14px] tracking-[0.02em] text-on-card transition-colors hover:text-accent dark:border dark:border-card-border",
         className,
       )}
     >
-      {EMAIL}
+      {aboutEmail}
     </a>
   )
 }

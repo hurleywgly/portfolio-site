@@ -32,7 +32,7 @@ export function SiteNav({ className }: { className?: string }) {
         const active = isCurrent(pathname, item)
         const inner = (
           <>
-            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon className="h-4 w-auto shrink-0" aria-hidden="true" />
             <span>{item.label}</span>
           </>
         )

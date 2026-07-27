@@ -25,7 +25,7 @@ export function MobileNavBar({ className }: { className?: string }) {
   return (
     <nav
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 border-t border-rule bg-page/90 pb-[env(safe-area-inset-bottom)] backdrop-blur",
+        "fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 border-t border-rule bg-page/90 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden",
         className,
       )}
       aria-label="Primary"
@@ -36,7 +36,7 @@ export function MobileNavBar({ className }: { className?: string }) {
         const inner = (
           <>
             <Icon
-              className={cn("h-[22px] w-[22px]", active && "text-accent")}
+              className={cn("h-[22px] w-auto", active && "text-accent")}
               aria-hidden="true"
             />
             <span

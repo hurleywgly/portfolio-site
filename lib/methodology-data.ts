@@ -1,6 +1,22 @@
 import type { LatticeMark } from "@/components/lattice"
 
 /**
+ * Page copy, verbatim from the Figma `page · methodology` frames (all four
+ * surfaces carry identical wording). Kept here so the page file stays free of
+ * JSX entity escaping.
+ */
+export const methodologyIntro =
+  "I made an operating system for AI that manages any model to work and think like I do. Mine keeps what matters on file, argues with itself from a few angles, and remembers what's important when it comes to solving Ryan's problems. It was built for me, by me, to run crucial parts of my every day."
+
+/** The paragraph that closes THE ARC, below the timeline (desktop only). */
+export const methodologyArcSummary =
+  "It has gone from a system that helped at home, to a work multiplier, to life admin for my family. They compound onto the same system because of one rare quality of my personal system: it knows me."
+
+/** The closing line above the "see how it runs →" link. */
+export const methodologyLocalCopies =
+  "I build on top of local copies that no cloud sync could break."
+
+/**
  * Methodology desktop diagram lattice — the visible architectural marks around
  * the ARC timeline and AT A GLANCE cards, traced 1:1 from the Figma frame
  * `page · methodology · desktop · light` (76:3, 1440-wide, content 80–1360).

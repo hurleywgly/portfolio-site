@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import type { CSSProperties, ReactNode } from "react"
 import {
@@ -9,9 +10,9 @@ import {
 } from "@/components/arsenal-chips"
 import { CrewPolaroid } from "@/components/crew-polaroid"
 import { ExhibitStage } from "@/components/exhibit-stage"
+import { HomeMobileMock } from "@/components/home-mobile-mock"
 import { Lattice } from "@/components/lattice"
 import { MethodologyCard } from "@/components/methodology-card"
-import { MobileNavBar } from "@/components/mobile-nav-bar"
 import { ProjectTile, homeMotifs } from "@/components/project-tile"
 import { RwLogo } from "@/components/rw-logo"
 import { ShelfDiorama } from "@/components/shelf-diorama"
@@ -20,6 +21,10 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 import { WaveformBanner } from "@/components/waveform-banner"
 import { WritingTile } from "@/components/writing-tile"
 import { homeChips, homeLatticeDesktop, homeTiles } from "@/lib/home-data"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+}
 
 const glyphs: Record<string, ReactNode> = {
   capsule: <CapsuleGlyph />,
@@ -95,12 +100,12 @@ export default function Home() {
           </Box>
 
           {/* hero */}
-          <Box x={80} y={132} w={470} z={10}>
+          <Box x={80} y={138} w={440} z={10}>
             <h1 className="font-display text-[40px] font-black leading-[1.06] tracking-[-0.015em] text-ink">
               Ryan is building apps &amp; AI systems
             </h1>
           </Box>
-          <Box x={80} y={244} w={452} z={10}>
+          <Box x={80} y={248} w={447} z={10}>
             <p className="font-body text-[17px] leading-[1.5] text-muted">
               The website is my canvas and kiosk, I hope you like it.
             </p>
@@ -169,99 +174,10 @@ export default function Home() {
       </div>
 
       {/* ============================== MOBILE ============================= */}
+      {/* Same mock-scale render as /m (not a reflow) — see components/home-mobile-mock.tsx */}
       <div className="md:hidden">
-        <div className="flex items-center justify-between px-6 pb-2 pt-5">
-          <Link href="/" aria-label="Ryan Wigley — home">
-            <RwLogo className="text-[26px]" />
-          </Link>
-          <ThemeSwitcher />
-        </div>
-
-        <div className="space-y-11 px-6 pb-28 pt-4">
-          {/* hero */}
-          <section className="space-y-4">
-            <h1 className="font-display text-[30px] font-black leading-[1.08] tracking-[-0.02em] text-ink">
-              Ryan is building apps &amp; AI systems
-            </h1>
-            <p className="max-w-[22rem] font-body text-[16px] leading-[1.5] text-muted">
-              The website is my canvas and kiosk, I hope you like it.
-            </p>
-          </section>
-
-          {/* flagship */}
-          <div className="h-[128px]">
-            <WaveformBanner />
-          </div>
-
-          {/* work grid */}
-          <div className="grid grid-cols-2 gap-3">
-            {homeTiles.map((tile) => (
-              <div key={tile.slug} className="aspect-[190/172]">
-                <ProjectTile
-                  title={tileTitle(tile.title)}
-                  href={tile.href}
-                  motif={homeMotifs[tile.slug]}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* lattice accent */}
-          <LatticeRule />
-
-          {/* personality */}
-          <div className="mx-auto max-w-[20rem]">
-            <ShelfDiorama />
-          </div>
-
-          {/* methodology */}
-          <div className="mx-auto aspect-[205/299] w-[70%] max-w-[280px]">
-            <MethodologyCard />
-          </div>
-
-          {/* arsenal */}
-          <section className="space-y-4">
-            <div>
-              <h2 className="font-display text-[24px] font-black leading-none tracking-[-0.02em] text-ink">
-                Tools
-              </h2>
-              <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                The Arsenal
-              </p>
-            </div>
-            <ArsenalChips chips={chips} className="gap-3" />
-            <Link
-              href="/tools"
-              className="inline-block font-mono text-[13px] lowercase text-card transition-colors hover:text-accent dark:text-accent"
-            >
-              browse all my skills&nbsp;&nbsp;→
-            </Link>
-          </section>
-
-          {/* writing */}
-          <div className="h-[188px]">
-            <WritingTile />
-          </div>
-
-          {/* crew */}
-          <div className="mx-auto max-w-[15rem]">
-            <CrewPolaroid />
-          </div>
-        </div>
-
-        <MobileNavBar />
+        <HomeMobileMock />
       </div>
     </main>
-  )
-}
-
-/** A single inline lattice separator for the mobile column's open space. */
-function LatticeRule() {
-  return (
-    <div className="flex items-center gap-3" aria-hidden="true">
-      <span className="h-[7px] w-[7px] rounded-full bg-diagram dark:bg-lattice-mid" />
-      <span className="h-px flex-1 bg-rule dark:bg-lattice-mid" />
-      <span className="h-[10px] w-[10px] border-[1.5px] border-diagram dark:border-lattice-mid" />
-    </div>
   )
 }

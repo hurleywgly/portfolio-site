@@ -4,14 +4,12 @@ interface PagePlaceholderProps {
   slug: "projects" | "tools" | "about" | "methodology"
   title: string
   description: string
-  grid: string
 }
 
 export function PagePlaceholder({
   slug,
   title,
   description,
-  grid,
 }: PagePlaceholderProps) {
   return (
     <div className="flex min-h-[calc(100dvh-5rem)] flex-col md:min-h-[calc(100dvh-6rem)]">
@@ -37,7 +35,7 @@ export function PagePlaceholder({
           </div>
         </section>
       </main>
-      <Footer grid={grid} locationOnly={slug === "about"} />
+      <Footer locationOnly={slug === "about"} />
     </div>
   )
 }

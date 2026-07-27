@@ -67,10 +67,10 @@ export function ArcTimeline() {
         <span className={stepLabel}>04 · ONE SYSTEM</span>
       </At>
 
-      {/* the connective aside, right-aligned against the chip */}
-      <div className="absolute right-[150px] top-[34px] text-right">
+      {/* the connective aside — runs into the chip's left edge (frame x 940) */}
+      <At x={860} y={34}>
         <span className={caption}>each lands as an upgrade, not a repair</span>
-      </div>
+      </At>
 
       {/* KNOWS chip — the rare quality anchoring the right end */}
       <div className="absolute left-[1130px] top-[38px] h-[64px] w-[120px] rounded-[4px] border border-card-border bg-card">

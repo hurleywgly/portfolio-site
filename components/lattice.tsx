@@ -19,7 +19,15 @@ export type LatticeMark =
       faint?: boolean
     }
   | { type: "square"; x: number; y: number; size: number; faint?: boolean }
-  | { type: "dot"; x: number; y: number; gold?: boolean; faint?: boolean }
+  | {
+      type: "dot"
+      x: number
+      y: number
+      /** Junction-dot diameter; 7 on desktop frames, 9 on the mobile artboards. */
+      size?: number
+      gold?: boolean
+      faint?: boolean
+    }
 
 const cornerBorders: Record<string, string> = {
   tl: "border-l border-t",
@@ -91,7 +99,12 @@ export function Lattice({
               m.gold ? "bg-accent" : "bg-diagram dark:bg-lattice-mid",
               m.faint && "opacity-60",
             )}
-            style={{ left: m.x, top: m.y, width: 7, height: 7 }}
+            style={{
+              left: m.x,
+              top: m.y,
+              width: m.size ?? 7,
+              height: m.size ?? 7,
+            }}
           />
         )
       })}

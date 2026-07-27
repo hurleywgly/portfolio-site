@@ -1,0 +1,45 @@
+# Ryan Wigley — ryanwigley.com
+
+> Personal site of Ryan Wigley, an AI-systems builder in Seattle. The site is a
+> "Working Exhibit": live systems, tools, and methods pinned to a drafting-table
+> canvas. Fifteen years turning complex inputs into reliable outputs — a blog
+> read by millions, music-rights tech acquired for $50M (Dubset), APIs at
+> billion scale (Amazon), now AI systems that run businesses and premium apps.
+
+Currently: Principal PM at Raya. Side project: Waveform (wavefrm.io), a
+browser-based podcast editor. Based in Seattle, WA.
+
+## Pages
+
+- [Home](https://ryanwigley.com/): the exhibit floor — flagship Waveform banner,
+  project tiles (Stumble AI, Rain or Rainier?, Acquired Bookshelf, RyOS Starter
+  Kit), methodology book, writing tile, the shelf diorama and family crew.
+- [Projects](https://ryanwigley.com/projects): the built things. waveform
+  (flagship, pre-beta), stumble ai (live), acquired bookshelf (live), rain or
+  rainier (live), ryos capsule (install), my skills (repo).
+- [Tools](https://ryanwigley.com/tools): the Skill Playbook — hand-built agent
+  skills installable via `npx skills add hurleywgly/skills`. Highlights:
+  /capsule (agent-ready knowledge transfer), /research, /pitch-me, /daily-brief,
+  /ink, /design, /projector, /mine.
+- [About](https://ryanwigley.com/about): who Ryan is, how to reach him
+  (ryan.wigley522@gmail.com; consulting via productonics.com).
+- [Methodology](https://ryanwigley.com/methodology): the operating system —
+  "Models change, but the system holds." One personal system spanning home,
+  work, and family; it knows him, models plug into it.
+- [Writing](https://blog.ryanwigley.com): the blog (external).
+
+## Projects (one-liners)
+
+- Waveform — browser-native podcast editor; the missing middle between
+  Audacity's complexity and Descript's opinions. wavefrm.io
+- Stumble AI — discover cool AI apps; 50k+ indexed.
+- Acquired Bookshelf — every book mentioned on the Acquired podcast,
+  auto-catalogued.
+- Rain or Rainier? — Seattle's daily question, answered by weather telemetry.
+- RyOS Capsule — build-your-own agent OS starter kit.
+
+## Elsewhere
+
+- GitHub: https://github.com/hurleywgly
+- X: https://x.com/rywigs
+- Blog: https://blog.ryanwigley.com

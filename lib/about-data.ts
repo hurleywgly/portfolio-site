@@ -14,6 +14,30 @@ export const aboutBio: string[] = [
 ]
 
 /**
+ * The `social-pill-bar` links — labels exactly as the Figma frames spell them
+ * (mono, no icons: three of the four about frames carry labels only).
+ *
+ * Handle provenance: `x` and `github` are corroborated by the site's own
+ * Person JSON-LD `sameAs` block in `app/layout.tsx`; `linkedin` appears only in
+ * the projects/methodology page footers — in-repo, but not corroborated by any
+ * canonical metadata, so treat it as UNVERIFIED until Ryan confirms.
+ */
+export type AboutSocial = { label: string; href: string }
+
+export const aboutSocials: AboutSocial[] = [
+  { label: "X", href: "https://x.com/rywigs" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rywigs/" },
+  { label: "GitHub", href: "https://github.com/hurleywgly" },
+]
+
+/** GET IN TOUCH cluster — the address in the pill, plus the consulting line. */
+export const aboutEmail = "ryan.wigley522@gmail.com"
+export const aboutConsulting = {
+  label: "productonics.com",
+  href: "https://productonics.com",
+}
+
+/**
  * Desktop lattice — traced 1:1 from the `blueprint-grid` layer of
  * `page · about · desktop · light` (frame 1440×940), then shifted up by the
  * 124px chrome crop so the exhibit canvas sits flush under the global header.
@@ -36,14 +60,17 @@ export const aboutLatticeDesktop: LatticeMark[] = [
 ]
 
 /**
- * Mobile lattice — the real grid-lattice layer of
- * `page · about · mobile · light` (artboard 1054-wide), extracted 1:1 and
- * shifted up by the 250px chrome crop. Two thin rules + two junction dots;
- * nested art groups (headshot, crew) excluded.
+ * Mobile lattice — the real lattice layer of `page · about · mobile · light`
+ * (artboard 1054×2300), extracted 1:1 and shifted up by the 250px chrome crop.
+ * Two thin rules + two 9px junction dots; the art groups (headshot,
+ * framed_portrait) and the frame's own `mobile_buttons` bar are excluded — the
+ * real bar is the shared fixed MobileNavBar.
  */
 export const aboutLatticeMobile: LatticeMark[] = [
+  // short vertical rule in the gap between the headshot and the crew polaroid
   { type: "rule", x: 560, y: 850, w: 2, h: 120 },
-  { type: "dot", x: 556, y: 846 },
+  { type: "dot", x: 556, y: 846, size: 9 },
+  // full-width baseline above the social pill bar, dot on its right terminus
   { type: "rule", x: 80, y: 1370, w: 894, h: 2 },
-  { type: "dot", x: 966, y: 1366 },
+  { type: "dot", x: 966, y: 1366, size: 9 },
 ]
