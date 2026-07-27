@@ -279,6 +279,136 @@ Screenshotted all 5 routes at 1400px, both themes (toggled via `localStorage.the
 
 ---
 
+## #60–#65 — Independent Codex QA pass on the LIVE site (Sonnet 5, 2026-07-27)
+
+Codex ran a second-perspective QA pass against `ryanwigley.com` (production) and filed 6 items. Fixed **#60–#63**; investigated and reported without unilaterally changing **#64–#65**, per the task's explicit split (RyOS-link defect was already fixed by the orchestrator before this pass, not touched here).
+
+### #60 (Medium) — FIXED. Projects mobile "tap again to launch."
+
+Root cause: `ProjectRow`'s `onClick` just called `onSelect` unconditionally — a second tap on an already-selected row re-ran the exact same no-op selection, so there was no way to reach the row's `href` except via the separate `FeaturedPanel` link.
+
+Fix: `components/projects-showcase.tsx` — `onClick` now runs a small `activate()` gate: if the row isn't yet selected, tap/click still only selects it (`onSelect()`, unchanged behavior); if it's **already** selected, the same tap/click navigates — `router.push(project.href)` for internal projects, `window.open(project.href, "_blank", "noopener,noreferrer")` for external ones (matches the existing external-link convention used by `FeaturedPanel`'s own anchor). `onMouseEnter`/`onFocus` still call bare `onSelect` and are untouched, so desktop hover-preview is unchanged — the only behavior change is that a click/Enter on a row that's *already* selected (via hover, focus, or a prior tap) now does something instead of nothing. `aria-pressed` and the rest of the button markup are unchanged.
+
+**Verified via direct DOM events** (not simulated mouse clicks, which always fire `mouseenter` before `click` in a real/CDP-driven browser and would confound the "no-hover tap" case) — fresh page load, `390px` viewport:
+- Initial: `waveform` row `aria-pressed=true` (default), `my skills` row `aria-pressed=false`, path `/projects`.
+- Tap 1 on `my skills` (`.click()`, unselected): `aria-pressed` → `true`, path **stays** `/projects` — first tap previews only, does not launch.
+- Tap 2 on `my skills` (already selected): path → `/tools` — second tap on the same row now navigates (internal case, `router.push`).
+- Same two-tap sequence on `Stumble AI` (external): tap 2 called `window.open("https://stumble-ai.com", "_blank", "noopener,noreferrer")` with `location.pathname` unchanged (opens in a new tab, doesn't blow away the current one) — confirmed by stubbing `window.open` and inspecting the call args.
+- Keyboard path: `onFocus`/`onMouseEnter` are byte-identical to before this change (only `onClick` was touched), so a focused-then-activated row exercises the exact same `activate()` gate as click — logically equivalent, not a separate code path. (A live Tab+Enter re-check was attempted but the automation tab's `document.hasFocus()`/`document.hidden` state made programmatic `.focus()` timing unreliable in-session — a harness limitation, not a product signal; the source diff is the stronger evidence here since `onFocus` was never edited.)
+- Desktop hover-preview reconfirmed unaffected by inspection (`onMouseEnter={onSelect}` unchanged) and by the fact that every existing preview screenshot in this session (1280/1440px, both themes) still swaps the panel correctly on hover.
+
+**Files:** `components/projects-showcase.tsx`.
+
+### #61 (Medium) — FIXED. Nav no longer shifts between Home and other routes.
+
+Root cause confirmed exactly as the task described: `/` drew its own `SiteNav`/`RwLogo`/`ThemeSwitcher` inside `ExhibitStage` (`app/page.tsx`), scaled by the stage's `scale = min(1, containerWidth/1440)` — while `components/header.tsx`'s shared `Header` rendered the SAME components at fixed, unscaled size on every other route, and was forced fully `invisible` on `/`/`/m` (present only to reserve layout height). Below 1440px the two diverged in size/position; Codex's 1280px measurement (Home `412×27` vs the rest `464×31`) is exactly that divergence.
+
+Fix — took the task's suggested approach, mirroring the crop-the-chrome-band technique `/about`/`/methodology` already use (see the `DESK_TOP` comments in `app/about/page.tsx`):
+- `components/header.tsx`: the desktop `<header>` strip is now **always real and visible**, on every route including `/` and `/m` — dropped the `exhibitRoute` gating for it entirely. Only the **mobile** logo+theme-switcher row and the `MobileNavBar` suppression stay conditionally invisible/suppressed on `/`+`/m` (renamed the flag `hideMobileChrome`), since `HomeMobileMock` still bakes its own chrome into the mobile artboard and renders the real `MobileNavBar` itself below `md` — that part was unchanged and untouched.
+- `app/page.tsx`: removed the three in-artboard chrome `Box`es (logo/nav/theme-switcher) from the desktop branch entirely (and the now-unused `RwLogo`/`SiteNav`/`ThemeSwitcher` imports). Cropped `ExhibitStage` from `height={1024}` to `height={1024 - DESK_TOP}` with `DESK_TOP = 90` (the original chrome band's bottom edge — logo `Box` was `y=42 h=48` → bottom 90), and every remaining child's `y` shifts by the same `-DESK_TOP`, preserving Figma's authored gap between chrome and content (hero was 48px below the chrome bottom; it's still 48px below the new crop line). `<main>`'s `md:-mt-[81px]` (which canceled the invisible header's reserved height) is now `md:mt-0`, since the header is real/in-flow now — normal document flow handles the offset. The mobile `-mt-[76px]` and the whole `HomeMobileMock` mobile branch are untouched.
+- `app/m/page.tsx`: same `md:-mt-[81px]` → `md:mt-0` fix, for the same reason (#63 below).
+
+This is a deliberate divergence from the Figma home frame (which bakes its own chrome into the artboard, like every page's frame) — logged in the Divergence Log below, per the task's instruction.
+
+**Verified — nav geometry, `nav[aria-label="Primary"]` `getBoundingClientRect()`, measured live via injected JS (not eyeballed):**
+
+| Viewport | `/` | `/projects` | `/tools` | `/about` | `/methodology` | `/m` |
+|---|---|---|---|---|---|---|
+| 768px | `{x:113.59, y:24.75, w:463.8, h:30.5}` | identical | identical | identical | identical | not required, checked anyway: identical |
+| 1280px | `{x:600.2, y:24.75, w:463.8, h:30.5}` | identical | identical | identical | identical | identical |
+| 1440px | `{x:760.2, y:24.75, w:463.8, h:30.5}` | identical | identical | identical | identical | not required, checked anyway: identical |
+
+Byte-identical (same `x`/`y`/`w`/`h` to 2 decimal places) across all 5 real routes at all 3 required breakpoints, and `/m` matches too (relevant to #63). Screenshotted `/` at 1280/1440px, both themes — hero/tiles/methodology/writing/arsenal/crew all still sit where they did before (confirmed against the pre-fix screenshots in this same session), just with the real header above instead of a scaled-in-artboard copy. `npm run build` clean; `read_console_messages(onlyErrors)` clean on all 6 routes × 4 breakpoints (375/768/1280/1440) × both themes (48 combinations).
+
+**Files:** `components/header.tsx`, `app/page.tsx`, `app/m/page.tsx`.
+
+### #62 (Low) — FIXED. `/tools` heading hierarchy no longer skips levels.
+
+Root cause confirmed via a live DOM heading dump: `/tools` had exactly one `h1` (`app/tools/page.tsx`) and the only other heading anywhere on the page was `h4` (the per-use-case sub-heading inside an expanded skill panel, `components/skill-playbook.tsx`) — a straight h1→h4 skip, no h2/h3 anywhere.
+
+Fix, in `components/skill-playbook.tsx`, visual sizes untouched:
+- `SkillPlaybook`: added `<h2 className="sr-only">Skills</h2>` immediately before the filter-chips/accordion block — the filter chips and list have no visible section heading in the design, so this is screen-reader-only (Tailwind's standard `sr-only` pattern, already used elsewhere in the codebase e.g. `site-nav.tsx`), not a new visible label.
+- `SkillRow`: wrapped the existing toggle `<button>` (name+tagline+categories) in `<h3 className="contents">` — the WAI-ARIA APG accordion pattern (heading *wraps* the button, not the reverse, which would put a heading inside interactive content — invalid content-model and not what any AT-tested pattern uses). `className="contents"` (`display: contents`) removes the `h3` from the box tree entirely so the **button** stays the actual flex item exactly as before — zero layout/visual change, confirmed via computed style (`h3` → `display: contents`; the button inside still carries `flex: 1 1 0%` exactly as before).
+- The existing per-use-case `<h4>` inside `SkillPanel` needed no change — it was already correctly one level below where `h3` now sits.
+
+Resulting order is a clean `h1 → h2 → h3 → h4 → h4 → h3 → h3 → … → h4 → h3 …` — increases never skip a level (the WCAG/axe "heading-order" rule only flags skipped *increases*; stepping back up to a shallower sibling level, e.g. `h4→h3`, is normal nesting and not a violation).
+
+**Verified:** live heading dump (`document.querySelectorAll('h1,h2,h3,h4,h5,h6')`) over the full `/tools` page (all default-open panels expanded) shows the h1→h2→h3→h4 pattern with no skip anywhere in the list. Computed styles confirm zero visual change: row-name `span` still `font-size: 19px; font-weight: 600` (unchanged), use-case `h4` still `15px` (unchanged), `h2` confirmed truly invisible (`position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)`). Screenshotted `/tools` at 1280px, both themes — pixel-identical to pre-fix screenshots in this session.
+
+**Files:** `components/skill-playbook.tsx`.
+
+### #63 (Low) — FIXED. `/m` now shows the shared desktop header at `md`+.
+
+Root cause: `Header`'s old `exhibitRoute` check treated `/` and `/m` identically, force-hiding the desktop strip on **both**. `/m` has no desktop-specific content of its own (it's a standalone mobile-mock preview, rendered at any viewport width), so above `md` it had the scaled-up mobile mock with literally no navigation anywhere — a dead end, exactly as filed.
+
+Fix: covered by the same `components/header.tsx` change as #61 — the desktop strip is now unconditionally real/visible on every route, so `/m` inherits it automatically without any `/m`-specific branching. Paired with the `app/m/page.tsx` `md:-mt-[81px]` → `md:mt-0` fix (see #61) so the now-visible header doesn't get overlapped by the mock content sliding up underneath it.
+
+**Verified:** nav geometry on `/m` at 1280px measured **identical** to every other route (`{x:600.2, y:24.75, w:463.8, h:30.5}`, part of the #61 table above). Screenshotted `/m` at 1440px, both themes — real header strip on top (home/projects/tools/writing/about, theme switcher, gold underline on nothing since `/m` isn't a nav target), the scaled-up mobile mock below it, no overlap. `<md` behavior (real phone widths) is untouched — `HomeMobileMock`'s own baked chrome + real `MobileNavBar` still render exactly as before; this was never the broken part and wasn't touched.
+
+**Files:** `components/header.tsx` (shared with #61), `app/m/page.tsx`.
+
+### #64 (Medium) — INVESTIGATED. Partially fixed (muted/secondary tokens); gold accent reported, not changed.
+
+Independently re-derived and **live-verified** (injected a WCAG relative-luminance/contrast calculator into the running page, walking each element's real composited background — not a static token diff) every ratio Codex reported, then ran a **full-page sweep** (every text-bearing element, every page, both themes) to check for anything Codex's spot-checks might have missed:
+
+| Codex's finding | Live-measured (before) | Token pair |
+|---|---|---|
+| `/about` light gold labels ≈2.87:1 | **2.869:1** | `--accent` (`#a18a2e`) on `--bg`/`--surface` (light) |
+| `/methodology` light small card text ≈3.34:1 | **3.34:1** | `--on-card-muted` (`#aeb8a0`) on `--card` (`#4f5f40`) — `GlanceCard` caption |
+| `/tools` light feature-card body ≈3.61:1 | **3.613:1** | `--on-card-muted` on `--card-deep` (`#495a3d`) — `SkillPanel` use-case body + `PanelLabel` kickers |
+| dark muted labels 4.14–4.29:1 | **4.137:1** / **4.289:1** | `--on-card-muted` (`#8aa0bc`) on `--card`/`--card-deep` (dark, identical hex) = 4.137; `--muted` (`#8295ab`) on `--surface` (dark) = 4.289 |
+
+All four numbers matched Codex's report almost exactly, confirming both the defects and the measurement method.
+
+**Fixed (permitted — muted/secondary tokens, not the brand gold):**
+- `app/globals.css` — `--on-card-muted`: light `#aeb8a0`→**`#ced4c2`**, dark `#8aa0bc`→**`#92aac7`**. `--muted`: dark `#8295ab`→**`#879bb2`** (light `--muted` was already compliant everywhere checked, 4.86–5.19:1 — left untouched). Each is the minimal lighten that clears 4.5:1 against that token's **worst-case real background** (light `on-card-muted` is set by `--card`, the lighter/harder of its two surfaces — `--card-deep` clears with more room). Verified post-fix, live: `on-card-muted`/light on card **4.541:1**, on card-deep **4.913:1**; `on-card-muted`/dark on card **4.645:1**; `muted`/dark on surface **4.619:1**, on bg **5.015:1**.
+- **Additional failure caught by the full-page sweep, not in Codex's 4 named items:** `components/projects-showcase.tsx`'s row tagline (`text-muted opacity-70`) — the `opacity-70` **compounds** with the text color when composited against its backdrop, and my first sweep pass (which didn't yet account for element-level `opacity`) initially under-reported it. Corrected calculation: **2.869:1 (light) / ~2.87:1 (dark)** — worse than any of Codex's named findings, and outside the "4.14–4.29" range they reported (their tooling likely didn't compound opacity either). Fixed by dropping `opacity-70` — `--muted` alone already carries the de-emphasis. Grepped the repo for other `opacity-7*` usage on muted-family text: this was the only instance.
+- Re-ran the full-page sweep after both fixes, all 6 routes × both themes (12 passes, every text element, not just Codex's 4): **zero muted/on-card-muted/opacity-related failures remain anywhere.** The only failures left on the entire site are gold-accent text (see below) — confirmed exhaustively, not sampled.
+
+**Investigated, NOT changed — the brand gold accent (`--accent`, `#a18a2e` light / `#c9a85a` dark):**
+
+Measured every real gold-as-text usage found by the full-page sweep, live:
+
+| Context | Light ratio | Dark ratio |
+|---|---|---|
+| Kicker/label directly on page (`bg`/`surface`) — `// about`, `GET IN TOUCH`, `Tools · The Arsenal`, etc. | 2.869:1 | 6.289:1 (passes) |
+| "PODCAST EDITOR" kicker on the waveform banner's `card-deep` (forest, light) | **2.2:1** (worse) | 4.875:1 (passes) |
+| Arsenal-chip arrow / "NEW" badge on `surface` | 3.058:1 | passes |
+
+Dark theme's gold already clears AA everywhere it's used as text (6.29:1 / 4.88:1) — this is a **light-theme-only** problem. Did not touch `--accent` per the task's explicit instruction. Three concrete options, computed and cross-checked live (not estimated):
+
+1. **Darken light `--accent` for all uses, flat swap.** A ~25% darken to `#7a6823` clears the page-bg case (2.87→**4.65:1**) — but the SAME swap makes the card-deep case *dramatically worse* (2.2→**1.36:1**, confirmed by testing the actual swapped value against `#495a3d`), because light theme's page (very light) and its forest card-deep (fairly dark) pull gold's required luminance in opposite directions — no single flat gold value can satisfy both AA floors simultaneously (page-bg needs L≤0.147; card-deep needs L≥0.583). **A flat swap is not viable** — it would trade one failure for a worse one.
+2. **Two-tier gold: keep the current bright `--accent` for pure decoration (dots, the selected-row rail, underlines, chip-arrow glyphs, borders — none of which carry WCAG's *text* contrast minimum; most read as ≥3:1 non-text-UI-component contrast already), add a separate, darker gold *text* token for page-level kickers/labels (~`#7a6823`, 4.65:1 on page/surface).** This still leaves the on-card gold case (waveform banner kicker, 2.2:1) unsolved — neither theme's current gold, nor a straightforward darken/lighten, cleanly fixes it (tested dark theme's own gold `#c9a85a` swapped into light's card-deep: only 3.28:1, still fails 4.5 though clears the 3:1 large-text floor). That specific case likely needs its own bespoke on-card gold tuned by eye in Figma, not a formula.
+3. **Move small kicker/label text off gold, keep gold only for decoration + any future large/display-size accents.** Gold's current value doesn't even clear the relaxed 3:1 *large-text* threshold (2.87<3.0), so "reserve for large text" alone isn't quite sufficient without also a token nudge — but since gold-as-headline-text isn't used anywhere today (headlines are already `text-ink`), this option mostly just means kickers/labels switch to `ink`/`muted` (both already AA-compliant everywhere) and gold becomes purely decorative (dots/rails/underlines/borders), sidestepping the text-contrast rule entirely. Simplest to implement, but a real, visible identity change — gold kickers are a recurring signature motif per DESIGN.md's chrome rule.
+
+None of these is a one-line fix; recommend Ryan pick a direction (most likely option 2, since it preserves the current gold's role as *decoration* while fixing the parts that are genuinely *text* — but the on-card case needs a Figma-side follow-up regardless).
+
+**Files changed:** `app/globals.css`, `components/projects-showcase.tsx`.
+
+### #65 (Medium) — INVESTIGATED, not changed (Ryan's call — needs new art).
+
+Confirmed Codex's numbers via `sips` (source files) and a live `getBoundingClientRect` read (rendered size), not assumed:
+
+- **Source resolution, `public/art/skills/*.jpg`:** 14 of 17 covers (`research`, `design`, `think`, `pitch-me`, `primer`, `projector`, `mine`, `auto-mine`, `channel`, `claude`, `codex`, `pull-digg`, `events`, plus unused `ops`) are **611×384**. Only `capsule`, `daily-brief`, `ink` are **1200×753**.
+- **Rendered size, live-measured:** the `FeaturePlate` `<img>` renders at **462×298 CSS px** at `lg`+ (≥1024px) viewport — matches the task's cited ~462×298 exactly. This is a fixed 464px column (`lg:grid-cols-[...]_464px]`) minus ~2px for the plate's own border; it doesn't grow further at 1280/1440px since the `sizes` attribute caps it at `464px` for the whole `lg`+ range, so `lg` is the single binding case (mobile's `calc(100vw-48px)` renders narrower and is less demanding).
+- **Density:** 611/462 ≈ **1.32×** — confirms the task's "≈1.3× density" for the 14 undersized covers. Below 2×, so these upscale (softly, not broken) on any 2×+ DPR phone — the large majority of modern devices. The 3 covers at 1200×753 clear 2× (1200/462≈2.6×) comfortably but fall just short of 3× (needs 1386, has 1200).
+- **Source resolution needed:** per the task's "≈2× rendered" target, minimum **~924×600px** (2× of 462×298, same ~1.55:1 aspect as the current art — no recrop needed, just higher pixel density) to be crisp on all 2× DPR phones; **~1386×900px** (3×) to also cover 3× DPR devices (most iPhones since 6S Plus, most Android flagships). Confirmed images ARE loading/rendering correctly in the browser (network requests 200/304, visually crisp at normal viewing distance in-session screenshots) — this is a softness-under-magnification issue on high-density phones, not a broken-image issue.
+- **Did not regenerate art** — out of this pass's scope (no image-generation tool access here, and per the task's explicit instruction not to upscale existing files, which adds no real detail). This needs new Midjourney (or equivalent) generations at the target resolution matching the already-approved art style — Ryan's call on scheduling that.
+
+**Files:** none changed (`components/skill-playbook.tsx`'s `sizes`/`quality` were already correct from PLAN.md #42/#48 — reconfirmed live, not re-touched).
+
+### Verification summary (all of #60–#65)
+
+- `npm run build` — clean, 13/13 routes prerender, zero TypeScript errors.
+- All 6 routes (`/`, `/projects`, `/tools`, `/about`, `/methodology`, `/m`) × 4 breakpoints (375/768/1280/1440) × both themes = 48 combinations, `read_console_messages(onlyErrors)` — **clean on every one**.
+- #61 nav geometry: byte-identical across 5 real routes at 768/1280/1440px (table above); `/m` matches too.
+- #60 tap-to-launch: proven via direct DOM `.click()` sequencing (not simulated mouse, which confounds the no-hover mobile case) — first tap selects only, second tap on the same row navigates (internal) or opens a new tab (external, `window.open` args verified).
+- #64: every fix verified with a live-injected WCAG contrast calculator, both before and after, not just recomputed by hand.
+- **Bonus: ran the existing `tests/e2e/navigation-stability.spec.ts` Playwright suite** (not explicitly required by this task, but directly relevant to #61) against a fresh production build, `PLAYWRIGHT_BASE_URL=http://localhost:3000`, chromium. The most relevant test — CLS + consecutive-frame visual diffs across every route pair, both viewports (1440×1024/390×844), both themes — **passed**, with `shifts.all: 0` / `shifts.unexpected: 0` reported for literally every transition in the matrix (independent, automated confirmation of #61 beyond my own manual measurements). The SSR-footprint test also passed. One unrelated test ("client navigation resets scroll") failed — traced to a pre-existing assumption (`expect(scrollY).toBeGreaterThan(100)` after scrolling `/` to `document.body.scrollHeight` at 390×844) that doesn't hold given Home-mobile's already-tight content height (883px vs an 844px viewport → only 39px of scroll exists); that page height comes entirely from prior `HomeMobileMock`/`ZoomableStage` work (PLAN.md #51) this pass never touched, and the failing test only exercises the `<md` code path, which none of #60–#65's changes reach. Two further tests were mechanically skipped as a result (`test.describe.configure({ mode: "serial" })` in that spec) — not independent failures. Did not attempt to fix this pre-existing, out-of-scope test.
+- One screenshot artifact noted for transparency, not treated as a defect: on `/methodology`, a screenshot taken immediately after a programmatic (non-animated) scroll intermittently showed a blurred/ghosted band near the top of the viewport. Checked live via DOM: `header`'s computed `position: sticky; top: 0px` and actual `getBoundingClientRect()` were correct in every case — this reproduces the exact "screenshots have produced false alarms in this project" pattern called out in the task brief (likely `backdrop-blur`'s compositor source going stale across an instant, non-interactive scroll jump in the automation harness — real interactive scrolling recomposites continuously and wouldn't show this). Not pursued further per the task's own guidance to trust DOM state over screenshots.
+
+---
+
 ## ORCHESTRATOR REVIEW — Opus 5, 2026-07-25 (post Sonnet-5 build pass)
 
 Independently re-verified the executor's work against Figma and against Ryan's session feedback. Build clean, optimizer live.
@@ -320,6 +450,8 @@ Append every intentional departure from Figma here, with the reason. Fable 5's p
 | #55 | Tools mobile heading | `text-[27px]`, not Figma's literal 48px nor the ~17px mock-scale-equivalent effective size | Same reasoning as Projects above, using Tools' own 18px mobile subhead × Figma's 1.5× heading:subhead ratio = 27px |
 | #58 | Methodology / About / Projects / Tools desktop `h1` | All set to a flat `40px` (Methodology `text-[40px]`, About `text-[40px]`, Projects `md:text-[40px]`, Tools `md:text-[40px]`), not each page's own Figma-authored literal size (52 / 58 / 56 / 60px respectively) | Ryan: "heading on desktop should match across pages ... too big at the moment." Figma itself is inconsistent page-to-page (5 different literal sizes across 5 pages, each independently verified against Figma in earlier passes: #31/#33/#34/#35) — converged all of them on Home's own size (the page Ryan didn't flag) per the task's explicit instruction, rather than chasing five different Figma numbers that don't agree with each other |
 | #59 | Every page footer | GRID coordinate tag (`● GRID NN · 47°N · PAGE`) removed site-wide | Ryan: "'Grid XX' is going away." The About desktop Figma frame (`71:2`) still literally contains this text node (`1059:30`) — Figma has not been updated yet, Ryan's verbal direction is ahead of the file. Followed the explicit instruction over the (stale) frame; DESIGN.md and the Figma file itself both still need this canon change, flagged under #53 |
+| #61 | Home (`/`) + `/m` desktop chrome | Dropped the in-artboard logo/nav/theme-switcher `Box`es from `app/page.tsx`; both routes now render the shared `Header` component (real, in-flow) instead of Figma's baked-into-the-artboard chrome. `ExhibitStage` crops 90px off the top of the 1024-tall frame (the old chrome band) and every remaining child's `y` shifts up by the same 90px | Codex #61: home's old in-artboard nav scaled with `ExhibitStage`'s responsive factor while every other route's nav didn't, so they measured different sizes below 1440px and navigation visibly "jumped" between routes — violating DESIGN.md's own stated canon that the header keeps a constant footprint on every route. Fix mirrors the exact crop-the-chrome-band technique `/about` and `/methodology` already use (`DESK_TOP` in `app/about/page.tsx`) for the identical reason. Figma's home frame still bakes its own chrome into the artboard — diverging from that is expected here, same as those other two pages |
+| #64 | `--on-card-muted` (light + dark), `--muted` (dark) | Lightened: light `on-card-muted` `#aeb8a0`→`#ced4c2`; dark `on-card-muted` `#8aa0bc`→`#92aac7`; dark `muted` `#8295ab`→`#879bb2`. Also dropped `opacity-70` from the Projects row tagline (`components/projects-showcase.tsx`) | Codex #64: WCAG AA failures, live-confirmed (3.34–4.29:1 against real backgrounds, need 4.5:1). Each value is the minimal lighten that clears 4.5:1 against that token's worst real-world background, verified with an injected contrast calculator before and after. `--accent` (brand gold) deliberately NOT touched — reported 3 options with computed ratios instead, per the task's explicit instruction not to change it unilaterally |
 | _(add rows as you go)_ | | | |
 
 ---

@@ -61,11 +61,12 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
  * approved this divergence explicitly (#43).
  *
  * `sizes` reflects the plate's real rendered width: full panel width (minus
- * the panel's own padding) below `lg`, a fixed 464px column at `lg`+. Note:
- * `next.config.mjs` currently sets `images.unoptimized: true`, so Next's
- * image optimizer — and therefore this `sizes` hint and any responsive
- * srcset — is inert in production; every visitor gets the source file at its
- * native resolution regardless of display size. See PLAN.md #42/#48.
+ * the panel's own padding) below `lg`, a fixed 464px column at `lg`+. Image
+ * optimization IS enabled (PLAN.md #42 removed `images.unoptimized: true`),
+ * so this `sizes` hint drives a real responsive srcset. The remaining limit
+ * is source resolution, not delivery: 14 of 17 covers are 611×384 rendering
+ * at ~462×298 (~1.3× density), so they still soften at 2×/3× DPR — fixing
+ * that needs regenerated art at ~924×600, see PLAN.md #65.
  */
 function FeaturePlate({ skill }: { skill: Skill }) {
   return (
@@ -199,23 +200,31 @@ function SkillRow({
           open && "border-b-transparent",
         )}
       >
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={open}
-          aria-controls={panelId}
-          className="flex min-w-0 flex-1 flex-col gap-1 text-left sm:flex-row sm:items-center sm:gap-4 lg:gap-6"
-        >
-          <span className="shrink-0 font-display text-[19px] font-semibold leading-none tracking-[-0.01em] text-ink sm:w-[130px] lg:w-[232px]">
-            {skill.name}
-          </span>
-          <span className="min-w-0 flex-1 font-body text-[14px] leading-snug text-muted sm:truncate">
-            {skill.tagline}
-          </span>
-          <span className="hidden w-[226px] shrink-0 font-mono text-[10px] lowercase tracking-[0.03em] text-muted xl:block">
-            {skill.categories.join(" · ")}
-          </span>
-        </button>
+        {/* h3: one level below the sr-only "Skills" h2 in SkillPlaybook, one
+            level above the use-case h4s inside SkillPanel (#62 — the page
+            previously jumped h1 straight to h4). `contents` keeps the button
+            as the actual flex item so this is purely a semantic wrapper —
+            zero visual/layout change, per the WAI-ARIA accordion pattern of
+            a heading wrapping its toggle button. */}
+        <h3 className="contents">
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={open}
+            aria-controls={panelId}
+            className="flex min-w-0 flex-1 flex-col gap-1 text-left sm:flex-row sm:items-center sm:gap-4 lg:gap-6"
+          >
+            <span className="shrink-0 font-display text-[19px] font-semibold leading-none tracking-[-0.01em] text-ink sm:w-[130px] lg:w-[232px]">
+              {skill.name}
+            </span>
+            <span className="min-w-0 flex-1 font-body text-[14px] leading-snug text-muted sm:truncate">
+              {skill.tagline}
+            </span>
+            <span className="hidden w-[226px] shrink-0 font-mono text-[10px] lowercase tracking-[0.03em] text-muted xl:block">
+              {skill.categories.join(" · ")}
+            </span>
+          </button>
+        </h3>
 
         <a
           href={SKILLS_GITHUB_URL}
@@ -266,6 +275,12 @@ export function SkillPlaybook() {
 
   return (
     <div>
+      {/* Visually-hidden section heading — establishes h1 → h2 → h3 (row
+          name) → h4 (use-case heading) with no level skip (#62). Filter
+          chips + the accordion list have no visible heading of their own in
+          the design, so this is sr-only rather than a new visible label. */}
+      <h2 className="sr-only">Skills</h2>
+
       {/* filter chips */}
       <div className="mt-10 flex flex-wrap gap-2">
         {filters.map((f) => {

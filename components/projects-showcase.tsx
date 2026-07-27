@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { projectsData, type ProjectEntry } from "@/lib/projects-data"
 import { cn } from "@/lib/utils"
@@ -54,7 +55,15 @@ export function ProjectsShowcase() {
 }
 
 /** One catalogue row: mono name + status tag, a one-line summary, and a small
- *  input→output tagline — a surface plate + gold rail when selected. */
+ *  input→output tagline — a surface plate + gold rail when selected.
+ *
+ *  Desktop hovers/focuses a row to preview it (`onSelect`, unchanged). Mobile
+ *  has no hover, so the same tap that would otherwise be a no-op on an
+ *  already-selected row instead launches it — "tap to preview → tap again to
+ *  launch," per Ryan's explicit ask (PLAN.md #60). Because hover/focus already
+ *  select before a click lands, this also means a desktop click on the
+ *  already-hovered row launches immediately — a superset of the old
+ *  (no-op-on-click) behavior, not a regression: hover-to-preview is untouched. */
 function ProjectRow({
   project,
   selected,
@@ -64,12 +73,27 @@ function ProjectRow({
   selected: boolean
   onSelect: () => void
 }) {
+  const router = useRouter()
+
+  const activate = () => {
+    if (!selected) {
+      onSelect()
+      return
+    }
+    // Already the active row — this is the "tap again" launch.
+    if (project.external) {
+      window.open(project.href, "_blank", "noopener,noreferrer")
+    } else {
+      router.push(project.href)
+    }
+  }
+
   return (
     <button
       type="button"
       onMouseEnter={onSelect}
       onFocus={onSelect}
-      onClick={onSelect}
+      onClick={activate}
       aria-pressed={selected}
       className={cn(
         "group relative flex w-full flex-col rounded-[6px] py-3.5 pl-5 pr-4 text-left outline-none transition-colors",
@@ -95,7 +119,12 @@ function ProjectRow({
       <p className="mt-2 font-body text-[14px] leading-[1.4] text-muted">
         {project.summary}
       </p>
-      <p className="mt-1.5 font-mono text-[11px] leading-none text-muted opacity-70">
+      {/* opacity-70 dropped (PLAN.md #64): it compounded with --muted to read
+          ~2.87:1 on the row's surface in both themes — a real AA failure
+          Codex's report didn't itemize by name but that's the same
+          muted-secondary-text family. --muted alone (now WCAG-fixed above)
+          already carries the de-emphasis; the extra opacity isn't needed. */}
+      <p className="mt-1.5 font-mono text-[11px] leading-none text-muted">
         {project.tagline}
       </p>
     </button>

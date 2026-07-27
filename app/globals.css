@@ -12,7 +12,13 @@
     --card-deep: #495a3d;
     --card-border: #445239;
     --on-card: #e8ebdd;
-    --on-card-muted: #aeb8a0;
+    /* #aeb8a0 → #ced4c2: WCAG fix (PLAN.md #64). Original read 3.34:1 on
+       --card (#4f5f40) and 3.61:1 on --card-deep — both fail AA's 4.5:1 for
+       normal text. --card (the lighter/worse-case of the two) sets the floor:
+       any on-card-muted lighter than L≈0.635 clears 4.5:1 there, which also
+       clears card-deep with room to spare. This is the minimum lightening
+       that reaches the floor, not an arbitrary brighten. */
+    --on-card-muted: #ced4c2;
     --ink: #222b1a;
     --muted: #5b6b4b;
     --rule: #c7cdb4;
@@ -32,9 +38,16 @@
     --card-deep: #2a3d54;
     --card-border: #3e5573;
     --on-card: #dde5ee;
-    --on-card-muted: #8aa0bc;
+    /* #8aa0bc → #92aac7: WCAG fix (PLAN.md #64), same reasoning as light
+       above — 4.14:1 on --card/--card-deep (identical in dark), a small
+       lighten clears 4.5:1. */
+    --on-card-muted: #92aac7;
     --ink: #e4eaf1;
-    --muted: #8295ab;
+    /* #8295ab → #879bb2: WCAG fix (PLAN.md #64) — 4.29:1 on --surface, the
+       worst case this token sits on in dark (row/card taglines, "github ↗"
+       links); a small lighten clears 4.5:1. --muted (light) was already
+       compliant everywhere checked (4.86–5.19:1) and is untouched. */
+    --muted: #879bb2;
     --rule: #2e4259;
     --diagram-line: #3e5573;
     --diagram: var(--diagram-line);

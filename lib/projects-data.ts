@@ -100,9 +100,13 @@ export const projectsData: ProjectEntry[] = [
     blurb:
       "A personal operating system that routes calendar, tasks, and knowledge through four specialized AI lenses.",
     cover: "/art/projects/ryos-capsule.jpg",
-    href: "https://github.com/hurleywgly/ryos",
+    // NOTE: github.com/hurleywgly/ryos is a PRIVATE repo — it 404s for every
+    // visitor. Point at the public profile instead (Ryan: "just go to my
+    // github for now"). Do not "restore" the ryos URL from `gh repo list`;
+    // that listing shows private repos to the authenticated owner only.
+    href: "https://github.com/hurleywgly",
     external: true,
-    buildLabel: "view the repo",
+    buildLabel: "view the github",
   },
   {
     slug: "skills",
