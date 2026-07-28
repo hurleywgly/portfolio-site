@@ -5,8 +5,11 @@ import { cn } from "@/lib/utils"
 /**
  * A narrow, tall work tile: forest-on-sage in light, one slate family in dark.
  * Diagram motif up top (traced from the Figma vectors, drawn with the on-card
- * palette + a single gold focal), UPPER-mono title bottom-left, arrow bottom-
- * right. The four home motifs live below, keyed by slug.
+ * palette + a single gold focal), UPPER-mono title spanning the full tile
+ * width bottom-left, arrow pinned to the top-right corner of that same info
+ * row (#68 — matches Figma's `578:4`, where the arrow is a separate node that
+ * never shares flex space with the title). The four home motifs live below,
+ * keyed by slug.
  */
 export function ProjectTile({
   title,
@@ -26,12 +29,23 @@ export function ProjectTile({
       <div className="pointer-events-none flex-1 text-on-card-muted">
         {motif}
       </div>
-      <div className="flex items-end justify-between gap-1">
-        <span className="font-mono text-[16px] uppercase leading-[1.04] tracking-[0.02em] text-on-card">
+      {/* Figma (module · project-cards, 578:4) gives the title the FULL tile
+          width — the arrow is a separate element pinned to the top-right
+          corner, at the same row as the title's first line, regardless of
+          whether the title wraps to one or two lines. The old markup shared
+          one flex row (`justify-between`) between title and arrow, leaving
+          only ~100px for a 16px mono title that needs ~96–100px — enough to
+          overflow "STUMBLE AI" to a second line and "RYOS"/"STARTER KIT" to
+          three (#68). Giving the title the full box (no shared flex, no
+          reserved padding) and floating the arrow on top of the trailing
+          whitespace — exactly where Figma places it — fixes both without
+          touching the two titles that were already correct. */}
+      <div className="relative">
+        <span className="block w-full font-mono text-[16px] uppercase leading-[1.04] tracking-[0.02em] text-on-card">
           {title}
         </span>
         <span
-          className="font-mono text-[13px] leading-none text-on-card-muted transition-transform group-hover:translate-x-0.5"
+          className="absolute right-0 top-0 font-mono text-[13px] leading-none text-on-card-muted transition-transform group-hover:translate-x-0.5"
           aria-hidden="true"
         >
           →

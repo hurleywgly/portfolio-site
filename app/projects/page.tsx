@@ -27,11 +27,15 @@ export default function ProjectsPage() {
               render the 1054-wide artboard scaled to the viewport. Figma sets
               every mobile hero at Fraunces Black 48 on that artboard, so the
               match is 48/1054 = 4.554vw (≈17.1px @375, ≈19.6px @430) — exactly
-              what /about measures. Kicker 26/1054, body 35/1054, same source. */}
+              what /about measures. Kicker 26/1054, body 35/1054, same source.
+              Desktop h1 tracks the SAME curve the ExhibitStage pages produce
+              at any viewport — their 40px h1 scales by min(1, viewport/1440),
+              i.e. min(40px, 2.778vw) — instead of a flat px that only agreed
+              with them near 1440 (#69). */}
           <p className="font-mono text-[2.467vw] lowercase tracking-[0.04em] text-accent md:text-[13px]">
             // current projects
           </p>
-          <h1 className="mt-4 max-w-[18ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[34px] md:leading-[1.05]">
+          <h1 className="mt-4 max-w-[18ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[min(40px,2.778vw)] md:leading-[1.05]">
             Always tinkering.
           </h1>
           <p className="mt-6 max-w-[48ch] font-body text-[3.321vw] leading-[1.5] text-muted md:text-[17px] md:leading-[1.55]">

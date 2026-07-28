@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { InstallBar } from "@/components/install-bar"
 import { cn } from "@/lib/utils"
 import {
@@ -95,7 +95,7 @@ function PairsWith({ slugs }: { slugs: string[] }) {
       {slugs.map((s) => (
         <span
           key={s}
-          className="border border-on-card-muted px-3 py-[7px] font-mono text-[10px] lowercase tracking-[0.06em] text-on-card"
+          className="border border-on-card-muted px-3 py-[7px] font-mono text-[2.9vw] lowercase tracking-[0.06em] text-on-card md:text-[10px]"
         >
           {s}
         </span>
@@ -166,12 +166,16 @@ function SkillPanel({ skill }: { skill: Skill }) {
 
           <div className="mt-7">
             <PanelLabel>install this skill</PanelLabel>
+            {/* Mobile text tracks the same artboard-derived vw as the row
+                typography below (Figma's expanded-panel install code/button
+                are both 18/1054, #66) so it can't out-rank the h1; md:
+                restores today's real-px desktop size unchanged. */}
             <InstallBar
               command={installFor(skill.slug)}
               align="center"
               className="min-h-[64px] bg-page pl-3.5"
-              codeClassName="text-[12px] leading-[18px]"
-              buttonClassName="h-[46px] w-[72px] text-[11px]"
+              codeClassName="text-[2.9vw] leading-[18px] md:text-[12px]"
+              buttonClassName="h-[46px] w-[72px] text-[2.9vw] md:text-[11px]"
             />
           </div>
         </div>
@@ -206,6 +210,14 @@ function SkillRow({
             as the actual flex item so this is purely a semantic wrapper —
             zero visual/layout change, per the WAI-ARIA accordion pattern of
             a heading wrapping its toggle button. */}
+        {/* Mobile name/tagline/category are expressed in the same
+            artboard-px/1054 vw convention as the hero above, pulled directly
+            from the Figma mobile playbook frame (1006:99: row name 25px,
+            tagline 20px — 25/1054=2.372vw, 20/1054=1.898vw; category has no
+            mobile equivalent in the frame, scaled proportionally). This was
+            the actual #66 regression: real-19px name rendered bigger than
+            the ~17px mock-scale-equivalent h1. md: restores today's real-px
+            desktop sizes unchanged. */}
         <h3 className="contents">
           <button
             type="button"
@@ -214,13 +226,13 @@ function SkillRow({
             aria-controls={panelId}
             className="flex min-w-0 flex-1 flex-col gap-1 text-left sm:flex-row sm:items-center sm:gap-4 lg:gap-6"
           >
-            <span className="shrink-0 font-display text-[19px] font-semibold leading-none tracking-[-0.01em] text-ink sm:w-[130px] lg:w-[232px]">
+            <span className="shrink-0 font-display text-[3.6vw] font-semibold leading-none tracking-[-0.01em] text-ink sm:w-[130px] md:text-[19px] lg:w-[232px]">
               {skill.name}
             </span>
-            <span className="min-w-0 flex-1 font-body text-[14px] leading-snug text-muted sm:truncate">
+            <span className="min-w-0 flex-1 font-body text-[3.2vw] leading-snug text-muted sm:truncate md:text-[14px]">
               {skill.tagline}
             </span>
-            <span className="hidden w-[226px] shrink-0 font-mono text-[10px] lowercase tracking-[0.03em] text-muted xl:block">
+            <span className="hidden w-[226px] shrink-0 font-mono text-[2.9vw] lowercase tracking-[0.03em] text-muted md:text-[10px] xl:block">
               {skill.categories.join(" · ")}
             </span>
           </button>
@@ -254,11 +266,30 @@ function SkillRow({
 
 /* -------------------------------------------------------------- playbook */
 
+/** Below Tailwind's `md` breakpoint (768px) — the same mobile/desktop split
+ *  used everywhere else on this page (hero kicker/h1/intro, row typography). */
+const MOBILE_QUERY = "(max-width: 767px)"
+
 export function SkillPlaybook() {
   const [filter, setFilter] = useState<Filter>("all")
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(
     () => new Set(defaultOpenSlugs),
   )
+
+  // Figma's mobile playbook frame (1006:99) shows exactly ONE expanded
+  // exemplar (/research); the desktop frame shows three, and
+  // DESIGN.md's hygiene.mobile-deltas already documents "1 expanded skill on
+  // mobile playbook vs 3 desktop" as canon (#67 — live shipped 3 open on
+  // mobile, a ~5,983px-tall initial page). Both server render and the first
+  // client render use the same desktop-default set (SSR-safe, no hydration
+  // mismatch); only after mount do we check the real viewport and narrow to
+  // the first default slug if it's mobile-width.
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY)
+    if (mq.matches && defaultOpenSlugs.length > 0) {
+      setOpenSlugs(new Set([defaultOpenSlugs[0]]))
+    }
+  }, [])
 
   const toggle = (slug: string) =>
     setOpenSlugs((prev) => {

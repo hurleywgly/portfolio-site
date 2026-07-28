@@ -31,11 +31,18 @@ export default function ToolsPage() {
             {playbookHero.kicker}
           </p>
           {/* mobile heading uses the same 48/1054 vw ratio as every other page
-              so the effective size matches the mock-scale pages */}
-          <h1 className="mt-4 max-w-[22ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[34px] md:leading-[1.05]">
+              so the effective size matches the mock-scale pages. Desktop
+              tracks the SAME curve the ExhibitStage pages (/, /about,
+              /methodology) produce at any viewport — their 40px h1 scales by
+              min(1, viewport/1440), i.e. min(40px, 2.778vw) — instead of a
+              flat px that only agrees with them near 1440 (#69). */}
+          <h1 className="mt-4 max-w-[22ch] font-display text-[4.554vw] font-black leading-[1.22] tracking-[-0.02em] text-ink md:text-[min(40px,2.778vw)] md:leading-[1.05]">
             {playbookHero.title}
           </h1>
-          <p className="mt-6 max-w-[58ch] font-body text-[18px] leading-[1.5] text-muted md:text-[20px]">
+          {/* intro uses the same artboard-derived vw as the h1/kicker above
+              (Projects' own pattern, #66) so it sits below the h1 but above
+              the skill-row names in the mobile hierarchy. */}
+          <p className="mt-6 max-w-[58ch] font-body text-[3.9vw] leading-[1.5] text-muted md:text-[20px]">
             {playbookHero.intro}
           </p>
 
