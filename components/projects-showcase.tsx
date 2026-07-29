@@ -23,21 +23,40 @@ import { cn } from "@/lib/utils"
  * background, not a forest/slate card surface.
  */
 export function ProjectsShowcase() {
-  const [activeSlug, setActiveSlug] = useState(projectsData[0].slug)
-  const active =
-    projectsData.find((p) => p.slug === activeSlug) ?? projectsData[0]
+  const [activeSlug, setActiveSlug] = useState<string | null>(
+    projectsData[0].slug,
+  )
+  const active = activeSlug
+    ? (projectsData.find((p) => p.slug === activeSlug) ?? null)
+    : null
 
   return (
     <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14">
       <FeaturedPanel active={active} />
 
       <div className="lg:order-1 lg:w-[43%] lg:max-w-[560px]">
-        <p className="mb-3 text-right font-mono text-[12px] lowercase tracking-[0.02em] text-muted">
-          <span className="lg:hidden">tap a project to preview&nbsp;&nbsp;→</span>
-          <span className="hidden lg:inline">
-            hover a project to preview&nbsp;&nbsp;→
-          </span>
-        </p>
+        <div className="mb-3 flex items-baseline justify-between gap-4">
+          {/* close-all collapses the preview back to the bare list (Ryan ask).
+              Mobile-only: desktop hover re-selects instantly, so it would be
+              a no-op there. Invisible (not hidden) when nothing is selected,
+              so the hint line never shifts. */}
+          <button
+            type="button"
+            onClick={() => setActiveSlug(null)}
+            className={cn(
+              "font-mono text-[12px] lowercase tracking-[0.02em] text-muted underline-offset-4 transition-colors hover:text-accent hover:underline lg:hidden",
+              !active && "invisible",
+            )}
+          >
+            close all&nbsp;&nbsp;×
+          </button>
+          <p className="ml-auto text-right font-mono text-[12px] lowercase tracking-[0.02em] text-muted">
+            <span className="lg:hidden">tap a project to preview&nbsp;&nbsp;→</span>
+            <span className="hidden lg:inline">
+              hover a project to preview&nbsp;&nbsp;→
+            </span>
+          </p>
+        </div>
         <ul className="flex flex-col divide-y divide-rule dark:divide-lattice-mid">
           {projectsData.map((p) => (
             <li key={p.slug}>
@@ -108,15 +127,33 @@ function ProjectRow({
           className="absolute inset-y-0 left-0 w-[3px] rounded-l-[6px] bg-accent"
         />
       )}
-      <span className="flex items-baseline justify-between gap-3">
-        <span className="font-mono text-[17px] lowercase leading-tight text-ink">
+      {/* Mobile rows are COMPACT (Ryan, 2026-07-29): display-serif name +
+          dashed leader + status tag + arrow, one line, no preview text — the
+          featured panel above already carries the description. Desktop keeps
+          the Figma-reconciled full row (mono lowercase name + summary +
+          tagline). Logged in PLAN.md's divergence table. */}
+      <span className="flex items-baseline gap-3 lg:justify-between">
+        <span className="font-display text-[19px] font-semibold leading-tight text-ink lg:font-mono lg:text-[17px] lg:font-normal lg:lowercase">
           {project.name}
         </span>
+        <span
+          aria-hidden="true"
+          className="flex-1 -translate-y-[3px] border-b border-dashed border-rule dark:border-lattice-mid lg:hidden"
+        />
         <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
           {project.tag}
         </span>
+        <span
+          aria-hidden="true"
+          className={cn(
+            "shrink-0 font-mono text-[15px] leading-none lg:hidden",
+            selected ? "text-accent" : "text-muted",
+          )}
+        >
+          →
+        </span>
       </span>
-      <p className="mt-2 font-body text-[14px] leading-[1.4] text-muted">
+      <p className="mt-2 hidden font-body text-[14px] leading-[1.4] text-muted lg:block">
         {project.summary}
       </p>
       {/* opacity-70 dropped (PLAN.md #64): it compounded with --muted to read
@@ -124,7 +161,7 @@ function ProjectRow({
           Codex's report didn't itemize by name but that's the same
           muted-secondary-text family. --muted alone (now WCAG-fixed above)
           already carries the de-emphasis; the extra opacity isn't needed. */}
-      <p className="mt-1.5 font-mono text-[11px] leading-none text-muted">
+      <p className="mt-1.5 hidden font-mono text-[11px] leading-none text-muted lg:block">
         {project.tagline}
       </p>
     </button>
@@ -133,8 +170,10 @@ function ProjectRow({
 
 /** The featured media plate — a bordered cover image with the tag, title,
  *  build link and description sitting directly on the page below it (no
- *  card surface, matching the Figma frame). */
-function FeaturedPanel({ active }: { active: ProjectEntry }) {
+ *  card surface, matching the Figma frame). Renders nothing when the list
+ *  has been collapsed via "close all". */
+function FeaturedPanel({ active }: { active: ProjectEntry | null }) {
+  if (!active) return null
   const title = /[.?!]$/.test(active.name) ? active.name : `${active.name}.`
 
   const inner = (

@@ -53,10 +53,10 @@ export const projectsData: ProjectEntry[] = [
     name: "Stumble AI",
     tag: "LIVE",
     panelTag: "LIVE",
-    summary: "Discover cool AI apps. 50k+ indexed.",
+    summary: "Discover cool AI apps. Nostalgia-inspired design.",
     tagline: "open web → daily tool discoveries",
     blurb:
-      "An AI that surfs the web on its own and drops offbeat site discoveries straight into Discord.",
+      "A website curated by an agent that surfs the web on its own and finds cool apps built with AI.",
     cover: "/art/projects/stumble-ai.jpg",
     href: "https://stumble-ai.com",
     external: true,
@@ -70,7 +70,7 @@ export const projectsData: ProjectEntry[] = [
     summary: "The Acquired podcast's books, auto-catalogued.",
     tagline: "episode mentions → browsable shelf",
     blurb:
-      "Every book mentioned on the Acquired podcast, tracked and delivered as fresh alerts.",
+      "Every book mentioned on the Acquired podcast, tracked and delivered as they release.",
     cover: "/art/projects/acquired-bookshelf.jpg",
     href: "https://acquired-bookshelf.vercel.app",
     external: true,
@@ -98,7 +98,7 @@ export const projectsData: ProjectEntry[] = [
     summary: "Build-your-own agent OS starter kit for work or life in minutes.",
     tagline: "ryan's agent os → portable knowledge",
     blurb:
-      "A personal operating system that routes calendar, tasks, and knowledge through four specialized AI lenses.",
+      "A one-click personalized agentic starter kit. It's designed to help you work better and live a fuller life, while staying lightweight.",
     cover: "/art/projects/ryos-capsule.jpg",
     // NOTE: github.com/hurleywgly/ryos is a PRIVATE repo — it 404s for every
     // visitor. Point at the public profile instead (Ryan: "just go to my
@@ -116,7 +116,7 @@ export const projectsData: ProjectEntry[] = [
     summary: "Drop-in skills I dogfood for months before sharing.",
     tagline: "choose your skill → upload-ready agent package",
     blurb:
-      "The reusable Claude Code skills — the arsenal that runs my operating system, day to day.",
+      "My arsenal of skills, packaged to be reusable by anyone. They help run my work and family operating systems each day.",
     cover: "/art/projects/my-skills.jpg",
     href: "/tools",
     external: false,
