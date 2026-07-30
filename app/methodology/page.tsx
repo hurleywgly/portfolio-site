@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { OG_IMAGE } from "@/lib/site"
 import Link from "next/link"
 import type { CSSProperties, ReactNode } from "react"
 import { ExhibitStage } from "@/components/exhibit-stage"
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     description:
       "Models change, but the system holds. Inside Ryan Wigley's personal operating system for AI — home, work, and family run as one system.",
     url: "/methodology",
+    images: OG_IMAGE,
   },
 }
 

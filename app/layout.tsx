@@ -42,7 +42,10 @@ export const metadata: Metadata = {
     url: "https://ryanwigley.com",
   },
   twitter: {
-    card: "summary",
+    // Large card — the 1200×630 OG art (app/twitter-image.png, exported from
+    // the Figma og-card frames on the Design Language page; dark variant kept
+    // at public/og/og-card-dark.png for a future swap).
+    card: "summary_large_image",
     title: "Ryan Wigley | AI Systems Builder",
     description:
       "A working exhibit of live systems, tools, and methods by Ryan Wigley.",

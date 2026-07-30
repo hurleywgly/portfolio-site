@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { OG_IMAGE } from "@/lib/site"
 import Image from "next/image"
 import type { CSSProperties, ReactNode } from "react"
 import { CrewPolaroid } from "@/components/crew-polaroid"
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
     description:
       "Ryan Wigley — a product person with fifteen years building things people rely on, now building apps and AI systems from Seattle.",
     url: "/about",
+    images: OG_IMAGE,
   },
 }
 
