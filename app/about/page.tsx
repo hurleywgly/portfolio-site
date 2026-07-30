@@ -43,7 +43,10 @@ const HEADSHOT_ALT = "Ryan Wigley, outdoors, smiling."
  * Frame crops. The Figma frames carry their own chrome (rw-logo, nav, theme
  * switcher on desktop; logo + theme row on mobile); the real page gets that
  * from the shared glass Header, so each stage starts below the frame's chrome
- * band. Desktop crops 124 (chrome ends at y=88, the lattice starts at y=120);
+ * band. Desktop crops 124 (chrome ends at y=88, the lattice starts at y=120).
+ * Desktop text column sits at x=160 (not the frame's 80) so the visible left
+ * margin matches the exhibit-shell pages (tools/projects: 1280 max + 80 pad)
+ * at >=1280px — Ryan 2026-07-29, logged in PLAN.md's divergence table;
  * mobile crops 250 and ends where the frame's own `mobile_buttons` bar starts
  * (y=2068) — the real bar is the shared fixed MobileNavBar.
  */
@@ -140,39 +143,39 @@ export default function AboutPage() {
           <Lattice marks={aboutLatticeDesktop} />
 
           {/* kicker + headline */}
-          <At x={80} y={168 - DESK_TOP} z={10}>
+          <At x={160} y={168 - DESK_TOP} z={10}>
             <p className="font-mono text-[13px] lowercase tracking-[0.046em] text-accent">
               // about
             </p>
           </At>
-          <At x={80} y={205 - DESK_TOP} w={560} z={10}>
+          <At x={160} y={205 - DESK_TOP} w={560} z={10}>
             <h1 className="font-display text-[40px] font-black leading-[1.05] tracking-[-1px] text-ink">
               Hey, I&apos;m Ryan.
             </h1>
           </At>
 
           {/* bio */}
-          <At x={80} y={290 - DESK_TOP} w={560} z={10}>
+          <At x={160} y={290 - DESK_TOP} w={560} z={10}>
             <p className="whitespace-pre-line font-body text-[18px] leading-[28px] text-muted">
               {aboutBio.join("\n\n")}
             </p>
           </At>
 
           {/* social bar */}
-          <At x={80} y={600 - DESK_TOP} w={430} h={66} z={10}>
+          <At x={160} y={600 - DESK_TOP} w={430} h={66} z={10}>
             <SocialPillBar />
           </At>
 
           {/* get in touch */}
-          <At x={80} y={760 - DESK_TOP} z={10}>
+          <At x={160} y={760 - DESK_TOP} z={10}>
             <p className="font-mono text-[11px] uppercase tracking-[0.055em] text-accent">
               GET IN TOUCH&nbsp;&nbsp;→
             </p>
           </At>
-          <At x={80} y={782 - DESK_TOP} w={360} h={48} z={10}>
+          <At x={160} y={782 - DESK_TOP} w={360} h={48} z={10}>
             <EmailPill />
           </At>
-          <At x={464} y={794 - DESK_TOP} z={10}>
+          <At x={544} y={794 - DESK_TOP} z={10}>
             <ConsultingLine className="text-[14px]" />
           </At>
 
@@ -188,7 +191,7 @@ export default function AboutPage() {
               the socials live in the pill bar above. Grid coordinate tag
               retired site-wide, see PLAN.md #59; matches the About desktop
               Figma frame (71:2), which carries only the BASED line here. */}
-          <At x={80} y={902 - DESK_TOP} z={10}>
+          <At x={160} y={902 - DESK_TOP} z={10}>
             <p className="font-mono text-[11px] uppercase tracking-[0.09em] text-muted">
               BASED · SEATTLE, WA
             </p>
