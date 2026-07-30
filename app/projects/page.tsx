@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { OG_IMAGE } from "@/lib/site"
 import { ProjectsShowcase } from "@/components/projects-showcase"
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     description:
       "A working shelf of shipped tools and live systems by Ryan Wigley — plus Waveform, the flagship still in build.",
     url: "/projects",
+    images: OG_IMAGE,
   },
 }
 

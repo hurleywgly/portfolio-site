@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { projectsData, type ProjectEntry } from "@/lib/projects-data"
 import { cn } from "@/lib/utils"
 
@@ -30,33 +30,26 @@ export function ProjectsShowcase() {
     ? (projectsData.find((p) => p.slug === activeSlug) ?? null)
     : null
 
+  // Mobile lands with NOTHING selected, so the flow is exactly tap → preview
+  // (panel appears) → tap again → visit. Desktop keeps the flagship
+  // pre-selected since hover drives selection there. Post-mount narrowing —
+  // the same SSR-safe pattern as the skill playbook's 1-open-panel rule
+  // (#67); the brief first-paint flash is the accepted cost.
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 1023px)").matches) setActiveSlug(null)
+  }, [])
+
   return (
     <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14">
       <FeaturedPanel active={active} />
 
       <div className="lg:order-1 lg:w-[43%] lg:max-w-[560px]">
-        <div className="mb-3 flex items-baseline justify-between gap-4">
-          {/* close-all collapses the preview back to the bare list (Ryan ask).
-              Mobile-only: desktop hover re-selects instantly, so it would be
-              a no-op there. Invisible (not hidden) when nothing is selected,
-              so the hint line never shifts. */}
-          <button
-            type="button"
-            onClick={() => setActiveSlug(null)}
-            className={cn(
-              "font-mono text-[12px] lowercase tracking-[0.02em] text-muted underline-offset-4 transition-colors hover:text-accent hover:underline lg:hidden",
-              !active && "invisible",
-            )}
-          >
-            close all&nbsp;&nbsp;×
-          </button>
-          <p className="ml-auto text-right font-mono text-[12px] lowercase tracking-[0.02em] text-muted">
-            <span className="lg:hidden">tap a project to preview&nbsp;&nbsp;→</span>
-            <span className="hidden lg:inline">
-              hover a project to preview&nbsp;&nbsp;→
-            </span>
-          </p>
-        </div>
+        <p className="mb-3 text-right font-mono text-[12px] lowercase tracking-[0.02em] text-muted">
+          <span className="lg:hidden">tap a project to preview&nbsp;&nbsp;→</span>
+          <span className="hidden lg:inline">
+            hover a project to preview&nbsp;&nbsp;→
+          </span>
+        </p>
         <ul className="flex flex-col divide-y divide-rule dark:divide-lattice-mid">
           {projectsData.map((p) => (
             <li key={p.slug}>
@@ -110,8 +103,17 @@ function ProjectRow({
   return (
     <button
       type="button"
-      onMouseEnter={onSelect}
-      onFocus={onSelect}
+      // Hover-preview is a MOUSE affordance. On touch, pointerenter (and
+      // focus) fire inside the same gesture as the click — so the old
+      // unguarded handlers made a single tap select AND launch ("one click
+      // to new tab"). Guarding by pointer type restores tap → preview,
+      // tap again → visit; keyboard users still preview on focus-visible.
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") onSelect()
+      }}
+      onFocus={(e) => {
+        if (e.currentTarget.matches(":focus-visible")) onSelect()
+      }}
       onClick={activate}
       aria-pressed={selected}
       className={cn(

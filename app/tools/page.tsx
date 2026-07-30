@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { OG_IMAGE } from "@/lib/site"
 import { Footer } from "@/components/footer"
 import { InstallBar } from "@/components/install-bar"
 import { SkillPlaybook } from "@/components/skill-playbook"
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     description:
       "The reusable skills and tools behind Ryan Wigley's work — the commands he reaches for on nearly every project. Each one is installable.",
     url: "/tools",
+    images: OG_IMAGE,
   },
 }
 
