@@ -37,6 +37,9 @@ export const metadata: Metadata = {
  * from the shared glass Header, so each stage starts below the frame's chrome
  * band. Desktop crops 88 (chrome ends at y=88, the top-right lattice bracket
  * starts at y=120 and must survive); mobile crops 250, matching /about.
+ * Desktop content box sits at 160..1280 (not the frame's 80..1360) so the
+ * margins match the exhibit-shell pages, same as /about — Ryan 2026-07-29;
+ * ArcTimeline is scaled to the 1120 box, glance cards 400→360.
  */
 const DESK_TOP = 88
 const MOB_TOP = 250
@@ -123,12 +126,12 @@ export default function MethodologyPage() {
           <Lattice marks={desktopLattice} />
 
           {/* kicker + headline */}
-          <At x={80} y={92} z={10}>
+          <At x={160} y={92} z={10}>
             <p className="font-mono text-[16px] lowercase tracking-[0.03em] text-accent">
               // methodology
             </p>
           </At>
-          <At x={78} y={122} w={700} z={10}>
+          <At x={158} y={122} w={700} z={10}>
             <h1 className="font-display text-[40px] font-black leading-[1.2] text-ink">
               Models change,
               <br />
@@ -137,29 +140,29 @@ export default function MethodologyPage() {
           </At>
 
           {/* intro */}
-          <At x={80} y={264} w={780} z={10}>
+          <At x={160} y={264} w={780} z={10}>
             <p className="font-body text-[14px] leading-[29px] text-ink">
               {methodologyIntro}
             </p>
           </At>
 
           {/* ————— THE ARC ————— */}
-          <At x={80} y={378} z={10}>
+          <At x={160} y={378} z={10}>
             <p className="font-mono text-[13px] tracking-[0.077em] text-muted">
               THE ARC · home → work → family · one system →
             </p>
           </At>
-          <At x={80} y={402} w={1280} h={140} z={10}>
+          <At x={160} y={402} w={1120} h={140} z={10}>
             <ArcTimeline />
           </At>
-          <At x={80} y={592} w={720} z={10}>
+          <At x={160} y={592} w={720} z={10}>
             <p className="font-body text-[14px] leading-[18px] text-muted">
               {methodologyArcSummary}
             </p>
           </At>
 
           {/* ————— AT A GLANCE ————— */}
-          <At x={80} y={712} z={10}>
+          <At x={160} y={712} z={10}>
             <p className="font-mono text-[14px] uppercase tracking-[0.071em] text-muted">
               AT A GLANCE
             </p>
@@ -167,9 +170,9 @@ export default function MethodologyPage() {
           {glanceCards.map((card, i) => (
             <At
               key={card.label}
-              x={80 + i * 440}
+              x={160 + i * 380}
               y={752}
-              w={400}
+              w={360}
               h={240}
               z={10}
             >
@@ -178,21 +181,21 @@ export default function MethodologyPage() {
           ))}
 
           {/* closing line + the one link out */}
-          <At x={80} y={1072} w={520} z={10}>
+          <At x={160} y={1072} w={520} z={10}>
             <p className="font-body text-[15px] leading-[20px] text-ink">
               {methodologyLocalCopies}
             </p>
           </At>
-          <At x={80} y={1122} z={10}>
+          <At x={160} y={1122} z={10}>
             <SeeHowItRuns className="text-[13px]" />
           </At>
 
           {/* footer — grid coordinate tag retired site-wide, see PLAN.md #59 */}
           <span
-            className="absolute left-[80px] top-[1332px] h-px w-[1280px] bg-rule"
+            className="absolute left-[160px] top-[1332px] h-px w-[1120px] bg-rule"
             aria-hidden="true"
           />
-          <div className="absolute left-[80px] right-[80px] top-[1355px] z-10 flex items-center justify-between">
+          <div className="absolute left-[160px] right-[160px] top-[1355px] z-10 flex items-center justify-between">
             <FooterSocials />
           </div>
         </ExhibitStage>

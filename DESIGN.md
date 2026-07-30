@@ -1,29 +1,37 @@
 # DESIGN.md — ryanwigley.com
-# STATUS: v1.1 (2026-07-24) — implementation round codified. Design stage COMPLETE
-# (2026-07-23): all five pages aligned across 20 surfaces (5 pages × desktop/mobile ×
-# light/dark). Current stage: implementation — the build conventions below are canon.
+# STATUS: v1.2 (2026-07-29) — SHIPPED. The Working Exhibit redesign is live at
+# https://ryanwigley.com (production push 2026-07-25 → 2026-07-29). This
+# revision reconciles the canon with what actually shipped: the doc had
+# drifted from both the Figma and the site (PLAN.md #53). Deliberate
+# code-vs-Figma departures live in PLAN.md's DELIBERATE DIVERGENCE LOG —
+# auditors read that table before flagging drift.
 # Source of truth: Figma "ryanwigley.com — Page Designs" (sGFjHbsFwMriSNcfT7TQrc)
-#   — Design Language page, section "MODULES · v2 — home-aligned" (578:2, includes v3
-#     additions band + RULES v3 text block 578:3)
+#   — pages: Design Language (0:1) · Home (164:2) · Projects (40:2) ·
+#     Methodology (76:2) · Tools · Skill Playbook (16:2) · About (61:2)
+#   — Design Language holds the module kit ("MODULES · v2 — home-aligned",
+#     578:2, incl. RULES v3 text 578:3) and the og-card frames (1161:2 light /
+#     1161:17 dark)
 #   — Live frames named exactly: `page · {slug} · {desktop|mobile} · {light|dark}`
 #     slugs: home · projects · playbook · about · methodology
 
 ---
-version: 1.1
+version: 1.2
 name: Working Exhibit
 description: Personal site of an AI-systems builder — a working exhibit of live systems.
-status: design locked; implementation underway — build conventions codified 2026-07-24
+status: SHIPPED — live in production; this doc describes what shipped
 
 themes:
-  # 2026-07-24 color audit vs Figma (palette exhibits 12:46/12:207 + home mobile 164:3/403:2): no token drift — today's touch-up is the light-mobile banner kicker going bright gold #C9A85A (the dark-gold token on a forest surface); no token values changed.
+  # 2026-07-29 audit: three muted tones were lifted from the Figma values to
+  # clear WCAG AA 4.5:1 (PLAN.md #64) — the palette below is the SHIPPED one.
+  # Figma still carries the old values; treat code as canon for these three.
   light:
     bg: "#E9EEDF"            # pale sage page
     surface: "#F3F4E9"       # selected-row plate, panels
     card: "#4F5F40"          # forest module surface
-    card-deep: "#495A3D"     # waveform banner
+    card-deep: "#495A3D"     # waveform banner, writing tile
     card-border: "#445239"
     on-card: "#E8EBDD"
-    on-card-muted: "#AEB8A0"
+    on-card-muted: "#CED4C2" # AA-lifted (Figma has #AEB8A0)
     ink: "#222B1A"
     muted: "#5B6B4B"
     rule: "#C7CDB4"          # hairlines / lattice lines
@@ -36,151 +44,240 @@ themes:
     card: "#2A3D54"          # ONE slate family for ALL tiles (incl. banner)
     card-border: "#3E5573"
     on-card: "#DDE5EE"
-    on-card-muted: "#8AA0BC"
+    on-card-muted: "#92AAC7" # AA-lifted (Figma has #8AA0BC)
     ink: "#E4EAF1"
-    muted: "#8295AB"
+    muted: "#879BB2"         # AA-lifted (Figma has #8295AB)
     rule: "#2E4259"
     diagram-line: "#3E5573"
     lattice-mid: "#516885"   # lattice lines/nodes in dark — brighter than rule, never ink
     accent: "#C9A85A"        # gold
     nav-icon: "#7E92A9"
+  # RETIRED (2026-07-29): the dim-gold #94854A Figma bakes into some secondary
+  # marks (chip arrows, kickers, methodology core) is NOT a token. Gold on the
+  # site is `accent`, full stop. Remaining #94854A fills in Figma are stale.
 
 typography:
-  display:  { family: "Fraunces",       weight: "Black",    usage: "page headlines ('Always tinkering.', 'Models change, but the system holds.'), hero name" }
-  title:    { family: "Fraunces",       weight: "SemiBold", usage: "tile/card titles, skill names, stat numerals" }
+  display:  { family: "Fraunces",       weight: "Black",    usage: "page headlines, hero name" }
+  title:    { family: "Fraunces",       weight: "SemiBold", usage: "tile/card titles, skill names, stat numerals, mobile project-row names" }
   body:     { family: "Hanken Grotesk", usage: "running text, descriptions" }
   label:    { family: "Fragment Mono",  transform: "lowercase or UPPER tracked", usage: "kickers, nav, captions, status tags, data, footers" }
-  mobile-display: "Fraunces Black 48 at artboard scale — every page's mobile hero heading (the mobile artboards are 1054-wide)"
+  desktop-display: >
+    ONE size across pages (Ryan 2026-07-25: "headings should match"). Stage
+    pages author 40px inside the 1440 ExhibitStage; reflow pages use
+    min(40px, 2.778vw) — the same effective curve at every viewport
+    (verified within 0.002px at 1280/1440/1920). About keeps the frame's
+    −2px optical x-offset on its h1.
+  mobile-display: >
+    Fraunces Black 48 at 1054-artboard scale on the mock-scale pages. Reflow
+    pages (projects, tools) express mobile type in vw of the artboard so the
+    EFFECTIVE size matches: h1 4.554vw (48/1054), kicker 2.467vw, body
+    3.321–3.9vw. Judge effective rendered px, never authored px.
+  body-readability: >
+    Projects + About body copy ships LARGER than the frames' literal px —
+    Ryan's readability call, logged in the divergence table. Do not "fix" back.
   never: italic
 
 spacing: { base: 8, page-pad-x: 80, content-max: 1280 }
-mobile:  { artboard: "1054 wide", margins: 80, bar: "mobile_buttons 1060×227 at frame-bottom−232, labels at bar+164" }
+mobile:  { artboard: "1054 wide", margins: 80 }
 
-# ————— THE FIVE RULES (v3) —————
+# ————— THE FIVE RULES (v3, amended v1.2) —————
 rules:
   emphasis-strategy: >
     LIGHT inverts: cards go forest on pale sage — contrast carries hierarchy.
     DARK stays in one slate tile family — gold + position carry hierarchy.
     Never powder-invert dark.
   accent-dosage: >
-    Gold in small doses only: target dots, NEW badges, active nav item (mobile bar),
-    selected-row rail, one link per cluster ('browse all my skills' goes gold in dark).
-    Never large fills.
+    Gold in small doses only: NEW badges, active nav item, selected-row rail,
+    kickers, one link per cluster. Never large fills. Gold is `accent` only —
+    the dim-gold #94854A is retired (see themes).
   lattice-grammar: >
-    Thin rules + L-brackets + hollow squares + filled junction dots, placed UNEVENLY in
-    open space between objects. NEVER hollow circles. NEVER even grids. No lattice line
-    within 24px of a card edge or text block. Dark lattice uses lattice-mid #516885 —
-    visible but calm (not rule-dark, never ink-light).
+    Thin rules + L-brackets + hollow squares + filled junction dots, placed
+    UNEVENLY in open space between objects. NEVER hollow circles. NEVER even
+    grids. No lattice line within 24px of a card edge or text block. Dark
+    lattice uses lattice-mid #516885 — visible but calm.
   nav: >
-    Labeled everywhere, lowercase mono. Desktop: top strip, 16px icon beside each word —
-    home projects tools writing about — active page underlined gold; theme-switcher
-    top-right (1253,44), moon-active pill in dark. Mobile: bottom bar, icon + label,
-    active page label gold. 'writing' is an external link to the blog (no site page).
+    Labeled everywhere, lowercase mono, REAL hand-drawn glyphs (see
+    components.nav-icons). Desktop: shared glass top strip on EVERY route —
+    home projects tools writing about — active page underlined gold;
+    theme-switcher top-right. Mobile: bottom bar, icon + label, active page
+    gold. 'writing' is an external link to blog.ryanwigley.com (no site page).
   chrome: >
-    Kickers: '// lowercase mono' (gold). Section labels: UPPER TRACKED MONO — FIG.-style
-    labels are RETIRED. Footer: socials left ('X · GITHUB · LINKEDIN · EMAIL'; about uses
-    'BASED · SEATTLE, WA' since socials live in its pill bar) + '● GRID NN · 47°N · PAGE'
-    right (gold dot). HOME IS FOOTER-LESS by design (front-door exception). GRID numbers
-    are arbitrary lore (about=01, projects=02, methodology=12) — set dressing, not data.
+    Kickers: '// lowercase mono' in accent gold on every page. Section labels:
+    UPPER TRACKED MONO. Footer: socials row 'X · GITHUB · LINKEDIN · EMAIL'
+    (about swaps it for 'BASED · SEATTLE, WA' — its socials live in the pill
+    bar). The '● GRID NN · 47°N · PAGE' coordinate tag is RETIRED site-wide
+    (2026-07-25); the frames still draw it — stale, ignore. HOME IS
+    FOOTER-LESS by design (front-door exception).
 
 # ————— COMPONENTS (exhibits in Figma modules section) —————
 components:
-  project-tile:      "140×128 desktop / 190×172 mobile · V-A motif set: stumble flat-S ridge,
-                      rainier mountain+rain+gold diamond, bookshelf spines+broadcast,
-                      ryos chip+network+compass+folder · UPPER mono title + arrow"
-  waveform-banner:   "flagship strip, card-deep; width = EXACTLY 2 tiles + gutter (292 desktop);
-                      PODCAST EDITOR kicker · Fraunces title · glyph = breaker-curl + gold crest
-                      → 13 midline-mirrored bars (1 gold) · mono caption"
-  selected-row:      "surface plate (r6, rule border) + 3px gold rail on left edge + mono hint
-                      ('hover a project to preview →' desktop / 'tap…' mobile, above list right)"
-  theme-switcher:    "144×44 pill pair top-right; sun-active in light, moon-active gold in dark"
-  footer-tag:        "gold 7px dot + 'GRID NN · 47°N · PAGE' mono 13 tracked, right-aligned"
-  social-pill-bar:   "forest (light) / slate (dark) rounded bar, mono X · LinkedIn · GitHub,
-                      inset padding — about page only"
-  methodology-book:  "tarot-style constellation card, Fraunces title, HOW I THINK mono footer"
-  arc-timeline:      "gold-dot node timeline with mono step labels (01 HOME → …) — methodology"
+  project-tile:      "140×128 desktop / 190×172 mobile · V-A motif set exported
+                      from 578:4 (light) / 578:137 (dark): stumble flat-S ridge,
+                      rainier mountain+rain+gold diamond, bookshelf
+                      spines+broadcast, ryos chip+network+compass+folder ·
+                      UPPER mono title on the FULL tile width, arrow pinned
+                      top-right (title and arrow never share a flex row —
+                      that wrapped titles an extra line)"
+  waveform-banner:   "flagship strip, card-deep; PODCAST EDITOR kicker ·
+                      Fraunces title · glyph = breaker-curl + gold crest → 13
+                      midline-mirrored bars (1 gold) · mono tagline 'raw audio
+                      → finished episodes' guarded whitespace-nowrap (ONE line)"
+  selected-row:      "surface plate (r6, rule border) + 3px gold rail on the
+                      left edge + mono hint. Rail only — the gold marker dot
+                      was removed from the frames 2026-07-29 (Ryan)."
+  project-rows:      "desktop: mono lowercase name + tag + summary + tagline.
+                      mobile: COMPACT — display-serif name + dashed leader +
+                      tag + arrow, one line, no preview text (Ryan 2026-07-29);
+                      the featured panel above carries the description"
+  theme-switcher:    "pill pair top-right; sun-active in light, moon-active gold in dark"
+  social-pill-bar:   "forest (light) / slate (dark) rounded bar, mono X ·
+                      LinkedIn · GitHub — about page only; text-only in BOTH
+                      themes (the dark frame's baked glyphs are an accepted
+                      divergence)"
+  methodology-book:  "tarot-style constellation card (33-node mesh from
+                      374:137/1003:103); mesh intentionally runs under the
+                      title and HOW I THINK footer"
+  arc-timeline:      "gold-dot node timeline with mono step labels + KNOWS chip
+                      — authored in an 1120-wide local space (the frame's 1280
+                      scaled ×0.875 into the 160..1280 content box)"
   arsenal-cluster:   "kicker + 2×2 chips + browse link, one unit; /capsule keeps NEW badge"
-  shelf:             "personality diorama — never shrinks; UNIQUE drawing per theme (light/dark
-                      are different art, not recolors — see implementation.art-exports)"
-  crew-polaroid:     "pixel family portrait; small clone sits in About mobile empty space;
-                      unique art per theme"
-  writing-nav-icon:  "document/nib glyph 16px; #8A9478 light / #7E92A9 dark"
-  rw-logo:           "the real single-path monogram vector (Figma 164:103) rendered via
-                      currentColor so it takes the theme's ink — stacked-text lockup RETIRED"
+  shelf:             "personality diorama — never shrinks; UNIQUE drawing per
+                      theme; taps through to /about (with the crew polaroid)"
+  crew-polaroid:     "pixel family portrait; unique art per theme; links to /about"
+  nav-icons:         "REAL hand-drawn vectors, inlined currentColor SVG:
+                      house · rocket · hollow shield with the sword visible
+                      inside (197:941 — the shield's mask/compound structure is
+                      load-bearing, do NOT 'simplify' it; that flattened it to
+                      a blob once) · document-nib · profile bust"
+  rw-logo:           "the real single-path monogram vector (164:103) via
+                      currentColor; also the favicon set + og-card mark"
+  og-card:           "1200×630 share card — frames `og-card · light` (1161:2) /
+                      `· dark` (1161:17) on the Design Language page: sage/
+                      midnight field, monogram, gold '// ai systems builder &
+                      product manager' kicker, Fraunces name, tagline, domain,
+                      shelf nested in the lattice bracket. Ships as a STATIC
+                      export (app/opengraph-image.png + twitter-image.png) —
+                      satori can't render the shelf's masked SVG, and the
+                      export is pixel-identical to the approved frame. Edit in
+                      Figma → re-export. Dark kept at public/og/og-card-dark.png."
 
 # ————— FILE HYGIENE (for future agents) —————
 hygiene:
   frame-naming: "page · {slug} · {desktop|mobile} · {light|dark} — all 20 live frames conform"
-  containers: "load-bearing containers carry module names ('module · waveform-banner',
-               'module · waveform + tools-grid', 'mobile_buttons'); ~1.5k generic LEAF layers
-               remain by decision (renaming them = low value)"
   structure-rule: "NEW work ships as named groups ('module · …'); don't restructure old flat frames"
-  archives: "Archive page holds the playbook VIDEO iteration (implement once videos exist).
-             Exploration pages deleted 2026-07-23. Annotation/note frames (terracotta) and
-             'ryan comment' frames live left of page frames — never inside them."
-  mobile-deltas: "acknowledged: crew polaroid mobile-About only; 1 expanded skill on mobile
-                  playbook vs 3 desktop; mobile footers have no GRID tag; frame heights content-driven"
+  figma-stale-backlog: >
+    Known frame-side staleness (code is canon): GRID footer tags still drawn ·
+    selected-row summaries/taglines on the projects mobile frame (site ships
+    compact rows) · three pre-AA muted tone values · #94854A marks · About
+    dark bio wording differs from the locked light copy · mobile home frame
+    underlines 'tools' in the bottom bar while home is active.
+  mobile-deltas: "acknowledged: crew polaroid mobile-About only; 1 expanded
+                  skill on mobile playbook vs 3 desktop; mobile footers exist
+                  without the (retired) GRID tag; frame heights content-driven"
+  archives: "Archive page holds the playbook VIDEO iteration (implement once
+             videos exist). Annotation/note frames live left of page frames —
+             never inside them."
 
-# ————— IMPLEMENTATION (build conventions, codified 2026-07-24) —————
+# ————— IMPLEMENTATION (shipped conventions, v1.2) —————
 implementation:
   mobile-model: >
-    Mobile pages render the Figma mobile artboard at MOCK SCALE — a uniformly scaled
-    1054-wide stage (ScaledStage). The home exhibit (/m) uses ZoomableStage: the same
-    fit-scaling plus pinch-zoom 1×–3× (double-tap, ctrl/cmd+wheel), with the fixed
-    bottom nav outside the zoom. The reflowed-native-mobile approach was tried and
-    REJECTED. Tappable objects on the home exhibit are a future test stage.
+    Mobile pages render the Figma mobile artboard at MOCK SCALE — a uniformly
+    scaled 1054-wide stage (ScaledStage). Home's mobile render is
+    HomeMobileMock (ZoomableStage: fit-scaling + OPT-IN pinch-zoom 1×–3×;
+    landing state is always the full artboard at 1:1 fit, never zoomed).
+    `/` mobile and `/m` share this component; /m is a standalone noindex
+    reference route. The reflowed-native-mobile approach was tried and
+    REJECTED — do not reintroduce it. Projects and Tools are the two
+    deliberate reflow pages; their mobile type tracks the artboard via vw.
   chrome: >
-    Glass-blur sticky header + glass mobile bottom bar are canon ('bg-page/90
-    backdrop-blur'). The header keeps a CONSTANT layout footprint on every route —
-    exhibit routes (/, /m) render it invisible rather than unmounting it, so navigation
-    never shifts content. scrollbar-gutter: stable for the same reason.
+    ONE shared glass header (bg-page/90 backdrop-blur) renders REAL and
+    VISIBLE on every route including / and /m — nav geometry is byte-identical
+    everywhere (the old invisible-header-on-exhibit-routes model is DEAD; it
+    made navigation jump). Each page crops its frame's baked chrome band via a
+    DESK_TOP offset instead. scrollbar-gutter: stable. Mobile bottom bar is
+    md:hidden.
+  margins: >
+    Desktop text margin is unified on the exhibit-shell line (max-w 1280 +
+    80px padding → text edge at (vw−1280)/2+80 for vw≥1280). Reflow pages get
+    it from .exhibit-shell; stage pages place their content box at 160..1280
+    stage coords (About text column x=160; Methodology full band 160..1280
+    with the timeline rescaled and glance cards at 360×240, x=160+i·380).
+    The frames' 80..1360 box is superseded.
+  projects-interaction: >
+    Desktop: hover previews (pointerType mouse only), click launches. Mobile:
+    lands with NOTHING selected → tap previews (panel appears) → tap again
+    launches. Hover/focus selection is guarded (mouse / :focus-visible) so a
+    touch tap can't select-and-launch in one gesture. No close-all control.
   art-exports: >
-    Shelf diorama and crew polaroid are UNIQUE drawings per theme. The shelf ships as a
-    single composed TRANSPARENT SVG per theme — individual SVG objects grouped, exported
-    whole from the Figma frames — never a raster plate. The crew polaroid ships per
-    theme as transparent PNG (pixel art). Files: public/art/home/shelf-diorama[-dark].svg
-    · crew-polaroid[-dark].png.
+    All artwork is exported from the real Figma nodes — never hand-drawn
+    approximations, never page-region crops. Shelf ships as one composed
+    TRANSPARENT SVG per theme (~126KB, zero rasters, no background rect);
+    crew polaroid per theme as transparent PNG. A region export once smuggled
+    a 1.6MB page background + embedded raster into the shelf — check for
+    `<image>` tags and full-artboard rects on every re-export.
+  metadata: >
+    Title 'Ryan Wigley | AI Systems Builder' (+ '%s | Ryan Wigley' template) —
+    deliberately NOT '& product manager' (that lives in the og-card kicker
+    only; Ryan's call 2026-07-29). Site description: "A working exhibit of
+    live systems, tools, and methods by Ryan Wigley, an AI systems builder and
+    product manager using AI to simplify work and life." Self-canonicals per
+    page; /m noindex → /; JSON-LD Person(#person, jobTitle 'AI Systems
+    Builder', worksFor Raya) + WebSite + ProfilePage on /about; og-card on
+    every route (pages defining their own openGraph must spread OG_IMAGE from
+    lib/site.ts — Next's shallow merge drops file-injected images);
+    twitter summary_large_image · @rywigs; llms.txt project one-liners mirror
+    lib/projects-data.ts copy — sync on copy changes.
+  skill-playbook: >
+    lib/tools-data.ts `detail` content is sourced from the Notion page
+    "Ryan's Skills" (371ae786…) — re-sync from Notion on copy changes, never
+    author skill copy in code. 1 panel open on mobile / 3 on desktop; feature
+    plates aspect 464/300 standardized (taller than frame, approved).
   ambient-motion: >
-    EXPLORING, NOT YET CANON — subtle lattice-line animation only (draw-in, surveyor's
-    dot, drift). prefers-reduced-motion honored. Lattice + dots only, never text/cards.
+    EXPLORING, NOT YET CANON — subtle lattice-line animation only (draw-in,
+    surveyor's dot, drift). prefers-reduced-motion honored. Lattice + dots
+    only, never text/cards.
 ---
 
 ## Status
 
-**Locked (1.0):** both themes · type roles · the five v3 rules · all components above ·
+**Locked (1.0):** both themes · type roles · the five v3 rules · module kit ·
 all 20 page surfaces · file hygiene conventions.
 
-**Locked (1.1, 2026-07-24):** mock-scale mobile rendering (ScaledStage; ZoomableStage on
-/m) · constant-footprint glass chrome · per-theme composed art exports · real RW monogram ·
-mobile display = Fraunces Black 48. Ambient lattice motion is exploring, NOT yet canon.
+**Locked (1.1, 2026-07-24):** mock-scale mobile rendering · per-theme composed
+art exports · real RW monogram · mobile display = Fraunces Black 48.
 
-**In progress (implementation):** port to code — `app/globals.css` tokens, nav/tile/banner/
-selected-row/theme-switcher components, per-page builds from the Figma frames. The avatar
-3D embed is NOT reserved in the layout anymore; it returns as its own future project
-(see `metahuman-avatar-assistant-capsule.md`) with placement decided then.
+**Shipped (1.2, 2026-07-25 → 29):** production at ryanwigley.com. Amendments
+codified above: unified shared header (invisible-header model retired) ·
+unified desktop heading size + exhibit-shell margin line · GRID tag retired ·
+AA-lifted muted tones, dim-gold retired · compact mobile project rows +
+tap-preview interaction · og-card + full metadata lane · nav-icon/shelf/tile
+art re-exported from source nodes · selected-row is rail-only. Every
+deliberate code-vs-Figma departure: PLAN.md → DELIBERATE DIVERGENCE LOG.
 
 ## The design in one paragraph
 
-A working exhibit: live systems pinned to a drafting-table canvas. A sparse architectural
-lattice (rules, brackets, squares, dots — never circles, never grids) fills the open space
-between objects. Work carries the visual weight; decoration recedes. Light mode argues with
-contrast (forest blocks on sage); dark mode argues with restraint (one slate family, gold
-pointing at what matters). Labels and data speak Fragment Mono, headlines speak Fraunces,
-emphasis is a marker swash, and every page ends with its grid coordinates — except home,
-which just ends.
+A working exhibit: live systems pinned to a drafting-table canvas. A sparse
+architectural lattice (rules, brackets, squares, dots — never circles, never
+grids) fills the open space between objects. Work carries the visual weight;
+decoration recedes. Light mode argues with contrast (forest blocks on sage);
+dark mode argues with restraint (one slate family, gold pointing at what
+matters). Labels and data speak Fragment Mono, headlines speak Fraunces, and
+home just ends — no footer on the front door.
 
 ## What it is NOT
 
-Not dark-glow SaaS. Not Inter + purple gradient. No glassmorphism, no glow, no eyebrow
-pills, no decorative numbering, no italic-serif hero, no icon-tile cards, no hollow-circle
-ornaments, no even background grids. The sage/forest palette is earned through structure.
+Not dark-glow SaaS. Not Inter + purple gradient. No glassmorphism (the one
+glass surface is the header), no glow, no eyebrow pills, no decorative
+numbering, no italic-serif hero, no icon-tile cards, no hollow-circle
+ornaments, no even background grids. The sage/forest palette is earned
+through structure.
 
 ## Provenance
 
-Foundation 2026-06 (FC-Mobile MJ recreation) → Home alignment 2026-07-07 (hierarchy flip,
-gold promotion, labeled nav, clearance rule) → V-A tile artwork + banner glyph 2026-07-16 →
-writing nav + image-first playbook 2026-07-17 → Ryan's Home/About/Methodology redesigns +
-dark parity + mobile build-out 2026-07-22 → comment round, lattice/footer/naming canon,
-file cleanup + v3 codification 2026-07-23 → implementation round (mock-scale mobile
-model, constant glass chrome, per-theme art exports, real RW monogram, Figma color
-audit — no token drift) + v1.1 codification 2026-07-24.
+Foundation 2026-06 → Home alignment 2026-07-07 → V-A tile artwork 2026-07-16 →
+writing nav + image-first playbook 2026-07-17 → Ryan's redesigns + dark parity
+2026-07-22 → v3 codification 2026-07-23 → implementation round + v1.1
+2026-07-24 → **production push 2026-07-25→29: Figma reconciliation (real
+nav/tile/shelf/methodology art from source nodes), SEO/metadata lane, Codex QA
++ Fable 5 pixel audit, OG card, margin/heading unification, copy pass — v1.2
+codified 2026-07-29.**

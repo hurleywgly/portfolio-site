@@ -45,10 +45,12 @@ export const methodologyDiagram: LatticeMark[] = [
   // between cards 2 and 3: rule → terminal dot
   { type: "rule", x: 760, y: 990, w: 420, h: 2 },
   { type: "dot", x: 1177, y: 987 },
-  // right vertical over card 3: dot → rule → foot square
-  { type: "dot", x: 1297, y: 836 },
-  { type: "rule", x: 1300, y: 840, w: 2, h: 160 },
-  { type: "square", x: 1294, y: 1000, size: 10 },
+  // right vertical beside card 3 (was hidden behind the old 960..1360 card;
+  // sits in the open right margin now that the card band ends at 1280 — kept
+  // 40px clear of the card edge per the 24px lattice-clearance canon)
+  { type: "dot", x: 1317, y: 836 },
+  { type: "rule", x: 1320, y: 840, w: 2, h: 160 },
+  { type: "square", x: 1314, y: 1000, size: 10 },
 ]
 
 /** AT A GLANCE card trio (desktop), in Figma order. Cards 1 & 2 carry a mini
