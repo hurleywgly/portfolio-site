@@ -5,6 +5,10 @@
 # drifted from both the Figma and the site (PLAN.md #53). Deliberate
 # code-vs-Figma departures live in PLAN.md's DELIBERATE DIVERGENCE LOG —
 # auditors read that table before flagging drift.
+# RENDERED REFERENCE: https://ryanwigley.com/design-system.html
+#   (public/design-system.html — the living style-guide; each of its sections
+#    links back to this file's matching block and to the Figma source node.
+#    Update the three together: code → this file → the HTML page.)
 # Source of truth: Figma "ryanwigley.com — Page Designs" (sGFjHbsFwMriSNcfT7TQrc)
 #   — pages: Design Language (0:1) · Home (164:2) · Projects (40:2) ·
 #     Methodology (76:2) · Tools · Skill Playbook (16:2) · About (61:2)

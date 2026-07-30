@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Working Exhibit — Design System v1.2</title>
+<link rel="icon" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Hanken+Grotesk:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ————— tokens: the SHIPPED palette (DESIGN.md → themes) ————— */
+  :root{
+    --bg:#E9EEDF; --surface:#F3F4E9; --card:#4F5F40; --card-deep:#495A3D;
+    --card-border:#445239; --on-card:#E8EBDD; --on-card-muted:#CED4C2;
+    --ink:#222B1A; --muted:#5B6B4B; --rule:#C7CDB4; --diagram:#98A48C;
+    --accent:#A18A2E; --nav-icon:#8A9478;
+    --d-bg:#192B43; --d-surface:#1F3149; --d-card:#2A3D54; --d-card-border:#3E5573;
+    --d-on-card:#DDE5EE; --d-on-card-muted:#92AAC7; --d-ink:#E4EAF1; --d-muted:#879BB2;
+    --d-rule:#2E4259; --d-diagram:#3E5573; --d-lattice:#516885; --d-accent:#C9A85A; --d-nav-icon:#7E92A9;
+    --display:"Fraunces",serif; --body:"Hanken Grotesk",sans-serif; --mono:"Fragment Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
+  .shell{max-width:80rem;margin-inline:auto;padding-inline:1.5rem}
+  @media(min-width:768px){.shell{padding-inline:5rem}}
+  a{color:inherit}
+  .kicker{font-family:var(--mono);color:var(--accent);font-size:13px;letter-spacing:.04em;text-transform:lowercase}
+  h1{font-family:var(--display);font-weight:900;font-size:40px;line-height:1.05;letter-spacing:-.015em;margin-top:14px}
+  h2{font-family:var(--display);font-weight:900;font-size:26px;margin:0 0 6px}
+  .section-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  section{padding:56px 0;border-top:1px solid var(--rule)}
+  header.page{padding:64px 0 48px}
+  .lede{max-width:62ch;color:var(--muted);font-size:17px;margin-top:14px}
+  /* rule-by-rule provenance links — every section carries one */
+  .canon{margin-top:22px;font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+  .canon a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+  .canon a:hover{border-bottom-color:var(--accent)}
+  .canon .sep{opacity:.55;margin:0 6px}
+  /* layout helpers */
+  .duo{display:grid;gap:18px;margin-top:22px}
+  @media(min-width:900px){.duo{grid-template-columns:1fr 1fr}}
+  .panel{border:1px solid var(--rule);border-radius:6px;padding:22px;background:var(--surface)}
+  .panel.dark{background:var(--d-bg);border-color:var(--d-rule);color:var(--d-ink)}
+  .panel-tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .panel.dark .panel-tag{color:var(--d-muted)}
+  /* swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+  .sw{border-radius:4px;overflow:hidden;border:1px solid var(--rule)}
+  .panel.dark .sw{border-color:var(--d-rule)}
+  .sw .chip{height:52px}
+  .sw .meta{padding:7px 9px;font-family:var(--mono);font-size:10px;line-height:1.5;background:var(--bg);color:var(--ink)}
+  .panel.dark .sw .meta{background:var(--d-surface);color:var(--d-ink)}
+  .sw .meta b{display:block;font-weight:400}
+  .sw .meta span{color:var(--muted)}
+  .panel.dark .sw .meta span{color:var(--d-muted)}
+  .lift{outline:2px solid var(--accent);outline-offset:1px}
+  .retired{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .retired s{opacity:.75}
+  .dotmark{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:6px;background:#94854A}
+  /* type ramp */
+  .ramp{display:grid;gap:18px;margin-top:8px}
+  .ramp .row{display:grid;grid-template-columns:130px 1fr;gap:14px;align-items:baseline}
+  .ramp .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  /* five rules cards */
+  .rules{display:grid;gap:14px;margin-top:22px}
+  @media(min-width:900px){.rules{grid-template-columns:repeat(2,1fr)}}
+  .rulecard{border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:20px 22px}
+  .rulecard .no{font-family:var(--mono);color:var(--accent);font-size:12px}
+  .rulecard h3{font-family:var(--display);font-weight:600;font-size:18px;margin:6px 0 8px}
+  .rulecard p{font-size:14px;color:var(--muted)}
+  /* lattice demo */
+  .lat{position:relative;height:190px;border-radius:6px;overflow:hidden}
+  .lat.light{background:var(--bg)}
+  .lat.dark{background:var(--d-bg)}
+  .lat i{position:absolute;display:block}
+  .lat .r{background:var(--rule)} .lat.dark .r{background:var(--d-lattice)}
+  .lat .dot{width:7px;height:7px;border-radius:50%;background:var(--diagram)} .lat.dark .dot{background:var(--d-lattice)}
+  .lat .gold{background:var(--accent)} .lat.dark .gold{background:var(--d-accent)}
+  .lat .sq{width:11px;height:11px;border:1.5px solid var(--diagram);background:transparent} .lat.dark .sq{border-color:var(--d-lattice)}
+  /* component specimens */
+  .spec{display:flex;flex-direction:column;gap:16px}
+  .tile{width:150px;height:132px;border-radius:8px;background:var(--card);border:1px solid var(--card-border);position:relative;padding:12px}
+  .panel.dark .tile{background:var(--d-card);border-color:var(--d-card-border)}
+  .tile .t{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--on-card);text-transform:uppercase;position:absolute;left:12px;bottom:12px;right:34px;line-height:1.35}
+  .panel.dark .tile .t{color:var(--d-on-card)}
+  .tile .arw{position:absolute;right:12px;bottom:10px;color:var(--on-card-muted);font-family:var(--mono)}
+  .panel.dark .tile .arw{color:var(--d-on-card-muted)}
+  .banner{border-radius:9px;background:var(--card-deep);padding:14px 16px;display:flex;align-items:center;gap:18px;max-width:340px}
+  .panel.dark .banner{background:var(--d-card)}
+  .banner .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .panel.dark .banner .k{color:var(--d-accent)}
+  .banner .n{font-family:var(--display);font-weight:900;font-size:20px;color:var(--on-card);line-height:1.1}
+  .panel.dark .banner .n{color:var(--d-on-card)}
+  .banner .tg{font-family:var(--mono);font-size:11px;color:var(--on-card-muted);white-space:nowrap;margin-top:6px}
+  .panel.dark .banner .tg{color:var(--d-on-card-muted)}
+  .bars{display:flex;align-items:center;gap:2px;height:38px;margin-left:auto}
+  .bars i{width:3px;background:var(--on-card-muted);border-radius:1px}
+  .panel.dark .bars i{background:var(--d-on-card-muted)}
+  .bars i.g{background:var(--accent)} .panel.dark .bars i.g{background:var(--d-accent)}
+  .selrow{position:relative;border:1px solid var(--rule);background:var(--surface);border-radius:6px;padding:12px 16px 12px 20px;max-width:420px}
+  .panel.dark .selrow{background:var(--d-surface);border-color:var(--d-lattice)}
+  .selrow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:6px 0 0 6px;background:var(--accent)}
+  .panel.dark .selrow::before{background:var(--d-accent)}
+  .selrow .nm{font-family:var(--mono);font-size:15px;color:var(--ink)} .panel.dark .selrow .nm{color:var(--d-ink)}
+  .selrow .tag2{float:right;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .panel.dark .selrow .tag2{color:var(--d-muted)}
+  .mrow{display:flex;align-items:baseline;gap:12px;max-width:420px;padding:10px 4px}
+  .mrow .nm{font-family:var(--display);font-weight:600;font-size:17px}
+  .mrow .lead{flex:1;border-bottom:1px dashed var(--rule);transform:translateY(-3px)}
+  .panel.dark .mrow .lead{border-color:var(--d-lattice)}
+  .mrow .tag2,.mrow .arw2{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .panel.dark .mrow .tag2,.panel.dark .mrow .arw2{color:var(--d-muted)}
+  .navspec{display:flex;gap:22px;font-family:var(--mono);font-size:14px;text-transform:lowercase}
+  .navspec .on{position:relative;color:var(--ink)} .panel.dark .navspec .on{color:var(--d-ink)}
+  .navspec .on::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--accent)}
+  .panel.dark .navspec .on::after{background:var(--d-accent)}
+  .navspec span{color:color-mix(in srgb,var(--ink) 70%,transparent)}
+  .panel.dark .navspec span{color:color-mix(in srgb,var(--d-ink) 70%,transparent)}
+  .switch{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface)}
+  .panel.dark .switch{border-color:var(--d-rule);background:var(--d-surface)}
+  .switch b{padding:7px 20px;font-size:13px;font-weight:400}
+  .switch .active{background:var(--card);color:var(--on-card);border-radius:999px}
+  .panel.dark .switch .active{background:var(--d-accent);color:var(--d-bg)}
+  .footspec{display:flex;justify-content:space-between;gap:14px;border-top:1px solid var(--rule);padding-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);flex-wrap:wrap}
+  .panel.dark .footspec{border-color:var(--d-rule);color:var(--d-muted)}
+  .shelfbox{padding:10px 0}
+  .shelfbox img{max-width:340px;width:100%;display:block}
+  .ogimgs{display:grid;gap:14px;margin-top:8px}
+  @media(min-width:900px){.ogimgs{grid-template-columns:1fr 1fr}}
+  .ogimgs img{width:100%;border-radius:6px;border:1px solid var(--rule);display:block}
+  /* implementation table */
+  .impl{margin-top:20px;display:grid;gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+  .impl .row{display:grid;grid-template-columns:190px 1fr;gap:16px;padding:14px 18px;background:var(--surface);border-top:1px solid var(--rule);font-size:14px}
+  .impl .row:first-child{border-top:0}
+  .impl .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:2px}
+  .impl .v{color:var(--muted)}
+  .impl .v b{color:var(--ink);font-weight:600}
+  footer.page{padding:40px 0 64px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;text-transform:uppercase;letter-spacing:.1em}
+  code{font-family:var(--mono);font-size:.92em}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="page">
+    <p class="kicker">// design system · working exhibit · v1.2</p>
+    <h1>Systems you can read.</h1>
+    <p class="lede">The rendered reference for ryanwigley.com — every section below is
+    linked, rule by rule, to its written canon in
+    <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md</a>
+    and its drawn source in the
+    <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=0-1">Figma file</a>.
+    Where the three disagree: shipped code is canon, DESIGN.md records it, Figma may lag
+    (see its <i>figma-stale-backlog</i>). Deliberate code-vs-Figma departures live in
+    PLAN.md's divergence log.</p>
+    <p class="canon">
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=0-1">Figma → Design Language (0:1)</a><span class="sep">·</span>
+      <a href="https://ryanwigley.com">live site</a>
+    </p>
+  </header>
+
+  <section id="palette">
+    <p class="section-label">01 · Palette</p>
+    <h2>Two themes, two arguments.</h2>
+    <p class="lede">Light argues with contrast — forest blocks on pale sage. Dark argues with
+    restraint — one slate family, gold pointing at what matters. Outlined swatches are the
+    three tones lifted above Figma's values to clear WCAG AA 4.5:1.</p>
+    <div class="duo">
+      <div class="panel">
+        <p class="panel-tag">light · sage</p>
+        <div class="swatches">
+          <div class="sw"><div class="chip" style="background:#E9EEDF"></div><div class="meta"><b>bg</b><span>#E9EEDF</span></div></div>
+          <div class="sw"><div class="chip" style="background:#F3F4E9"></div><div class="meta"><b>surface</b><span>#F3F4E9</span></div></div>
+          <div class="sw"><div class="chip" style="background:#4F5F40"></div><div class="meta"><b>card</b><span>#4F5F40</span></div></div>
+          <div class="sw"><div class="chip" style="background:#495A3D"></div><div class="meta"><b>card-deep</b><span>#495A3D</span></div></div>
+          <div class="sw"><div class="chip" style="background:#222B1A"></div><div class="meta"><b>ink</b><span>#222B1A</span></div></div>
+          <div class="sw"><div class="chip" style="background:#5B6B4B"></div><div class="meta"><b>muted</b><span>#5B6B4B</span></div></div>
+          <div class="sw"><div class="chip" style="background:#C7CDB4"></div><div class="meta"><b>rule</b><span>#C7CDB4</span></div></div>
+          <div class="sw"><div class="chip" style="background:#98A48C"></div><div class="meta"><b>diagram</b><span>#98A48C</span></div></div>
+          <div class="sw lift"><div class="chip" style="background:#CED4C2"></div><div class="meta"><b>on-card-muted</b><span>#CED4C2 · AA</span></div></div>
+          <div class="sw"><div class="chip" style="background:#A18A2E"></div><div class="meta"><b>accent</b><span>#A18A2E · gold</span></div></div>
+        </div>
+      </div>
+      <div class="panel dark">
+        <p class="panel-tag">dark · midnight</p>
+        <div class="swatches">
+          <div class="sw"><div class="chip" style="background:#192B43"></div><div class="meta"><b>bg</b><span>#192B43</span></div></div>
+          <div class="sw"><div class="chip" style="background:#1F3149"></div><div class="meta"><b>surface</b><span>#1F3149</span></div></div>
+          <div class="sw"><div class="chip" style="background:#2A3D54"></div><div class="meta"><b>card</b><span>#2A3D54 · all tiles</span></div></div>
+          <div class="sw"><div class="chip" style="background:#E4EAF1"></div><div class="meta"><b>ink</b><span>#E4EAF1</span></div></div>
+          <div class="sw lift"><div class="chip" style="background:#879BB2"></div><div class="meta"><b>muted</b><span>#879BB2 · AA</span></div></div>
+          <div class="sw"><div class="chip" style="background:#2E4259"></div><div class="meta"><b>rule</b><span>#2E4259</span></div></div>
+          <div class="sw"><div class="chip" style="background:#516885"></div><div class="meta"><b>lattice-mid</b><span>#516885</span></div></div>
+          <div class="sw lift"><div class="chip" style="background:#92AAC7"></div><div class="meta"><b>on-card-muted</b><span>#92AAC7 · AA</span></div></div>
+          <div class="sw"><div class="chip" style="background:#C9A85A"></div><div class="meta"><b>accent</b><span>#C9A85A · gold</span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="retired"><span class="dotmark"></span><s>#94854A dim-gold</s> — RETIRED 2026-07-29.
+    Gold on the site is <code>accent</code>, full stop; remaining #94854A fills in Figma are stale.</p>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → themes</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=12-46">Figma → palette exhibit (12:46)</a>
+    </p>
+  </section>
+
+  <section id="type">
+    <p class="section-label">02 · Typography</p>
+    <h2>Four roles, never italic.</h2>
+    <div class="panel" style="margin-top:22px">
+      <div class="ramp">
+        <div class="row"><span class="tag">display · Fraunces Black</span><span style="font-family:var(--display);font-weight:900;font-size:40px;letter-spacing:-.015em;line-height:1.05">Models change, but the system holds.</span></div>
+        <div class="row"><span class="tag">title · Fraunces SemiBold</span><span style="font-family:var(--display);font-weight:600;font-size:19px">/research — skill names, tile titles, stat numerals</span></div>
+        <div class="row"><span class="tag">body · Hanken Grotesk</span><span style="font-size:16px;color:var(--muted)">Running text in Hanken Grotesk — the soft humanist grotesque carrying every paragraph.</span></div>
+        <div class="row"><span class="tag">label · Fragment Mono</span><span style="font-family:var(--mono);font-size:13px;letter-spacing:.06em">// kickers · nav · UPPER TRACKED SECTION LABELS · status tags · data</span></div>
+      </div>
+    </div>
+    <div class="impl">
+      <div class="row"><span class="k">desktop h1</span><span class="v"><b>One size on every page</b> — 40px inside the 1440 stage; <code>min(40px, 2.778vw)</code> on reflow pages. Same effective curve at every viewport.</span></div>
+      <div class="row"><span class="k">mobile h1</span><span class="v"><b>Fraunces Black 48 at 1054-artboard scale</b>; reflow pages track it via vw (<code>4.554vw</code> = 48/1054). Judge effective rendered px, never authored px.</span></div>
+      <div class="row"><span class="k">readability</span><span class="v">Projects + About body copy ships <b>larger than the frames</b> — deliberate, logged. Don't "fix" it back.</span></div>
+    </div>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → typography</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=12-83">Figma → type ramp (12:83)</a>
+    </p>
+  </section>
+
+  <section id="rules">
+    <p class="section-label">03 · The Five Rules (v3)</p>
+    <h2>The argument, numbered.</h2>
+    <div class="rules">
+      <div class="rulecard"><span class="no">1 · emphasis strategy</span><h3>Light inverts, dark restrains.</h3><p>Light: forest cards on pale sage — contrast carries hierarchy. Dark: one slate family — gold + position carry hierarchy. Never powder-invert dark.</p></div>
+      <div class="rulecard"><span class="no">2 · accent dosage</span><h3>Gold in small doses only.</h3><p>NEW badges, active nav, selected-row rail, kickers, one link per cluster. Never large fills. Gold is <code>accent</code> only.</p></div>
+      <div class="rulecard"><span class="no">3 · lattice grammar</span><h3>Uneven marks in open space.</h3><p>Thin rules + L-brackets + hollow squares + filled junction dots. Never hollow circles, never even grids, nothing within 24px of a card edge or text block.</p></div>
+      <div class="rulecard"><span class="no">4 · nav</span><h3>Labeled everywhere, lowercase mono.</h3><p>Real hand-drawn glyphs beside every word. One shared glass header on every route; active page underlined gold. 'writing' is the external blog.</p></div>
+      <div class="rulecard" style="grid-column:1/-1"><span class="no">5 · chrome</span><h3>Kickers gold, labels tracked, home just ends.</h3><p>Kickers are <code>// lowercase mono</code> in accent. Section labels are UPPER TRACKED MONO. Footers carry the socials row (About: BASED · SEATTLE, WA). The ● GRID coordinate tag is retired. Home is footer-less by design.</p></div>
+    </div>
+    <div class="duo">
+      <div class="lat light" aria-label="lattice grammar specimen, light">
+        <i class="r" style="left:58%;top:26px;width:36%;height:1px"></i>
+        <i class="r" style="left:94%;top:26px;width:1px;height:96px"></i>
+        <i class="dot gold" style="left:calc(94% - 3px);top:23px"></i>
+        <i class="r" style="left:8%;top:64px;width:1px;height:98px"></i>
+        <i class="dot" style="left:calc(8% - 3px);top:160px"></i>
+        <i class="sq" style="left:70%;top:118px"></i>
+        <i class="r" style="left:30%;top:140px;width:22%;height:1px"></i>
+        <i class="dot" style="left:calc(30% - 3px);top:137px"></i>
+      </div>
+      <div class="lat dark" aria-label="lattice grammar specimen, dark">
+        <i class="r" style="left:58%;top:26px;width:36%;height:1px"></i>
+        <i class="r" style="left:94%;top:26px;width:1px;height:96px"></i>
+        <i class="dot gold" style="left:calc(94% - 3px);top:23px"></i>
+        <i class="r" style="left:8%;top:64px;width:1px;height:98px"></i>
+        <i class="dot" style="left:calc(8% - 3px);top:160px"></i>
+        <i class="sq" style="left:70%;top:118px"></i>
+        <i class="r" style="left:30%;top:140px;width:22%;height:1px"></i>
+        <i class="dot" style="left:calc(30% - 3px);top:137px"></i>
+      </div>
+    </div>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → rules</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=578-3">Figma → RULES v3 (578:3)</a>
+    </p>
+  </section>
+
+  <section id="components">
+    <p class="section-label">04 · Components</p>
+    <h2>The module kit.</h2>
+    <p class="lede">Specimens rebuilt with the shipped tokens; artwork embedded from the live
+    exports. The Figma module kit is the drawn source for each.</p>
+    <div class="duo">
+      <div class="panel">
+        <p class="panel-tag">light specimens</p>
+        <div class="spec">
+          <div class="navspec"><span class="on">home</span><span>projects</span><span>tools</span><span>writing</span><span>about</span></div>
+          <p class="kicker">// kicker — lowercase mono, always gold</p>
+          <div class="banner"><div><div class="k">Podcast Editor</div><div class="n">Waveform</div><div class="tg">raw audio&nbsp;&nbsp;→&nbsp;&nbsp;finished episodes</div></div>
+            <div class="bars"><i style="height:8px"></i><i style="height:14px"></i><i style="height:22px"></i><i style="height:30px"></i><i style="height:19px"></i><i class="g" style="height:34px"></i><i style="height:26px"></i><i style="height:15px"></i><i style="height:23px"></i><i style="height:11px"></i><i style="height:17px"></i><i style="height:9px"></i><i style="height:6px"></i></div></div>
+          <div class="tile"><span class="t">Stumble<br>AI</span><span class="arw">→</span></div>
+          <div class="selrow"><span class="tag2">flagship · pre-beta</span><span class="nm">waveform</span></div>
+          <div class="mrow"><span class="nm">Waveform</span><span class="lead"></span><span class="tag2">flagship</span><span class="arw2">→</span></div>
+          <div class="shelfbox"><img src="/art/home/shelf-diorama.svg" alt="Shelf diorama, light theme"></div>
+          <div class="switch"><b class="active">☀</b><b>☾</b></div>
+          <div class="footspec"><span>X · GitHub · LinkedIn · Email</span><span>based · seattle, wa</span></div>
+        </div>
+      </div>
+      <div class="panel dark">
+        <p class="panel-tag">dark specimens — different drawings, not recolors</p>
+        <div class="spec">
+          <div class="navspec"><span class="on">home</span><span>projects</span><span>tools</span><span>writing</span><span>about</span></div>
+          <p class="kicker" style="color:var(--d-accent)">// kicker — lowercase mono, always gold</p>
+          <div class="banner"><div><div class="k">Podcast Editor</div><div class="n">Waveform</div><div class="tg">raw audio&nbsp;&nbsp;→&nbsp;&nbsp;finished episodes</div></div>
+            <div class="bars"><i style="height:8px"></i><i style="height:14px"></i><i style="height:22px"></i><i style="height:30px"></i><i style="height:19px"></i><i class="g" style="height:34px"></i><i style="height:26px"></i><i style="height:15px"></i><i style="height:23px"></i><i style="height:11px"></i><i style="height:17px"></i><i style="height:9px"></i><i style="height:6px"></i></div></div>
+          <div class="tile"><span class="t">Stumble<br>AI</span><span class="arw">→</span></div>
+          <div class="selrow"><span class="tag2">flagship · pre-beta</span><span class="nm">waveform</span></div>
+          <div class="mrow" style="color:var(--d-ink)"><span class="nm">Waveform</span><span class="lead"></span><span class="tag2">flagship</span><span class="arw2">→</span></div>
+          <div class="shelfbox"><img src="/art/home/shelf-diorama-dark.svg" alt="Shelf diorama, dark theme"></div>
+          <div class="switch"><b>☀</b><b class="active">☾</b></div>
+          <div class="footspec"><span>X · GitHub · LinkedIn · Email</span><span>based · seattle, wa</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → components</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=578-2">Figma → MODULES v2 (578:2)</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=197-982">shelf (197:982 / 403:127)</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=197-941">tools glyph (197:941)</a>
+    </p>
+  </section>
+
+  <section id="ogcard">
+    <p class="section-label">05 · Share Card</p>
+    <h2>The og-card.</h2>
+    <p class="lede">1200×630, designed as frames and shipped as a static export — pixel-identical
+    to the approved artwork (the shelf's masked SVG can't survive a runtime rebuild). Light ships
+    on every route; dark is kept ready for a swap. Edit in Figma → re-export.</p>
+    <div class="ogimgs">
+      <img src="/opengraph-image.png" alt="OG share card, light">
+      <img src="/og/og-card-dark.png" alt="OG share card, dark">
+    </div>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → components.og-card</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=1161-2">Figma → og-card · light (1161:2)</a><span class="sep">·</span>
+      <a href="https://www.figma.com/design/sGFjHbsFwMriSNcfT7TQrc/ryanwigley.com-%E2%80%94-Page-Designs?node-id=1161-17">· dark (1161:17)</a>
+    </p>
+  </section>
+
+  <section id="impl">
+    <p class="section-label">06 · Implementation Canon</p>
+    <h2>How it ships.</h2>
+    <div class="impl">
+      <div class="row"><span class="k">chrome</span><span class="v"><b>One shared glass header on every route</b> — nav geometry byte-identical everywhere. Pages crop their frame's baked chrome band (<code>DESK_TOP</code>). Mobile bottom bar is <code>md:hidden</code>.</span></div>
+      <div class="row"><span class="k">margins</span><span class="v">Desktop text sits on the <b>exhibit-shell line</b> (1280 max + 80 pad). Stage pages place content at <b>160..1280</b> stage coords. The frames' 80..1360 box is superseded.</span></div>
+      <div class="row"><span class="k">mobile model</span><span class="v"><b>Mock scale</b>: the 1054 artboard scaled as one object, landing un-zoomed. Projects + Tools are the two reflow pages, tracking the artboard via vw. Reflowed-native-mobile is rejected canon.</span></div>
+      <div class="row"><span class="k">projects flow</span><span class="v">Desktop hover previews, click launches. Mobile lands unselected: <b>tap → preview → tap again → visit</b>. Selection is pointer-type guarded.</span></div>
+      <div class="row"><span class="k">art exports</span><span class="v"><b>Real Figma nodes only</b> — never approximations, never page-region crops. Shelf = transparent composed SVG per theme; check every re-export for <code>&lt;image&gt;</code> tags and artboard rects.</span></div>
+      <div class="row"><span class="k">metadata</span><span class="v">Title stays <b>"AI Systems Builder"</b> (the "&amp; product manager" lives in the og-card kicker only). Self-canonicals; JSON-LD Person/WebSite/ProfilePage; pages defining <code>openGraph</code> must spread <code>OG_IMAGE</code>; llms.txt mirrors the projects copy.</span></div>
+      <div class="row"><span class="k">skill copy</span><span class="v">Notion page <b>"Ryan's Skills"</b> is the source of truth for /tools playbook copy — sync, never author in code.</span></div>
+    </div>
+    <p class="canon">canon:
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/DESIGN.md">DESIGN.md → implementation</a><span class="sep">·</span>
+      <a href="https://github.com/hurleywgly/portfolio-site/blob/main/PLAN.md">PLAN.md → divergence log</a>
+    </p>
+  </section>
+
+  <footer class="page">
+    <span>working exhibit · design system v1.2 · 2026-07-29</span>
+    <span><a href="https://ryanwigley.com" style="color:var(--accent);text-decoration:none">ryanwigley.com</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
