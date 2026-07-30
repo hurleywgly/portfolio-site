@@ -32,13 +32,13 @@ export const metadata: Metadata = {
     template: "%s | Ryan Wigley",
   },
   description:
-    "A working exhibit of live systems, tools, and methods by Ryan Wigley — builder of Waveform, Stumble AI, and hand-built agent skills.",
+    "A working exhibit of live systems, tools, and methods by Ryan Wigley, an AI systems builder and product manager using AI to simplify work and life.",
   openGraph: {
     type: "website",
     siteName: "Ryan Wigley — Working Exhibit",
     title: "Ryan Wigley | AI Systems Builder",
     description:
-      "A working exhibit of live systems, tools, and methods by Ryan Wigley.",
+      "A working exhibit of live systems, tools, and methods by Ryan Wigley, an AI systems builder and product manager using AI to simplify work and life.",
     url: "https://ryanwigley.com",
   },
   twitter: {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ryan Wigley | AI Systems Builder",
     description:
-      "A working exhibit of live systems, tools, and methods by Ryan Wigley.",
+      "A working exhibit of live systems, tools, and methods by Ryan Wigley, an AI systems builder and product manager using AI to simplify work and life.",
     creator: "@rywigs",
   },
 }
@@ -91,7 +91,7 @@ const websiteJsonLd = {
   name: "Ryan Wigley — Working Exhibit",
   url: "https://ryanwigley.com",
   description:
-    "A working exhibit of live systems, tools, and methods by Ryan Wigley.",
+    "A working exhibit of live systems, tools, and methods by Ryan Wigley, an AI systems builder and product manager using AI to simplify work and life.",
   publisher: { "@id": "https://ryanwigley.com/#person" },
 }
 

@@ -30,13 +30,17 @@ browser-based podcast editor. Based in Seattle, WA.
 
 ## Projects (one-liners)
 
-- Waveform — browser-native podcast editor; the missing middle between
-  Audacity's complexity and Descript's opinions. wavefrm.io
-- Stumble AI — discover cool AI apps; 50k+ indexed.
-- Acquired Bookshelf — every book mentioned on the Acquired podcast,
-  auto-catalogued.
+- Waveform — the missing middle between Audacity's complexity and Descript's
+  opinion; browser-native, AI-enhanced. wavefrm.io
+- Stumble AI — a website curated by an agent that surfs the web on its own
+  and finds cool apps built with AI. Nostalgia-inspired design. stumble-ai.com
+- Acquired Bookshelf — every book mentioned on the Acquired podcast, tracked
+  and delivered as they release.
 - Rain or Rainier? — Seattle's daily question, answered by weather telemetry.
-- RyOS Capsule — build-your-own agent OS starter kit.
+- RyOS Capsule — a one-click personalized agentic starter kit; designed to
+  help you work better and live a fuller life, while staying lightweight.
+- My Skills — an arsenal of skills, packaged to be reusable by anyone; they
+  help run Ryan's work and family operating systems each day.
 
 ## Elsewhere
 
