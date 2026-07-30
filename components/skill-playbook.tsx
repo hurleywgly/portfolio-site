@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import posthog from "posthog-js"
 import { useEffect, useState } from "react"
 import { InstallBar } from "@/components/install-bar"
 import { cn } from "@/lib/utils"
@@ -222,6 +223,7 @@ function SkillRow({
           <button
             type="button"
             onClick={onToggle}
+            data-attr={`skill-toggle-${skill.slug}`}
             aria-expanded={open}
             aria-controls={panelId}
             className="flex min-w-0 flex-1 flex-col gap-1 text-left sm:flex-row sm:items-center sm:gap-4 lg:gap-6"
@@ -291,13 +293,17 @@ export function SkillPlaybook() {
     }
   }, [])
 
-  const toggle = (slug: string) =>
+  const toggle = (slug: string) => {
+    if (!openSlugs.has(slug)) {
+      posthog.capture("skill_expanded", { skill: slug })
+    }
     setOpenSlugs((prev) => {
       const next = new Set(prev)
       if (next.has(slug)) next.delete(slug)
       else next.add(slug)
       return next
     })
+  }
 
   const filters: Filter[] = ["all", ...skillCategories]
   const visible = skills.filter(

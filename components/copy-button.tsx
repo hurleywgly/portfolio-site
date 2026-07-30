@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useRef, useState } from "react"
+import posthog from "posthog-js"
 import { cn } from "@/lib/utils"
 
 /**
@@ -23,6 +24,7 @@ export function CopyButton({
   const onCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(text)
+      posthog.capture("install_copied", { command: text })
     } catch {
       // clipboard may be unavailable (insecure context) — fail quietly
     }
@@ -35,6 +37,7 @@ export function CopyButton({
     <button
       type="button"
       onClick={onCopy}
+      data-attr="install-copy"
       aria-label={`Copy: ${text}`}
       className={cn(
         "shrink-0 bg-card font-mono lowercase tracking-[0.03em] text-on-card transition-colors hover:bg-card-deep",

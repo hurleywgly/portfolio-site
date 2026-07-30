@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import posthog from "posthog-js"
 import { useEffect, useState } from "react"
 import { projectsData, type ProjectEntry } from "@/lib/projects-data"
 import { cn } from "@/lib/utils"
@@ -93,6 +94,10 @@ function ProjectRow({
       return
     }
     // Already the active row — this is the "tap again" launch.
+    posthog.capture("project_launched", {
+      project: project.slug,
+      href: project.href,
+    })
     if (project.external) {
       window.open(project.href, "_blank", "noopener,noreferrer")
     } else {
@@ -115,6 +120,7 @@ function ProjectRow({
         if (e.currentTarget.matches(":focus-visible")) onSelect()
       }}
       onClick={activate}
+      data-attr={`project-launch-${project.slug}`}
       aria-pressed={selected}
       className={cn(
         "group relative flex w-full flex-col rounded-[6px] py-3.5 pl-5 pr-4 text-left outline-none transition-colors",
