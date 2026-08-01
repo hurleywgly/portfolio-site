@@ -1,5 +1,13 @@
 # PLAN.md — Working Exhibit production push
 
+> ## ✅ BUILD CLOSED — 2026-07-31
+> Shipped and live at **https://ryanwigley.com**. Every numbered item is resolved:
+> done, superseded, or explicitly declined by Ryan. Declined at close ("those are
+> all good"): **#65** skill-cover regen at ~924×600 (current 611×384 covers accepted)
+> and the **Figma stale-backlog sweep** (tracked in DESIGN.md → hygiene, harmless).
+> Canon of record: DESIGN.md v1.2 ↔ /design-system.html ↔ Figma. This file is now
+> an archive — future portfolio work starts a fresh plan.
+
 **Authored by:** Opus 5 (planning) · **Executed by:** Sonnet 5 · **Final pixel QA:** Fable 5
 **Rule:** single-threaded. One task at a time. No Workflow, no parallel agent fleets.
 IDs are stable — an item keeps its `#N` forever. PLAN.md is the single source of truth.
