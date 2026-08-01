@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import posthog from "posthog-js"
 import { cn } from "@/lib/utils"
 
 /**
@@ -24,7 +25,11 @@ export function ThemeSwitcher({ className }: { className?: string }) {
     >
       <button
         type="button"
-        onClick={() => setTheme("light")}
+        onClick={() => {
+          posthog.capture("theme_changed", { theme: "light" })
+          setTheme("light")
+        }}
+        data-attr="theme-light"
         className="inline-flex items-center justify-center rounded-full bg-card text-on-card transition-colors dark:bg-transparent dark:text-muted"
         aria-label="Use light theme"
       >
@@ -32,7 +37,11 @@ export function ThemeSwitcher({ className }: { className?: string }) {
       </button>
       <button
         type="button"
-        onClick={() => setTheme("dark")}
+        onClick={() => {
+          posthog.capture("theme_changed", { theme: "dark" })
+          setTheme("dark")
+        }}
+        data-attr="theme-dark"
         className="inline-flex items-center justify-center rounded-full text-muted transition-colors dark:bg-accent dark:text-page"
         aria-label="Use dark theme"
       >

@@ -151,7 +151,7 @@ Everything below was previously "verified" against DESIGN.md + rendering, **not*
 
 ## PHASE 3 — Tracking
 
-- [ ] **#21** PostHog — hand off to **Codex** via a `/capsule` (Ryan's call). Create the capsule after Phases 1–2 land so it carries the settled codebase state.
+- [x] **#21** PostHog — shipped (2026-07-29). The dedicated `ryanwigley.com` project uses client-side `posthog-js`, a first-party `/ingest` proxy, anonymous profiles, disabled session recording, web autocapture, and four semantic events: `project_launched`, `skill_expanded`, `install_copied`, and `theme_changed`. All were browser-verified in PostHog Live before production deployment.
 
 ---
 
