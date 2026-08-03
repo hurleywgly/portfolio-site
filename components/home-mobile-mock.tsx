@@ -181,6 +181,7 @@ export function HomeMobileMock() {
               title={tileTitle(tile.title)}
               href={tile.href}
               motif={homeMotifs[tile.slug]}
+              dataAttr={`home-tile-${tile.slug}`}
             />
           </AtScaled>
         ))}
@@ -202,14 +203,31 @@ export function HomeMobileMock() {
           </p>
         </At>
 
-        {/* arsenal — single column, chip natural ~223×73 → 338 artboard */}
-        <AtScaled x={74} y={1240} natW={223} natH={310} k={1.51} z={10}>
+        {/* Arsenal — single column, chip natural ~223×86 → 338 artboard wide.
+            Chips are 24 natural px taller than Figma's content-sized 62 (rows
+            pinned at 86, gap 6.5 → 8) and the "browse all my skills" link below
+            moved down to clear it. Reason: this whole page is the artboard uniformly
+            fit-scaled to the viewport (~0.36× at 375pt), so Figma's chip height
+            landed at 33pt of thumb — under Apple's 44pt minimum, with only
+            ~3.7pt between one chip and the next. The extra height is pure
+            vertical padding inside the chip (icon and both text lines are
+            untouched), and it now measures ≥44pt tall on a 375pt-wide phone and
+            up. Chips are the page's densest tap cluster and each one is a
+            distinct destination, so they're the one element sized for the
+            thumb rather than the artboard. Logged in DESIGN.md →
+            hygiene.mobile-deltas. */}
+        <AtScaled x={74} y={1240} natW={223} natH={368} k={1.51} z={10}>
+          {/* 86 natural px × 1.51 × (375/1054 fit scale) = 46.2pt of thumb on
+              the narrowest phone this design targets, and taller from there.
+              82px was the exact 44.0pt floor and measured 44.05pt live — any
+              later nudge to `k` or the fit scale would have dropped it under
+              with no warning, so this carries ~2pt of deliberate headroom. */}
           <ArsenalChips
             chips={chips}
-            className="grid-cols-1 gap-y-[6.5px]"
+            className="auto-rows-[86px] grid-cols-1 gap-y-[8px]"
           />
         </AtScaled>
-        <At x={74} y={1734} z={10}>
+        <At x={74} y={1816} z={10}>
           <Link
             href="/tools"
             className="font-mono text-[21px] lowercase text-card dark:text-accent"

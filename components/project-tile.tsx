@@ -17,12 +17,15 @@ export function ProjectTile({
   external,
   motif,
   className,
+  dataAttr,
 }: {
   title: ReactNode
   href: string
   external?: boolean
   motif: ReactNode
   className?: string
+  /** PostHog event target, e.g. `home-tile-stumble`. */
+  dataAttr?: string
 }) {
   const body = (
     <>
@@ -61,13 +64,22 @@ export function ProjectTile({
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={classes}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        data-attr={dataAttr}
+        className={classes}
+      >
         {body}
       </a>
     )
   }
   return (
-    <Link href={href} className={classes}>
+    // `scroll={false}`: the destination positions itself on the deep-linked
+    // item (lib/deep-link.ts), and the router's own scroll-to-top lands after
+    // ours and would undo it.
+    <Link href={href} scroll={false} data-attr={dataAttr} className={classes}>
       {body}
     </Link>
   )
