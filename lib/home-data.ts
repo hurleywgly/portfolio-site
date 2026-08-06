@@ -6,12 +6,17 @@ export type TileConfig = {
   href: string
 }
 
-/** The 2×2 work grid, in Figma order. */
+/** The 2×2 work grid, in Figma order.
+ *
+ *  Each tile deep-links to its own entry in the projects showcase — the slugs
+ *  match `projectsData` 1:1, so `/projects?project=stumble` lands with Stumble
+ *  AI's row selected and its featured panel (cover, tag, blurb, build link)
+ *  already showing. See lib/deep-link.ts. */
 export const homeTiles: TileConfig[] = [
-  { title: "Stumble AI", slug: "stumble", href: "/projects" },
-  { title: ["Rain or", "Rainier?"], slug: "rainier", href: "/projects" },
-  { title: ["Acquired", "Bookshelf"], slug: "bookshelf", href: "/projects" },
-  { title: ["RyOS", "Starter Kit"], slug: "ryos", href: "/projects" },
+  { title: "Stumble AI", slug: "stumble", href: "/projects?project=stumble" },
+  { title: ["Rain or", "Rainier?"], slug: "rainier", href: "/projects?project=rainier" },
+  { title: ["Acquired", "Bookshelf"], slug: "bookshelf", href: "/projects?project=bookshelf" },
+  { title: ["RyOS", "Starter Kit"], slug: "ryos", href: "/projects?project=ryos" },
 ]
 
 export type ChipConfig = {
@@ -22,12 +27,17 @@ export type ChipConfig = {
   isNew?: boolean
 }
 
-/** The arsenal cluster, in Figma order — /capsule keeps its NEW badge. */
+/** The arsenal cluster, in Figma order — /capsule keeps its NEW badge.
+ *
+ *  Each chip deep-links to its own skill in the playbook: the chip names are
+ *  the skill slugs (minus the leading slash) in `tools-data`, so
+ *  `/tools?skill=capsule` opens /capsule expanded and parked at the top of the
+ *  page. See lib/deep-link.ts. */
 export const homeChips: ChipConfig[] = [
-  { name: "/capsule", desc: "agent-ready knowledge", glyph: "capsule", href: "/tools", isNew: true },
-  { name: "/pitch-me", desc: "divergent concept pitches", glyph: "pitch", href: "/tools" },
-  { name: "/daily-brief", desc: "your morning brief", glyph: "brief", href: "/tools" },
-  { name: "/research", desc: "scored web research", glyph: "research", href: "/tools" },
+  { name: "/capsule", desc: "agent-ready knowledge", glyph: "capsule", href: "/tools?skill=capsule", isNew: true },
+  { name: "/pitch-me", desc: "divergent concept pitches", glyph: "pitch", href: "/tools?skill=pitch-me" },
+  { name: "/daily-brief", desc: "your morning brief", glyph: "brief", href: "/tools?skill=daily-brief" },
+  { name: "/research", desc: "scored web research", glyph: "research", href: "/tools?skill=research" },
 ]
 
 /**

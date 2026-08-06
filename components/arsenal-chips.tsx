@@ -28,6 +28,11 @@ export function ArsenalChips({
         <Link
           key={chip.name}
           href={chip.href}
+          // The destination parks the requested skill at the top of the page
+          // itself (lib/deep-link.ts); the router's own scroll-to-top would
+          // otherwise land after ours and undo it.
+          scroll={false}
+          data-attr={`home-arsenal-${chip.name.replace(/^\//, "")}`}
           className={cn(
             "group relative flex h-full items-center gap-3 rounded-[8px] border bg-surface px-3 py-2.5 transition-colors",
             chip.isNew
