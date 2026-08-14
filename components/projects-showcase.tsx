@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import posthog from "posthog-js"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import {
   readDeepLink,
   scrollDeepLinkIntoView,
@@ -35,6 +35,7 @@ export function ProjectsShowcase() {
   const [activeSlug, setActiveSlug] = useState<string | null>(
     projectsData[0].slug,
   )
+  const suppressArrivalHover = useRef(false)
   const active = activeSlug
     ? (projectsData.find((p) => p.slug === activeSlug) ?? null)
     : null
@@ -57,6 +58,10 @@ export function ProjectsShowcase() {
   useIsomorphicLayoutEffect(() => {
     const wanted = readDeepLink("project")
     if (wanted && projectsData.some((p) => p.slug === wanted)) {
+      // Route transitions can place the stationary desktop pointer over a
+      // project row. Ignore that synthetic arrival hover until the visitor
+      // actually moves the pointer, or it can immediately replace `wanted`.
+      suppressArrivalHover.current = true
       setActiveSlug(wanted)
       scrollDeepLinkIntoView(SHOWCASE_ID)
       return
@@ -84,7 +89,13 @@ export function ProjectsShowcase() {
               <ProjectRow
                 project={p}
                 selected={p.slug === activeSlug}
-                onSelect={() => setActiveSlug(p.slug)}
+                onSelect={() => {
+                  if (!suppressArrivalHover.current) setActiveSlug(p.slug)
+                }}
+                onPointerPreview={() => {
+                  suppressArrivalHover.current = false
+                  setActiveSlug(p.slug)
+                }}
               />
             </li>
           ))}
@@ -108,10 +119,12 @@ function ProjectRow({
   project,
   selected,
   onSelect,
+  onPointerPreview,
 }: {
   project: ProjectEntry
   selected: boolean
   onSelect: () => void
+  onPointerPreview: () => void
 }) {
   const router = useRouter()
 
@@ -142,6 +155,9 @@ function ProjectRow({
       // tap again → visit; keyboard users still preview on focus-visible.
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse") onSelect()
+      }}
+      onPointerMove={(e) => {
+        if (e.pointerType === "mouse") onPointerPreview()
       }}
       onFocus={(e) => {
         if (e.currentTarget.matches(":focus-visible")) onSelect()
