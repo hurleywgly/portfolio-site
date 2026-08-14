@@ -4,9 +4,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import posthog from "posthog-js"
-import { useEffect, useState } from "react"
+import { useRef, useState } from "react"
+import {
+  readDeepLink,
+  scrollDeepLinkIntoView,
+  useIsomorphicLayoutEffect,
+} from "@/lib/deep-link"
 import { projectsData, type ProjectEntry } from "@/lib/projects-data"
 import { cn } from "@/lib/utils"
+
+/** Anchor the deep link scrolls to — the showcase's own top edge. */
+const SHOWCASE_ID = "projects-showcase"
 
 /**
  * The selected-state projects showcase: a list of six rows on one side and a
@@ -27,21 +35,45 @@ export function ProjectsShowcase() {
   const [activeSlug, setActiveSlug] = useState<string | null>(
     projectsData[0].slug,
   )
+  const suppressArrivalHover = useRef(false)
   const active = activeSlug
     ? (projectsData.find((p) => p.slug === activeSlug) ?? null)
     : null
 
-  // Mobile lands with NOTHING selected, so the flow is exactly tap → preview
-  // (panel appears) → tap again → visit. Desktop keeps the flagship
-  // pre-selected since hover drives selection there. Post-mount narrowing —
-  // the same SSR-safe pattern as the skill playbook's 1-open-panel rule
-  // (#67); the brief first-paint flash is the accepted cost.
-  useEffect(() => {
+  // Two post-mount passes, in priority order:
+  //
+  // 1. A deep link (`/projects?project=stumble`, from a home work tile) wins
+  //    outright — that project is selected on BOTH breakpoints and the showcase
+  //    is brought to the top of the viewport, so the tap lands the visitor on
+  //    the project's details instead of the top of a page they have to hunt
+  //    through. It also overrides the mobile "nothing selected" rule below:
+  //    they already picked a project, so previewing it IS the first tap, and
+  //    the next tap on its row launches it.
+  // 2. Otherwise mobile lands with NOTHING selected, so the flow is exactly
+  //    tap → preview (panel appears) → tap again → visit. Desktop keeps the
+  //    flagship pre-selected since hover drives selection there.
+  //
+  // Runs before paint on the client (see useIsomorphicLayoutEffect), so a click
+  // from home doesn't flash the flagship's cover before cross-fading.
+  useIsomorphicLayoutEffect(() => {
+    const wanted = readDeepLink("project")
+    if (wanted && projectsData.some((p) => p.slug === wanted)) {
+      // Route transitions can place the stationary desktop pointer over a
+      // project row. Ignore that synthetic arrival hover until the visitor
+      // actually moves the pointer, or it can immediately replace `wanted`.
+      suppressArrivalHover.current = true
+      setActiveSlug(wanted)
+      scrollDeepLinkIntoView(SHOWCASE_ID)
+      return
+    }
     if (window.matchMedia("(max-width: 1023px)").matches) setActiveSlug(null)
   }, [])
 
   return (
-    <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14">
+    <div
+      id={SHOWCASE_ID}
+      className="flex scroll-mt-6 flex-col gap-10 md:scroll-mt-24 lg:flex-row lg:items-start lg:gap-14"
+    >
       <FeaturedPanel active={active} />
 
       <div className="lg:order-1 lg:w-[43%] lg:max-w-[560px]">
@@ -57,7 +89,13 @@ export function ProjectsShowcase() {
               <ProjectRow
                 project={p}
                 selected={p.slug === activeSlug}
-                onSelect={() => setActiveSlug(p.slug)}
+                onSelect={() => {
+                  if (!suppressArrivalHover.current) setActiveSlug(p.slug)
+                }}
+                onPointerPreview={() => {
+                  suppressArrivalHover.current = false
+                  setActiveSlug(p.slug)
+                }}
               />
             </li>
           ))}
@@ -81,10 +119,12 @@ function ProjectRow({
   project,
   selected,
   onSelect,
+  onPointerPreview,
 }: {
   project: ProjectEntry
   selected: boolean
   onSelect: () => void
+  onPointerPreview: () => void
 }) {
   const router = useRouter()
 
@@ -115,6 +155,9 @@ function ProjectRow({
       // tap again → visit; keyboard users still preview on focus-visible.
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse") onSelect()
+      }}
+      onPointerMove={(e) => {
+        if (e.pointerType === "mouse") onPointerPreview()
       }}
       onFocus={(e) => {
         if (e.currentTarget.matches(":focus-visible")) onSelect()

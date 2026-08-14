@@ -133,6 +133,7 @@ export default function Home() {
                 title={tileTitle(tile.title)}
                 href={tile.href}
                 motif={homeMotifs[tile.slug]}
+                dataAttr={`home-tile-${tile.slug}`}
               />
             </Box>
           ))}

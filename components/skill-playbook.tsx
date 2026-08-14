@@ -2,8 +2,13 @@
 
 import Image from "next/image"
 import posthog from "posthog-js"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { InstallBar } from "@/components/install-bar"
+import {
+  readDeepLink,
+  scrollDeepLinkIntoView,
+  useIsomorphicLayoutEffect,
+} from "@/lib/deep-link"
 import { cn } from "@/lib/utils"
 import {
   FEATURE_CAPTION,
@@ -198,7 +203,9 @@ function SkillRow({
 }) {
   const panelId = `skill-panel-${skill.slug}`
   return (
-    <div className="mb-3">
+    // `scroll-mt-*` clears the sticky desktop header when a deep link from the
+    // home arsenal scrolls this row to the top of the page.
+    <div id={`skill-row-${skill.slug}`} className="mb-3 scroll-mt-4 md:scroll-mt-24">
       <div
         className={cn(
           "flex min-h-[72px] items-center gap-4 border border-rule bg-surface px-4 py-3.5 transition-colors sm:gap-6 sm:px-6 lg:px-9 lg:pr-4",
@@ -278,17 +285,30 @@ export function SkillPlaybook() {
     () => new Set(defaultOpenSlugs),
   )
 
-  // Figma's mobile playbook frame (1006:99) shows exactly ONE expanded
-  // exemplar (/research); the desktop frame shows three, and
-  // DESIGN.md's hygiene.mobile-deltas already documents "1 expanded skill on
-  // mobile playbook vs 3 desktop" as canon (#67 — live shipped 3 open on
-  // mobile, a ~5,983px-tall initial page). Both server render and the first
-  // client render use the same desktop-default set (SSR-safe, no hydration
-  // mismatch); only after mount do we check the real viewport and narrow to
-  // the first default slug if it's mobile-width.
-  useEffect(() => {
-    const mq = window.matchMedia(MOBILE_QUERY)
-    if (mq.matches && defaultOpenSlugs.length > 0) {
+  // Two post-mount passes, in priority order:
+  //
+  // 1. A deep link (`/tools?skill=capsule`, from a home arsenal chip) wins
+  //    outright: that skill — and ONLY that skill — is expanded, and its row is
+  //    scrolled to the top of the page. Collapsing the defaults matters as much
+  //    as the scroll does; leaving three other panels open above/below turns
+  //    the requested skill into one card in a wall of them.
+  // 2. Otherwise: Figma's mobile playbook frame (1006:99) shows exactly ONE
+  //    expanded exemplar (/research); the desktop frame shows three, and
+  //    DESIGN.md's hygiene.mobile-deltas already documents "1 expanded skill on
+  //    mobile playbook vs 3 desktop" as canon (#67 — live shipped 3 open on
+  //    mobile, a ~5,983px-tall initial page).
+  //
+  // Both server render and the first client render use the same desktop-default
+  // set (SSR-safe, no hydration mismatch); only after mount do we read the URL
+  // and the real viewport.
+  useIsomorphicLayoutEffect(() => {
+    const wanted = readDeepLink("skill")
+    if (wanted && skills.some((s) => s.slug === wanted)) {
+      setOpenSlugs(new Set([wanted]))
+      scrollDeepLinkIntoView(`skill-row-${wanted}`)
+      return
+    }
+    if (window.matchMedia(MOBILE_QUERY).matches && defaultOpenSlugs.length > 0) {
       setOpenSlugs(new Set([defaultOpenSlugs[0]]))
     }
   }, [])

@@ -144,7 +144,17 @@ components:
   arc-timeline:      "gold-dot node timeline with mono step labels + KNOWS chip
                       — authored in an 1120-wide local space (the frame's 1280
                       scaled ×0.875 into the 160..1280 content box)"
-  arsenal-cluster:   "kicker + 2×2 chips + browse link, one unit; /capsule keeps NEW badge"
+  arsenal-cluster:   "kicker + 2×2 chips + browse link, one unit; /capsule keeps
+                      NEW badge. Each chip DEEP-LINKS to its own skill
+                      (/tools?skill=<slug>) — the playbook opens with that skill
+                      expanded (and only that one) parked at the top of the page.
+                      The browse link still goes to the plain /tools landing."
+  project-tile-link: "the four home work tiles DEEP-LINK to their own showcase
+                      entry (/projects?project=<slug>) — the showcase opens with
+                      that project's row selected and its featured panel (cover,
+                      tag, blurb, build link) showing, scrolled to the top. On
+                      mobile that counts as the first tap of the page's own
+                      tap-preview → tap-launch flow. Plumbing: lib/deep-link.ts."
   shelf:             "personality diorama — never shrinks; UNIQUE drawing per
                       theme; taps through to /about (with the crew polaroid)"
   crew-polaroid:     "pixel family portrait; unique art per theme; links to /about"
@@ -177,7 +187,13 @@ hygiene:
     underlines 'tools' in the bottom bar while home is active.
   mobile-deltas: "acknowledged: crew polaroid mobile-About only; 1 expanded
                   skill on mobile playbook vs 3 desktop; mobile footers exist
-                  without the (retired) GRID tag; frame heights content-driven"
+                  without the (retired) GRID tag; frame heights content-driven;
+                  home arsenal chips are 86 natural px tall (Figma's are
+                  content-sized ~62) and the browse link below moved 1734→1816 —
+                  mock scale (~0.36× at 375pt) turned the frame value into 33pt
+                  of thumb, under Apple's 44pt minimum. Extra height is padding
+                  only; icon and both text lines are unchanged. The four work
+                  tiles already cleared 44pt (67×61pt) and were not touched."
   archives: "Archive page holds the playbook VIDEO iteration (implement once
              videos exist). Annotation/note frames live left of page frames —
              never inside them."
